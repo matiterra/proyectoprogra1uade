@@ -67,3 +67,7 @@ def SeleccionarDificultad():
 
 def SolicitarPista():
 #Función para que el usuario solicite una pista.
+
+
+integrantes:
+Martin Schauvinhold - usuario Martin Schauvinhold
