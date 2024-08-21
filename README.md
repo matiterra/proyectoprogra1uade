@@ -52,3 +52,26 @@ def PalabrasVerticales(palabras):
 
 def CrearTablero(palabras):
 #¿Función para crear tablero de palabras horizontales y verticales?
+
+def PalabrasVerticales(palabras):
+    # Función para generar palabras en vertical para el tablero.
+    # Posible lógica para elegir y colocar palabras en vertical.
+    pass
+
+def ImprimirTablero(tablero):
+#Función para imprimir el tablero en la consola, mostrando las palabras y guiones.
+
+def IngresarPalabra(numero_palabra, palabra, tablero):
+#Función para que el usuario ingrese una palabra por consola y verificar si es correcta.
+
+def ManejarErrores(entrada):
+#Función para manejar errores en la entrada de datos del usuario.
+
+def ReiniciarJuego():
+#Función para reiniciar el juego o iniciar una nueva partida.
+
+def SeleccionarDificultad():
+#Función para que el usuario seleccione el nivel de dificultad.
+
+def SolicitarPista():
+#Función para que el usuario solicite una pista.
