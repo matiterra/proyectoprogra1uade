@@ -50,14 +50,6 @@ def AgregoIndice(palabras):
 def PalabrasVerticales(palabras):
 #¿Funcion para crear un listado de palabras que van a ir en forma vertical?
 
-def CrearTablero(palabras):
-#¿Función para crear tablero de palabras horizontales y verticales?
-
-def PalabrasVerticales(palabras):
-    # Función para generar palabras en vertical para el tablero.
-    # Posible lógica para elegir y colocar palabras en vertical.
-    pass
-
 def ImprimirTablero(tablero):
 #Función para imprimir el tablero en la consola, mostrando las palabras y guiones.
 
