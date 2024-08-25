@@ -1,12 +1,12 @@
 [
-    {"word": "DOG", "definition": "Un mejor amigo de los humanos"},
-    {"word": "CAT", "definition": "Un felino doméstico"},
-    {"word": "FISH", "definition": "Animal que vive en el agua"},
-    {"word": "BIRD", "definition": "Animal que vuela"},
-    {"word": "HORSE", "definition": "Animal usado para montar"},
-    {"word": "COW", "definition": "Produce leche"},
-    {"word": "SHEEP", "definition": "Animal que da lana"},
-    {"word": "GOAT", "definition": "Animal de montaña"},
-    {"word": "DUCK", "definition": "Animal que nada y vuela"},
-    {"word": "PIG", "definition": "Animal que se cría para carne"}
+    {"word": "DOG", "definition1": "Un mejor amigo de los humanos", "definition2": "Canino"},
+    {"word": "CAT", "definition1": "Un felino doméstico"},
+    {"word": "FISH", "definition1": "Animal que vive en el agua"},
+    {"word": "BIRD", "definition1": "Animal que vuela"},
+    {"word": "HORSE", "definition1": "Animal usado para montar"},
+    {"word": "COW", "definition1": "Produce leche"},
+    {"word": "SHEEP", "definition1": "Animal que da lana"},
+    {"word": "GOAT", "definition1": "Animal de montaña"},
+    {"word": "DUCK", "definition1": "Animal que nada y vuela"},
+    {"word": "PIG", "definition1": "Animal que se cría para carne"}
 ]
