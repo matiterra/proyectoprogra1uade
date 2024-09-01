@@ -21,13 +21,12 @@ Imprimir la primer letra de la primer palabra para poder empezar ✔
 
 8-Crear función de repregunta y confirmación para volver a jugar al final o en caso de que quiera reiniciarse la partida. Para reiniciar el programa el usuario deberá ingresar por consola la palabra "reset". En el caso de que el usuario gane, se le preguntará si quiere volver a jugar o finalizar el programa. ✔
 
-9-Crear un Sistema de Temáticas a elegir al empezar a jugar y que haya un modo en dónde las listas se Temáticas se mezclen entre sí. 
+9-Crear un Sistema de Temáticas a elegir al empezar a jugar y que haya un modo en dónde las listas se Temáticas se mezclen entre sí.
 Ejemplo: Jugadores de Fútbol, Vegetales o Informática. ✔
 
 10-Si el usuario se queda trabado o necesita una pista, tendrá un comodin por partida (Se completará una palabra random mientras no sea la ultima que quede sin completar.) ✔
 
-
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 Primeras ideas sobre funciones a incluir en el programa:
 
@@ -35,16 +34,12 @@ def LeerJson(): ✔
 #Función que se va a utilizar para leer los datos del archivo plano.
 
 def CargarListas(): ✔
-#Función que se va a encargar de llenar las N listas principales: 
-                                                                    - palabras = []
-                                                                    - definiciones1 = ["definición1"]
-                                                                    - definiciones2 = ["definición2"]
-                                                                    - definicionesN = ["definiciónN"]
+#Función que se va a encargar de llenar las N listas principales: - palabras = [] - definiciones1 = ["definición1"] - definiciones2 = ["definición2"] - definicionesN = ["definiciónN"]
 En este caso, en la lista de palabras, se podría utilizar algo cómo:
 
 for i in palabras_data:
-    palabras.append(list(i['word']))  --> Esto realizaría una lista de listas para tener las palabras separadas por letras: [["D","O","G"], ["C","A","T"]]
-    definiciones.append(i['definition'])
+palabras.append(list(i['word'])) --> Esto realizaría una lista de listas para tener las palabras separadas por letras: [["D","O","G"], ["C","A","T"]]
+definiciones.append(i['definition'])
 
 def BuscoCoincidencias(palabras):
 #Función que se encarga de buscar letras dentro de las palabras de forma que guarde el Indice
@@ -73,9 +68,56 @@ def SeleccionarDificultad():
 def SolicitarPista():
 #Función para que el usuario solicite una pista.
 
-------------------------------------------------------------------------------------------------------------------------------------------------
+---
+
+1/9/2024
+
+Planning Poker y estimación de esfuerzos para futura división de labores.
+
+1- función LeerJson(parámetros E/S a revisar) ---> Puntos: 1 ---> Designación pendiente
+
+2- función CargarListas(parámetros E/S a revisar) ---> Puntos: 1.5 ---> Rework y designación pendiente
+
+3- función BuscoCoincidencias(parámetros E/S a revisar) ---> Puntos: 3.5 ---> Designación pendiente
+
+4- función AgregoIndice(parámetros E/S a revisar) ---> Puntos: 2 ---> Designación pendiente
+
+5- función ConstrucciónTablero(parámetros E/S a revisar) ---> Puntos: 8 ---> Es necesario modularizarla (pendiente)
+
+6- función ImprimirTablero(parámetros E/S a revisar) ---> Puntos: 4 ---> Designación pendiente --- ¿Rework pendiente?
+
+7- función IngresarPalabra(parámetros E/S a revisar) ---> Puntos: 2.5 ---> Designación Pendiente --- Permite que el usuario indique el indice de palabra que desea adivinar y revisa que la palabra pertenezca al conjunto de palabras del crucigrama
+
+8- función ManejarErrores(parámetros E/S a revisar) ---> Puntos: 3.5 ---> Designación pendiente
+
+9- función ReiniciarJuego(parámetros E/S a revisar) ---> Puntos: 1.5 ---> Designación pendiente
+
+10- función SeleccionarModo(parámetros E/S a revisar) ---> Puntos: 1 ---> Designación pendiente
+
+11- función SolicitarPista(parámetros E/S a revisar) ---> Puntos: 1 ---> Designación pendiente
+
+Puntos totales: 29, 5 a dividir entre los 3 integrantes sin tener en cuenta que la función N° 5 todavia tiene que ser modularizada
+
+---
+
+Funciones necesarias para la primer entrega:
+
+-Listas avanzadas y métodos de caracteres: 1 y 2 (maquetas, sin uso de archivos externos)
+
+-Funciones lambda, math, filter y reduce: 5(a modularizar)
+
+-Expresiones regulares: 7 y 5 (a modularizar)
+
+-Manipulación avanzada de diccionarios: 3
+
+-Tuplas y conjuntos: 4
+
+-Excepciones: 8
+
+---
 
 Integrantes:
-- Martin Schauvinhold 
+
+- Martin Schauvinhold
 - Matias Terranova
 - Luciano Perrella
