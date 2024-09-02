@@ -114,6 +114,10 @@ Funciones necesarias para la primer entrega:
 
 -Excepciones: 8
 
+Estamos encaminados con la planificación, pero todavía nos queda bastante por delante. Sumamos un total de 29.5 puntos que tenemos que repartir bien para que sea mas justa la division de funciones. La función de "ConstrucciónTablero" es la más pesada, con 8 puntos, y necesitamos modularizarla sí o sí para que no se nos complique.
+para la primera entrega necesitamos tener al menos el 40% del proyecto realizado lo que significa que tendriamos que empezar a realizar las funciones que consideramos mas importantes hasta este momento para poder visualizar si hay algun error o algo que nos falta para agregar a la planificación
+
+
 ---
 
 Integrantes:
