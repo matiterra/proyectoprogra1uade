@@ -17,11 +17,9 @@ def CargarListas(palabras_data):
         palabras.append(list(_['word']))
         definiciones.append(_['definition'])
 
-
-
-#Función encargada del Ingreso de la palabra a adivinar siguiendo la lógica de número - palabra (1 - C A S A)
-#Devuelve la palabra Ingresada, el número de la palabra a adivinar y si el usuario necesita una pista.
 def IngresarPalabraNumero():
+    '''Función encargada del Ingreso de la palabra a adivinar siguiendo la lógica de número - palabra (1 - C A S A)
+        Devuelve la palabra Ingresada, el número de la palabra a adivinar y si el usuario necesita una pista. '''
     bandera = True
     while bandera:
         try:
