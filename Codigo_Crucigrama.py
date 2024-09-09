@@ -48,6 +48,24 @@ def IngresarPalabraNumero():
         else: 
             print("Por favor ingrese una palabra. Vuelva a intentarlo.")
 
+def BuscoCoincidencias(palabras):
+    #Función que se encarga de buscar letras dentro de las palabras de forma que guarde el Indice
+    coincidencias = {}
+
+    for palabra in palabras:
+        palabra_str = ''.join(palabra)
+        index = 0  # Contador para el índice de la letra
+        
+        while index < len(palabra):
+            letra = palabra[index]
+            if letra not in coincidencias:
+                coincidencias[letra] = []
+            coincidencias[letra].append({
+                'palabra': palabra_str,
+                'indice': index
+            })
+            index += 1  #incrementa el indice
+    return coincidencias
 
 #MAIN
 IngresarPalabraNumero()
