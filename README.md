@@ -74,11 +74,11 @@ def SolicitarPista():
 
 Planning Poker y estimación de esfuerzos para futura división de labores.
 
-1- función LeerJson(parámetros E/S a revisar) ---> Puntos: 1 ---> Designación pendiente
+1- función LeerJson(parámetros E/S a revisar) ---> Puntos: 1 ---> Designación: Luciano Perrella
 
-2- función CargarListas(parámetros E/S a revisar) ---> Puntos: 1.5 ---> Rework y designación pendiente
+2- función CargarListas(parámetros E/S a revisar) ---> Puntos: 1.5 ---> Designación: Luciano Perrella
 
-3- función BuscoCoincidencias(parámetros E/S a revisar) ---> Puntos: 3.5 ---> Designación pendiente
+3- función BuscoCoincidencias(parámetros E/S a revisar) ---> Puntos: 3.5 ---> Designación: Martin Schauvinhold
 
 4- función AgregoIndice(parámetros E/S a revisar) ---> Puntos: 2 ---> Designación pendiente
 
@@ -86,7 +86,7 @@ Planning Poker y estimación de esfuerzos para futura división de labores.
 
 6- función ImprimirTablero(parámetros E/S a revisar) ---> Puntos: 4 ---> Designación pendiente --- ¿Rework pendiente?
 
-7- función IngresarPalabra(parámetros E/S a revisar) ---> Puntos: 2.5 ---> Designación Pendiente --- Permite que el usuario indique el indice de palabra que desea adivinar y revisa que la palabra pertenezca al conjunto de palabras del crucigrama
+7- función IngresarPalabra(parámetros E/S a revisar) ---> Puntos: 2.5 ---> Designación: Matias Terranova --- Permite que el usuario indique el indice de palabra que desea adivinar y revisa que la palabra pertenezca al conjunto de palabras del crucigrama
 
 8- función ManejarErrores(parámetros E/S a revisar) ---> Puntos: 3.5 ---> Designación pendiente
 
@@ -113,10 +113,6 @@ Funciones necesarias para la primer entrega:
 -Tuplas y conjuntos: 4
 
 -Excepciones: 8
-
-Estamos encaminados con la planificación, pero todavía nos queda bastante por delante. Sumamos un total de 29.5 puntos que tenemos que repartir bien para que sea mas justa la division de funciones. La función de "ConstrucciónTablero" es la más pesada, con 8 puntos, y necesitamos modularizarla sí o sí para que no se nos complique.
-para la primera entrega necesitamos tener al menos el 40% del proyecto realizado lo que significa que tendriamos que empezar a realizar las funciones que consideramos mas importantes hasta este momento para poder visualizar si hay algun error o algo que nos falta para agregar a la planificación
-
 
 ---
 
