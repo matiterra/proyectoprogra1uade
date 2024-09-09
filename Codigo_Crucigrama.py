@@ -3,19 +3,29 @@ import random
 import json
 
 #Función encargada de leer json desde el archivo plano
-def LeerJson():
-    with open('palabras.json', 'r') as file:
-        palabras_data = json.load(file)
-    return palabras_data
+
 
 #Función encargada de cargar las dos listas principales: 1-Palabras 2-Definiciones
-def CargarListas(palabras_data):
-    palabras = []
-    definiciones = []
+def cargarListas(lista):
+    '''Función que se va a encargar de llenar las N listas principales: - palabras = [] - definiciones1 = ["definición1"] - definiciones2 = ["definición2"] - definicionesN = ["definiciónN"]. 
+    En caso de solo llevar una definición, en su indice de la lista definiciones_2 se completará con un guión medio (-)'''
+    
+    
 
-    for _ in palabras_data:
-        palabras.append(list(_['word']))
-        definiciones.append(_['definition'])
+    palabras = []
+    definiciones_1 = []
+    definiciones_2 = []
+
+    for i in range(len(lista)):
+        palabras.append(list(lista[i][0]))
+        if len(lista[i]) > 2:
+            definiciones_1.append(lista[i][1])
+            definiciones_2.append(lista[i][2])
+        else:
+            definiciones_1.append(lista[i][1])
+            definiciones_2.append("-")
+
+    return palabras,definiciones_1,definiciones_2
 
 def IngresarPalabraNumero():
     '''Función encargada del Ingreso de la palabra a adivinar siguiendo la lógica de número - palabra (1 - C A S A)
