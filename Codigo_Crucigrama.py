@@ -8,7 +8,7 @@ import json
 #Función encargada de cargar las dos listas principales: 1-Palabras 2-Definiciones
 def cargarListas(lista):
     '''Función que se va a encargar de llenar las N listas principales: - palabras = [] - definiciones1 = ["definición1"] - definiciones2 = ["definición2"] - definicionesN = ["definiciónN"]. 
-    En caso de solo llevar una definición, en su indice de la lista definiciones_2 se completará con un guión medio (-)'''
+    En caso de solo llevar una definición, en su indice de la lista definiciones_2 se completará con un guión medio (-). Se retornrarán 3 listas con la palabras y las definiciones'''
     
     
 
