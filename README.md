@@ -47,8 +47,17 @@ def BuscoCoincidencias(palabras):
 def AgregoIndice(palabras):
 #Función para agregar un Indice a cada palabra (Ejemplo: ["1,-,P,A,L,A,B,R,A"]), esto se haría agregando un elemento númerico que comience por uno y se vaya incrementando cada vez que se inserta con indice [0] dentro los elementos del arreglo de palabras. Una vez insertado se elimina del array esa palabra para continuar con la siguiente.
 
-def ConstrucciónTablero(palabras):
-#La idea de esta función es elegir que palabras van a ir en Vertical y cuales van a ir en Horizontal eligiendo desde las listas correspondientes.
+def BuscarPrimerPalabra(palabras):
+#Función que se va a encargar de buscar dentro del array de palabras la primer palabra a utilizar.
+
+def ConstruccionTableroVacio(palabras):
+#Función que se va a encargar de armar un tablero vacío de 150x150 de forma estática.
+
+def LogicaConstruccion(palabras, tablerovacio):
+#Función que se encarga de seleccionar las palabras de forma aletoria, siguiendo ciertas reglas.
+
+def OrdenoPalabras():
+#Funcion que se encarga de guardar las palabras y las definiciones que se buscan en la función LogicaConstruccion.
 
 def ImprimirTablero(tablero):
 #Función para imprimir el tablero en la consola, mostrando las palabras y guiones.
