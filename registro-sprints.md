@@ -57,3 +57,10 @@ Funciones asignadas:
 -Matias terranova: N° 7 ---> 2.5 puntos de esfuerzo
 
 ---
+
+Sprint 2
+-Martin Schauvinhold: N° 3 ---> SolicitarPista, ReiniciarJuego
+
+-Luciano Perrella: N° 1 y 2 ---> ContruccionTablero, BuscarPrimerPalabra, LogicaConstruccion
+
+-Matias terranova: N° 7 ---> Imprirtablero, ConstruccionTableroVacio, AgregoIndice
