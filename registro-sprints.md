@@ -59,6 +59,7 @@ Funciones asignadas:
 ---
 
 Sprint 2
+
 -Martin Schauvinhold: N° 3 ---> SolicitarPista, ReiniciarJuego
 
 -Luciano Perrella: N° 1 y 2 ---> ContruccionTablero, BuscarPrimerPalabra, LogicaConstruccion
