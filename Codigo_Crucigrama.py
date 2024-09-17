@@ -49,10 +49,13 @@ def cargarListas(lista):
             definiciones_1.append(lista[i][1][0])
             definiciones_2.append("-")
             definiciones_3.append("-")
+    
+    print(palabras)
             
             
         
     return palabras,definiciones_1,definiciones_2,definiciones_3
+
 def IngresarPalabraNumero():
     '''Función encargada del Ingreso de la palabra a adivinar siguiendo la lógica de número - palabra (1 - C A S A)
         Devuelve la palabra Ingresada, el número de la palabra a adivinar y si el usuario necesita una pista. '''
@@ -84,6 +87,31 @@ def IngresarPalabraNumero():
         else: 
             print("Por favor ingrese una palabra. Vuelva a intentarlo.")
 
+
+def AgregoIndice(palabras_partida):
+    '''Función encargada de colocar el prefijo utilizando la lista de palabras seleccionadas. (1 - C A S A)
+        Esto se hace desde la primer palabra de SeleccionarPrimerPalabra que tendrá el prefijo 1-.
+        PENDIENTE REWORK SEGUN LO HABLADO CON LUCHO 16/9 '''
+
+    palabras_con_prefijo = [f"{i+1}-" + palabra for i, palabra in enumerate(palabras_partida)]
+    return palabras_con_prefijo
+
+def ConstruccionTableroVacio():
+    '''Función encargada de generar un tablero vacio con el centro marcado con un *'''
+
+    filas = 20
+    columnas = 20
+    tablero_vacio = [[list(" ") for i in range(columnas)] for i in range(filas)]
+
+    tablero_vacio[9][9] = list("*")
+
+    for fila in tablero_vacio:
+        print(fila)
+
+
+def ImpresionTablero():
+    pass
+
 def BuscoCoincidencias(palabras):
     #Función que se encarga de buscar letras dentro de las palabras de forma que guarde el Indice
     coincidencias = {}
@@ -104,7 +132,6 @@ def BuscoCoincidencias(palabras):
     return coincidencias
 
 #MAIN
-IngresarPalabraNumero()
 diccionario_maqueta = {
   "perro": [
     "Mamífero doméstico de la familia de los cánidos, de tamaño, forma y pelaje muy diversos, según las razas, que tiene olfato muy fino y es inteligente y muy leal a su dueño. Usado en masculino referido a la especie.",
@@ -124,7 +151,9 @@ diccionario_maqueta = {
   ]
 }
 
-lista = LeerDict(diccionario)
+lista = LeerDict(diccionario_maqueta)
 palabras,def_01,def_02,def_03 = cargarListas(lista)
+AgregoIndice(palabras)
+ConstruccionTableroVacio()
 
 
