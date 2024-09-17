@@ -1,6 +1,7 @@
 #Importo librerias 
 import random
 import json
+from re import match
 
 #Función encargada de leer json desde el archivo plano
 
@@ -86,14 +87,33 @@ def IngresarPalabraNumero():
             return IngresaPalabra, SeleccionaNumero, PedirPista
         else: 
             print("Por favor ingrese una palabra. Vuelva a intentarlo.")
+    
+    ValidarPalabra(IngresaPalabra)
 
+def ValidarPalabra(palabras_partida, IngresaPalabra):
+    for IngresaPalabra in palabras_partida:
+        if IngresaPalabra == palabras_partida:
+            print("Correcto! La palabra adivinada es la correcta")
+            ImpresionTablero()
+    else: 
+        print("Incorrecto! La palabra adivinada no es correcta")
+        ImpresionTablero()
+
+
+'''Función lambda que verifica si el primer carácter de una cadena es un dígito'''
+IniciaConNumero = lambda palabra: palabra[0].isdigit()
 
 def AgregoIndice(palabras_partida):
-    '''Función encargada de colocar el prefijo utilizando la lista de palabras seleccionadas. (1 - C A S A)
-        Esto se hace desde la primer palabra de SeleccionarPrimerPalabra que tendrá el prefijo 1-.
-        PENDIENTE REWORK SEGUN LO HABLADO CON LUCHO 16/9 '''
+    '''Función encargada de colocar el prefijo utilizando una palabra a analizar. (1 - C A S A)
+       Esta función llama a la función lambda IniciaConNumero que verifica si '''
 
-    palabras_con_prefijo = [f"{i+1}-" + palabra for i, palabra in enumerate(palabras_partida)]
+    palabras_con_prefijo = []
+
+    for i, palabra in enumerate(palabras_partida):
+        if IniciaConNumero(palabra) == True:
+            palabras_con_prefijo.append(palabra)
+        else:
+            palabras_con_prefijo.append(f"{i+1}"- + palabra)
     return palabras_con_prefijo
 
 def ConstruccionTableroVacio():
