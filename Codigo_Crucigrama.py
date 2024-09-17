@@ -90,8 +90,9 @@ def IngresarPalabraNumero():
     
     ValidarPalabra(IngresaPalabra)
 
-def ValidarPalabra(palabras_partida, IngresaPalabra):
-    for IngresaPalabra in palabras_partida:
+def ValidarPalabra(palabras_partida, IngresaPalabra, SeleccionaNumero):
+    palabra_con_numero= f"{SeleccionaNumero}-{IngresaPalabra}"
+    for palabra_con_numero in palabras_partida:
         if IngresaPalabra == palabras_partida:
             print("Correcto! La palabra adivinada es la correcta")
             ImpresionTablero()
@@ -101,20 +102,21 @@ def ValidarPalabra(palabras_partida, IngresaPalabra):
 
 
 '''Función lambda que verifica si el primer carácter de una cadena es un dígito'''
-IniciaConNumero = lambda palabra: palabra[0].isdigit()
+IniciaConNumero = lambda palabra_a_analizar: palabra_a_analizar[0].isdigit()
 
 def AgregoIndice(palabras_partida):
     '''Función encargada de colocar el prefijo utilizando una palabra a analizar. (1 - C A S A)
-       Esta función llama a la función lambda IniciaConNumero que verifica si '''
+       Esta función llama a la función lambda IniciaConNumero que devuelve True
+        o False que verifica si la palabra a analizar tiene un dígito en el indice 0 o no.'''
 
-    palabras_con_prefijo = []
+    devolucion_palabras = []
 
     for i, palabra in enumerate(palabras_partida):
         if IniciaConNumero(palabra) == True:
-            palabras_con_prefijo.append(palabra)
+            devolucion_palabras.append(palabra)
         else:
-            palabras_con_prefijo.append(f"{i+1}"- + palabra)
-    return palabras_con_prefijo
+            devolucion_palabras.append(f"{i+1}"- + palabra)
+    return devolucion_palabras
 
 def ConstruccionTableroVacio():
     '''Función encargada de generar un tablero vacio con el centro marcado con un *'''
@@ -151,29 +153,32 @@ def BuscoCoincidencias(palabras):
             index += 1  #incrementa el indice
     return coincidencias
 
+
 #MAIN
-diccionario_maqueta = {
-  "perro": [
-    "Mamífero doméstico de la familia de los cánidos, de tamaño, forma y pelaje muy diversos, según las razas, que tiene olfato muy fino y es inteligente y muy leal a su dueño. Usado en masculino referido a la especie.",
-    "El mejor amigo del hombre",
-    "Un capo sinceramente"
-  ],
-  "gato": [
-    "Mamífero de la familia de los félidos, digitígrado, doméstico, de unos 50 centímetro(s) de largo desde la cabeza hasta el arranque de la cola, que por sí sola mide unos 20 centímetro(s), de cabeza redonda, lengua muy áspera, patas cortas y generalmente pelaje suave y espeso, de color blanco, gris, pardo, rojizo o negro, empleado en algunos lugares para cazar ratones. Usado en masculino referido a la especie.",
-    "Minino"
-  ],
-  "banana": [
-    "Fruta tropical procedente de la planta herbácea que recibe el mismo nombre o banano, perteneciente a la familia de las musáceas. Tiene forma alargada o ligeramente curvada"
-  ],
-  "pelota": [
-    "Bola hecha de una materia que le permita botar, usada en diversos juegos y deportes.",
-    "esférico"
-  ]
-}
+def main(lista):
+    diccionario_maqueta = {
+    "perro": [
+        "Mamífero doméstico de la familia de los cánidos, de tamaño, forma y pelaje muy diversos, según las razas, que tiene olfato muy fino y es inteligente y muy leal a su dueño. Usado en masculino referido a la especie.",
+        "El mejor amigo del hombre",
+        "Un capo sinceramente"
+    ],
+    "gato": [
+        "Mamífero de la familia de los félidos, digitígrado, doméstico, de unos 50 centímetro(s) de largo desde la cabeza hasta el arranque de la cola, que por sí sola mide unos 20 centímetro(s), de cabeza redonda, lengua muy áspera, patas cortas y generalmente pelaje suave y espeso, de color blanco, gris, pardo, rojizo o negro, empleado en algunos lugares para cazar ratones. Usado en masculino referido a la especie.",
+        "Minino"
+    ],
+    "banana": [
+        "Fruta tropical procedente de la planta herbácea que recibe el mismo nombre o banano, perteneciente a la familia de las musáceas. Tiene forma alargada o ligeramente curvada"
+    ],
+    "pelota": [
+        "Bola hecha de una materia que le permita botar, usada en diversos juegos y deportes.",
+        "esférico"
+    ]
+    }
 
-lista = LeerDict(diccionario_maqueta)
-palabras,def_01,def_02,def_03 = cargarListas(lista)
-AgregoIndice(palabras)
-ConstruccionTableroVacio()
+    ista = LeerDict(diccionario_maqueta)
+    palabras,def_01,def_02,def_03 = cargarListas(lista)
+    AgregoIndice(palabras)
+    ConstruccionTableroVacio()
 
 
+main()
