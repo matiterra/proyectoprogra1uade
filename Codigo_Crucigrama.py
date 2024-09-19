@@ -163,38 +163,35 @@ def LogicaConstruccion(lista_palabras,diccionario_coincidencias):
                  palabras_partida.append(siguiente_palabra)
 
 def calcularFila(fila_anterior,indice,direccion):
-    if direccion == "vertical-norte": 
-        fila_siguiente = fila_anterior - indice  
+    
 
-    elif direccion == "vertical-sur":
+    if direccion in ["vertical-sur","horizontal-sur" ,"horizontal-norte"]:
         fila_siguiente = fila_anterior + indice
     
-    elif direccion == "horizontal-sur":
-        fila_siguiente = fila_anterior + indice
+    else: 
+        fila_siguiente = fila_anterior - indice  
     
-    else:
-        fila_siguiente = fila_anterior
+   
     return fila_siguiente
 
 
 
 def calcularColumna(columna_anterior,indice,direccion):
-    if direccion == "vertical-norte" or "vertical-sur":
+    if direccion in ["vertical-norte","vertical-sur","horizontal-sur"]:
         columna_siguiente = columna_anterior + indice 
 
-    elif direccion == "horizontal-norte":
+    else:
         columna_siguiente = columna_anterior - indice
 
 
-    else: 
-        columna_siguiente = columna_anterior  + indice
+   
     return columna_siguiente
 
 #Aclaración: calcularFila y calcularColumna están bajo revisión
 
 def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direccion):
     indice_fila_inicial = 9
-    indice_columna_inicial = 5
+    indice_columna_inicial = 9
     fila_anterior = indice_fila_inicial
     columna_anterior = indice_columna_inicial
     for i in range(len(lista_palabras)):
@@ -203,41 +200,39 @@ def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direccion):
         
             print(coordenadas)
 
-            if i == 0:
+            if i == 0: #Primer Palabra - Horizontal
                 fila_anterior = indice_fila_inicial
                 columna_anterior =indice_columna_inicial 
+                if len(coordenadas) == 0: #Guardo las coordenadas
+                    coordenadas.append([fila_anterior,columna_anterior])
                 
                 tablero[fila_anterior][columna_anterior + j][0] = lista_palabras[i][j]
 
-            elif i == 1:
-                proxima_columna = calcularColumna(columna_anterior,coincidencias[i][0],direcciones[i])
-                proxima_fila = calcularFila(fila_anterior,coincidencias[i][1],direcciones[i])
-                if len(coordenadas) == 0: #Guardo las coordenadas
+            elif i in [1,2]: #Segunda Palabra - Vertical - Depende de la Palabra N°1 /// #Tercera Palabra - Vertical - Depende de la Palabra N°1
+                proxima_columna = calcularColumna(coordenadas[0][0],coincidencias[i][0],direcciones[i])
+                proxima_fila = calcularFila(coordenadas[0][1],coincidencias[i][1],direcciones[i])
+                if len(coordenadas) == i: #Guardo las coordenadas
                     coordenadas.append([proxima_fila,proxima_columna])
-                print(coordenadas)
+       
                 tablero[proxima_fila + j][proxima_columna][0] = lista_palabras[i][j]
                 
 
-            elif i == 2:
+            elif i == 3: #Cuarta Palabra - Horizontal - Depende de la Palabra N° 2
+                proxima_fila = calcularFila(coordenadas[1][0],coincidencias[i][0],direcciones[i])
+                proxima_columna = calcularColumna(coordenadas[1][1],coincidencias[i][1],direcciones[i])
                 
-                proxima_columna = calcularColumna(columna_anterior,coincidencias[i][0],direcciones[i])
-                proxima_fila = proxima_fila = calcularFila(fila_anterior,coincidencias[i][1],direcciones[i])
-                if len(coordenadas) == 1:#Guardo las coordenadas
-                    coordenadas.append([proxima_fila,proxima_columna])
                 
-                tablero[proxima_fila + j][proxima_columna][0] = lista_palabras[i][j]
-            elif i == 3:
-                proxima_fila = proxima_fila = calcularFila(coordenadas[0][0],coincidencias[i][1],direcciones[i])
-                proxima_columna = calcularColumna(coordenadas[0][1],coincidencias[i][0],direcciones[i])
-                if len(coordenadas) == 2: #Guardo las coordenadas
+                if len(coordenadas) == 3: #Guardo las coordenadas
                     coordenadas.append([proxima_fila,proxima_columna])
                 
                 tablero[proxima_fila][proxima_columna + j][0] = lista_palabras[i][j]
-            elif i == 4:
-                proxima_fila = calcularFila(coordenadas[1][0],coincidencias[i][0],direcciones[i])
-                proxima_columna = calcularColumna(coordenadas[1][1],coincidencias[i][1],direcciones[i])
-                if len(coordenadas) == 3: #Guardo las coordenadas
+                
+            elif i == 4: #Quinta Palabra - Horizontal - Depende de la plabra N 3
+                proxima_fila = calcularFila(coordenadas[2][0],coincidencias[i][0],direcciones[i])
+                proxima_columna = calcularColumna(coordenadas[2][1],coincidencias[i][1],direcciones[i])
+                if len(coordenadas) == 4: #Guardo las coordenadas
                     coordenadas.append([proxima_fila,proxima_columna])
+                
                 
                 tablero[proxima_fila][proxima_columna + j][0] = lista_palabras[i][j]
 def IngresarPalabraNumero():
