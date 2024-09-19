@@ -306,7 +306,7 @@ def ConstruccionTableroVacio():
 def ImpresionTablero():
     pass
 
-def BuscoCoincidencias(palabras):
+
     #Función que se encarga de buscar letras dentro de las palabras de forma que guarde el Indice
  def BuscoCoincidencias(palabras):
     coincidencias = {}
