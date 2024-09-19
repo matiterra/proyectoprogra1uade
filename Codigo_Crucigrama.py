@@ -308,23 +308,56 @@ def ImpresionTablero():
 
 def BuscoCoincidencias(palabras):
     #Función que se encarga de buscar letras dentro de las palabras de forma que guarde el Indice
+ def BuscoCoincidencias(palabras):
     coincidencias = {}
 
+    # Recorre cada palabra buscando coincidencias de letras
     for palabra in palabras:
-        palabra_str = ''.join(palabra)
-        index = 0  # Contador para el índice de la letra
-        
-        while index < len(palabra):
+        palabra_str = ''.join(palabra)  # Convierte la lista de letras en una cadena de texto
+        index = 0  # Índice manual
+
+        while index < len(palabra):  # Itera por la palabra usando el índice manual
             letra = palabra[index]
             if letra not in coincidencias:
-                coincidencias[letra] = []
+                coincidencias[letra] = []  # Crea la entrada para la letra si no existe
             coincidencias[letra].append({
                 'palabra': palabra_str,
-                'indice': index
+                'indice': index  # Guarda el índice de la letra
             })
-            index += 1  #incrementa el indice
-    return coincidencias
+            index += 1  # Incrementa el índice manualmente
 
+    # Filtrar letras que tienen más de una coincidencia ENTRE DISTINTAS PALABRAS
+    letras_comunes = {}
+    for letra, datos in coincidencias.items():
+        palabras_vistas = []
+        for dato in datos:
+            if dato['palabra'] not in palabras_vistas:
+                palabras_vistas.append(dato['palabra'])
+        
+        # Si la letra aparece en más de una palabra diferente
+        if len(palabras_vistas) > 1:
+            letras_comunes[letra] = datos
+
+    # Construir la salida mostrando coincidencias agrupadas en diccionarios
+    resultado = {}
+    for letra, datos in letras_comunes.items():
+        coincidencias_letra = {}
+        for dato in datos:
+            palabra = dato['palabra']
+            indice = dato['indice']
+            if palabra not in coincidencias_letra:
+                coincidencias_letra[palabra] = []
+            coincidencias_letra[palabra].append(indice)
+        
+        resultado[letra] = coincidencias_letra
+
+    # Mostrar el resultado
+    for letra, coincidencias_letra in resultado.items():
+        print(f"Letra: {letra}")
+        for palabra, indices in coincidencias_letra.items():
+            indices_str = ' '.join(map(str, indices))
+            print(f"{palabra} {indices_str}")
+        print()
 
 #MAIN
 def main(lista):
