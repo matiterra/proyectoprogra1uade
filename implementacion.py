@@ -143,7 +143,7 @@ def LogicaConstruccion(lista_palabras,diccionario):
                     siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))#esto tendría que ser una palabra que empiece con la última letra de la primer palabra horizontal
                  #índice que tiene la letra de la palabra que voy a traer del diccionario de lista_coincidencias
                 # if len(indice_coincidencia) == 1:
-                lista_coincidencias.append([palabras_partida[0].index(letra_palabra),indice_coincidencia[0]])
+                lista_coincidencias.append([palabras_partida[0].rindex(letra_palabra),indice_coincidencia[0]])
                 # else:
                 #     lista_coincidencias.append([indice_letra_a_buscar,indice_coincidencia[0][0]])
                 palabras_partida.append(siguiente_palabra)
@@ -158,7 +158,7 @@ def LogicaConstruccion(lista_palabras,diccionario):
                 while siguiente_palabra[-1] != letra_palabra and siguiente_palabra not in palabras_partida:
                     siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items())) #esto tendría que ser una palabra que termine con la última letra de la primer palabra horizontal
                 # if len(indice_coincidencia) == 1:
-                lista_coincidencias.append([palabras_partida[0].index(letra_palabra),indice_coincidencia[0]])
+                lista_coincidencias.append([palabras_partida[0].rindex(letra_palabra),indice_coincidencia[0]])
                 # else:
                 #     lista_coincidencias.append([indice_letra_a_buscar,indice_coincidencia[0][0]])
                 flag_direccion = definir_direccion(siguiente_palabra,indice_coincidencia[0])
