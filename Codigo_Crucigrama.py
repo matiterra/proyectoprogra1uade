@@ -351,14 +351,13 @@ def ImpresionTablero():
         
         resultado[letra] = coincidencias_letra
 
-    # Mostrar el resultado
-    for letra, coincidencias_letra in resultado.items():
-        print(f"Letra: {letra}")
-        for palabra, indices in coincidencias_letra.items():
-            indices_str = ' '.join(map(str, indices))
-            print(f"{palabra} {indices_str}")
-        print()
- BuscoCoincidencias(palabras)
+    # Retornar el resultado
+    return resultado
+
+resultado = BuscoCoincidencias(palabras)
+
+
+
 
 #MAIN
 def main(lista):
