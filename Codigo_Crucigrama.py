@@ -358,6 +358,7 @@ def ImpresionTablero():
             indices_str = ' '.join(map(str, indices))
             print(f"{palabra} {indices_str}")
         print()
+ BuscoCoincidencias(palabras)
 
 #MAIN
 def main(lista):
