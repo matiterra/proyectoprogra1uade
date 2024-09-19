@@ -163,27 +163,21 @@ def LogicaConstruccion(lista_palabras,diccionario_coincidencias):
                  palabras_partida.append(siguiente_palabra)
 
 def calcularFila(fila_anterior,indice,direccion):
-    
-
-    if direccion in ["vertical-sur","horizontal-sur" ,"horizontal-norte"]:
+    if direccion in ["horizontal-sur" ,"horizontal-norte"]:
         fila_siguiente = fila_anterior + indice
     
     else: 
         fila_siguiente = fila_anterior - indice  
     
-   
     return fila_siguiente
 
 
 
 def calcularColumna(columna_anterior,indice,direccion):
-    if direccion in ["vertical-norte","vertical-sur","horizontal-sur"]:
+    if direccion in ["vertical-norte","vertical-sur"]:
         columna_siguiente = columna_anterior + indice 
-
     else:
         columna_siguiente = columna_anterior - indice
-
-
    
     return columna_siguiente
 
