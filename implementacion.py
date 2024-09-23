@@ -1,5 +1,5 @@
 
-
+import re
 import random
 def Buscolista_coincidencias(palabras):
 
@@ -289,18 +289,8 @@ def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direcciones):
             #         coordenadas.append([proxima_fila,proxima_columna])
             #     tablero[proxima_fila + j][proxima_columna ][0] = lista_palabras[i][j]
             #     print(coordenadas)
-                
-          
 
-
-                
-
-          
-                
-
-
-
-    return tablero
+    return tablero, coordenadas
 
 IniciaConNumero = lambda palabra_a_analizar: palabra_a_analizar[0].isdigit()
 
@@ -316,58 +306,172 @@ def AgregoIndice(palabras_partida):
         devolucion_palabras.append(list(f"{i+1}"+ "-" + palabra))
     return devolucion_palabras
 
+def ImpresionTablero(tablero):
+    tablero_actualizado = []
+
+    for fila in tablero:
+        nueva_fila = []
+        for elemento in fila:
+            if elemento[0].isdigit() or elemento[0] == "-":
+                nueva_fila.append(elemento[0])
+
+            elif elemento[0].isalpha():
+                nueva_fila.append("_")
+            else:
+                nueva_fila.append(" ")
+
+        tablero_actualizado.append(nueva_fila)
+
+    for fila in tablero_actualizado:
+        print(" ".join(fila))
+
+    return tablero_actualizado
+
+def ImprimirTableroActualizado(tablero_actualizado, flag_palabra, palabras_con_indice, coordenadas, lista_direcciones, SeleccionaNumero):
+    numero_indice = SeleccionaNumero - 1
+
+    if flag_palabra == True:
+        palabra = palabras_con_indice[numero_indice]
+        coordenadas = coordenadas[numero_indice]
+        direccion = lista_direcciones[numero_indice]
+
+        if direccion in ["vertical-norte", "vertical-sur"]:
+            direccion = "flag-vertical"
+        elif direccion in ["horizontal-norte", "horizontal-sur"]:
+            direccion = "flag-horizontal"
+
+        print(direccion, coordenadas, palabra)
+
+        if SeleccionaNumero == 1:
+            coordenadas = [12, 12]
+            direccion = "flag-horizontal"
+
+        x, y = coordenadas
+        
+        for letra in palabra:
+            tablero_actualizado [x][y] = str(letra)
+
+            if direccion == "flag-horizontal":
+                y = y + 1
+
+            elif direccion == "flag-vertical":
+                x = x + 1
+                
+        for fila in tablero_actualizado:
+            nueva_fila = [celda[0] if isinstance(celda, list) else celda for celda in fila]
+            print(" ".join(nueva_fila))
+
+        return tablero_actualizado
+    
 
 
+def IngresarPalabraNumero(numero_palabra_encontrada):
+    '''Función encargada del Ingreso de la palabra a adivinar siguiendo la lógica de número - palabra (1 - C A S A)
+        Devuelve la palabra Ingresada, el número de la palabra a adivinar y si el usuario necesita una pista. '''
+    bandera = True
+    while bandera:
+        try:
+            SeleccionaNumero = int(input("Ingrese el número de la palabra que quiere adivinar ó de la que quiere consultar una Pista: "))
+            if 1 <= SeleccionaNumero <= 5 and SeleccionaNumero not in numero_palabra_encontrada:
+                bandera = False
+            else:
+                print("El número ingresado debe corresponder a uno de los números que se muestran en el tablero.")
+        except ValueError:
+            print("Por favor ingrese un número. Vuelva a intentarlo.")
 
-#MAIN
-lista =[
-    "abaco", "abandonar", "abierto", "abogado", "abundante", "acuerdo", "acusar", "adelante",
-    "admirar", "adverso", "afecto", "agregar", "ahora", "alcance", "alegría", "alivio",
-    "alumno", "amar", "análisis", "anhelo", "anotar", "ansioso", "aprender", "aprecio",
-    "aroma", "arte", "asistente", "asociar", "atender", "atrasar", "atún", "avanzar",
-    "bailar", "banco", "barco", "bello", "beso", "bicho", "brillante", "brindar",
-    "cabeza", "cambiar", "camino", "cantar", "capacidad", "caracter", "cargar", "carta",
-    "causar", "celebrar", "cielo", "ciudad", "claridad", "cohesión", "comunicar", "compañero",
-    "comprender", "conectar", "consentir", "contar", "correr", "crear", "crédito", "cultivar",
-    "curiosidad", "dar", "decidir", "dedicar", "defender", "delicado", "demostrar", "deporte",
-    "desafío", "descubrir", "deseo", "destino", "detener", "difundir", "diligente", "disfrutar",
-    "divertido", "doctor", "dolar", "educar", "efectivo", "efecto", "elegir", "emocionar",
-    "empresa", "encontrar", "enviar", "entender", "escribir", "esperanza", "espejo",
-    "estudiante", "estilo", "eterno", "evidente", "exitoso", "felicidad", "feliz", "futuro",
-    "ganar", "generar", "gente", "globo", "gusto", "hablar", "herencia", "historia",
-    "honor", "hospital", "humano", "idea", "iluminar", "imaginación", "impulso", "importante",
-    "inclusión", "iniciar", "innovar", "intención", "intentar", "interesante", "inversión",
-    "jardín", "juego", "juntar", "lápiz", "lavar", "libertad", "libro", "luz", "magia",
-    "maravilla", "medida", "mientras", "misterio", "modificar", "motivo", "mover", "música",
-    "navegar", "naturaleza", "nube", "ocurrir", "ofrecer", "opción", "optimismo", "organizar",
-    "paz", "pedir", "pensar", "pequeño", "placer", "plena", "pluma", "poder", "preguntar",
-    "probar", "promesa", "propósito", "pueblo", "razón", "recibir", "reconocer", "reflejar",
-    "regresar", "relación", "reparar", "requerir", "resolver", "respeto", "resultar", "reunir",
-    "saber", "salud", "salir", "satisfacción", "seguir", "semilla", "sentido", "sueño",
-    "sorpresa", "sostenible", "sumar", "superar", "sustento", "suerte", "tarea", "tiempo",
-    "trabajo", "tranquilidad", "tratar", "unir", "valer", "valor", "variar", "viajar",
-    "vida", "vivir", "volver", "voto", "yacer", "zanahoria", "zapato", "zona",
-    "acertar", "alegrar", "apasionar", "cautivar", "claro", "compromiso", "construir",
-    "dar", "destacar", "educación", "entusiasmo", "equilibrio", "esfuerzo", "experiencia",
-    "fuerza", "generosidad", "gesto", "honestidad", "imaginación", "inspirar", "inteligencia",
-    "liberación", "magnífico", "metas", "optimista", "pasión", "perseverancia", "recuerdo",
-    "reflejo", "renacer", "sincero", "sorpresa", "temprano", "tranquilidad", "transformar",
-    "valentía", "vigor", "visión", "vital", "zénit"
-]
+    bandera2 = True
+    while bandera2:
+        PedirPista = input("¿Desea pedir una pista extra? S = Sí / N = No: ").strip().upper()
+        if PedirPista == "S" or PedirPista == "N":
+            bandera2 = False
+        else:
+            print("Por favor, ingrese 'S' para Sí o 'N'  para No.")
 
-diccionario = Buscolista_coincidencias(lista)
-tablero = ConstruccionTableroVacio()
+    bandera3 = True
+    while bandera3:
+        IngresaPalabra = input("Ingrese la palabra que quiere adivinar: ")
+        if IngresaPalabra.isalpha():
+            bandera3 = False
+            return IngresaPalabra, SeleccionaNumero, PedirPista
+        else: 
+            print("Por favor ingrese una palabra. Vuelva a intentarlo.")
 
 
-palabras_para_juga,lista_direcciones,lista_coincidencias = LogicaConstruccion(lista,diccionario)
+def ValidarPalabra(palabras_con_indice, IngresaPalabra, SeleccionaNumero):
+    numero_palabra_encontrada = []
+    numero_indice = SeleccionaNumero - 1
+    flag_palabra = False
+    palabra_con_numero= f"{SeleccionaNumero}-{IngresaPalabra}"
+
+    palabrita = "".join(palabras_con_indice[numero_indice])
+
+    if palabra_con_numero == palabrita:
+        print("Correcto! La palabra adivinada es correcta")
+        flag_palabra = True
+
+        numero_palabra_encontrada.append(SeleccionaNumero)
+    else: 
+        print("Incorrecto! La palabra adivinada no es correcta")
+        
+    return flag_palabra, numero_palabra_encontrada
 
 
-palabras_con_indice = AgregoIndice(palabras_para_juga)
+def main():
+    lista =[
+        "abaco", "abandonar", "abierto", "abogado", "abundante", "acuerdo", "acusar", "adelante",
+        "admirar", "adverso", "afecto", "agregar", "ahora", "alcance", "alegría", "alivio",
+        "alumno", "amar", "análisis", "anhelo", "anotar", "ansioso", "aprender", "aprecio",
+        "aroma", "arte", "asistente", "asociar", "atender", "atrasar", "atún", "avanzar",
+        "bailar", "banco", "barco", "bello", "beso", "bicho", "brillante", "brindar",
+        "cabeza", "cambiar", "camino", "cantar", "capacidad", "caracter", "cargar", "carta",
+        "causar", "celebrar", "cielo", "ciudad", "claridad", "cohesión", "comunicar", "compañero",
+        "comprender", "conectar", "consentir", "contar", "correr", "crear", "crédito", "cultivar",
+        "curiosidad", "dar", "decidir", "dedicar", "defender", "delicado", "demostrar", "deporte",
+        "desafío", "descubrir", "deseo", "destino", "detener", "difundir", "diligente", "disfrutar",
+        "divertido", "doctor", "dolar", "educar", "efectivo", "efecto", "elegir", "emocionar",
+        "empresa", "encontrar", "enviar", "entender", "escribir", "esperanza", "espejo",
+        "estudiante", "estilo", "eterno", "evidente", "exitoso", "felicidad", "feliz", "futuro",
+        "ganar", "generar", "gente", "globo", "gusto", "hablar", "herencia", "historia",
+        "honor", "hospital", "humano", "idea", "iluminar", "imaginación", "impulso", "importante",
+        "inclusión", "iniciar", "innovar", "intención", "intentar", "interesante", "inversión",
+        "jardín", "juego", "juntar", "lápiz", "lavar", "libertad", "libro", "luz", "magia",
+        "maravilla", "medida", "mientras", "misterio", "modificar", "motivo", "mover", "música",
+        "navegar", "naturaleza", "nube", "ocurrir", "ofrecer", "opción", "optimismo", "organizar",
+        "paz", "pedir", "pensar", "pequeño", "placer", "plena", "pluma", "poder", "preguntar",
+        "probar", "promesa", "propósito", "pueblo", "razón", "recibir", "reconocer", "reflejar",
+        "regresar", "relación", "reparar", "requerir", "resolver", "respeto", "resultar", "reunir",
+        "saber", "salud", "salir", "satisfacción", "seguir", "semilla", "sentido", "sueño",
+        "sorpresa", "sostenible", "sumar", "superar", "sustento", "suerte", "tarea", "tiempo",
+        "trabajo", "tranquilidad", "tratar", "unir", "valer", "valor", "variar", "viajar",
+        "vida", "vivir", "volver", "voto", "yacer", "zanahoria", "zapato", "zona",
+        "acertar", "alegrar", "apasionar", "cautivar", "claro", "compromiso", "construir",
+        "dar", "destacar", "educación", "entusiasmo", "equilibrio", "esfuerzo", "experiencia",
+        "fuerza", "generosidad", "gesto", "honestidad", "imaginación", "inspirar", "inteligencia",
+        "liberación", "magnífico", "metas", "optimista", "pasión", "perseverancia", "recuerdo",
+        "reflejo", "renacer", "sincero", "sorpresa", "temprano", "tranquilidad", "transformar",
+        "valentía", "vigor", "visión", "vital", "zénit"
+    ]
 
 
-producto_final = ConstruirTablero(tablero,palabras_con_indice,lista_coincidencias,lista_direcciones)
+    #Funciones que se deben ejecutar al principio del programa:
+    diccionario = Buscolista_coincidencias(lista)
+    tablero = ConstruccionTableroVacio()
+    palabras_para_jugar,lista_direcciones,lista_coincidencias = LogicaConstruccion(lista,diccionario)
+    palabras_con_indice = AgregoIndice(palabras_para_jugar)
+    producto_final, coordenadas = ConstruirTablero(tablero,palabras_con_indice,lista_coincidencias,lista_direcciones)
+    tablero_actualizado = ImpresionTablero(tablero)
 
+    #esto lo dejo para saber las respuestas:
+    for fila in producto_final:
+       print(fila)
 
+    #while para jugar:
+    numero_palabra_encontrada = []
 
-for fila in producto_final:
-    print(fila)
+    while len(numero_palabra_encontrada) < 5:
+        param1, param2, param3 = IngresarPalabraNumero(numero_palabra_encontrada) #return IngresaPalabra, SeleccionaNumero, PedirPista
+        validation, param4  = ValidarPalabra(palabras_con_indice, param1, param2) #return flag_palabra, contador, numero_palabra_encontrada
+                                                                                           
+        tablero_actualizado_final = ImprimirTableroActualizado(tablero_actualizado, validation, palabras_con_indice, coordenadas, lista_direcciones, param2)
+
+main()
