@@ -453,25 +453,49 @@ def main():
     ]
 
 
-    #Funciones que se deben ejecutar al principio del programa:
+    
+ # Funciones que se deben ejecutar al principio del programa:
     diccionario = Buscolista_coincidencias(lista)
     tablero = ConstruccionTableroVacio()
-    palabras_para_jugar,lista_direcciones,lista_coincidencias = LogicaConstruccion(lista,diccionario)
+    palabras_para_jugar, lista_direcciones, lista_coincidencias = LogicaConstruccion(lista, diccionario)
     palabras_con_indice = AgregoIndice(palabras_para_jugar)
-    producto_final, coordenadas = ConstruirTablero(tablero,palabras_con_indice,lista_coincidencias,lista_direcciones)
+    producto_final, coordenadas = ConstruirTablero(tablero, palabras_con_indice, lista_coincidencias, lista_direcciones)
     tablero_actualizado = ImpresionTablero(tablero)
 
-    #esto lo dejo para saber las respuestas:
+    # Esto lo dejo para saber las respuestas:
     for fila in producto_final:
-       print(fila)
+        print(fila)
 
-    #while para jugar:
+    # Variables de control para el juego
     numero_palabra_encontrada = []
+    continuar_jugando = 'sí'
 
-    while len(numero_palabra_encontrada) < 5:
-        param1, param2, param3 = IngresarPalabraNumero(numero_palabra_encontrada) #return IngresaPalabra, SeleccionaNumero, PedirPista
-        validation, param4  = ValidarPalabra(palabras_con_indice, param1, param2) #return flag_palabra, contador, numero_palabra_encontrada
-                                                                                           
+    # while para jugar:
+    while continuar_jugando == 'sí' and len(numero_palabra_encontrada) < 5:
+        param1, param2, param3 = IngresarPalabraNumero(numero_palabra_encontrada)  # return IngresaPalabra, SeleccionaNumero, PedirPista
+        validation, param4 = ValidarPalabra(palabras_con_indice, param1, param2)   # return flag_palabra, contador, numero_palabra_encontrada
+
         tablero_actualizado_final = ImprimirTableroActualizado(tablero_actualizado, validation, palabras_con_indice, coordenadas, lista_direcciones, param2)
 
-main()
+        if validation:  # Si se valida correctamente, agregar a las palabras encontradas
+            numero_palabra_encontrada.append(param1)
+
+        if len(numero_palabra_encontrada) >= 5:
+            print("¡Has encontrado todas las palabras!")
+            break
+
+        continuar_jugando = input("¿Quieres seguir jugando? (sí/no): ").strip().lower()
+
+    if continuar_jugando == 'no':
+        print("Gracias por jugar. ¡Hasta la próxima!")  # Mensaje al finalizar el juego.
+
+def reiniciar_juego():
+    jugar_de_nuevo = 'sí'
+    while jugar_de_nuevo == 'sí':
+        main()  # Llama a la función main para reiniciar el juego.
+        # Resetear la variable de palabras encontradas para el nuevo juego
+        continuar_jugando = input("¿Quieres jugar de nuevo desde el principio? (sí/no): ").strip().lower()
+
+    print("Gracias por jugar. ¡Hasta la próxima!")  # Mensaje al finalizar.
+
+reiniciar_juego()
