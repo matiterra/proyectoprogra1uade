@@ -85,7 +85,8 @@ def definir_direccion(palabra,indice_coincidencia):
 
 def LogicaConstruccion(lista_palabras,diccionario_coincidencias):
     '''Esta función delimitará la lógica de construcción partida a partida a partir del primer 
-    llamado a la función anterior: "BuscarPrimerPalabra" que devolverá una palabra que minimamente tenga 7 caracteres o más. La palabras irán de a pares: Horizontales y Verticales'''
+    llamado a la función anterior: "BuscarPrimerPalabra" que devolverá una palabra que minimamente tenga 7 caracteres o más. 
+    La palabras irán de a pares: Horizontales y Verticales'''
     
     #La primer palabra siempre se utilizará de manera horizontal
     palabras_partida = BuscarPrimerPalabra(lista_palabras)
@@ -160,7 +161,7 @@ def LogicaConstruccion(lista_palabras,diccionario_coincidencias):
                 #indice_coincidencia = #índice que tiene la letra de la palabra que voy a traer del diccionario de coincidencias
                 # flag_direccion = definir_direccion(siguiente_palabra,indice_coincidencia)
                 #lista_direcciones.append("horizontal-"flag_direccion)
-                 palabras_partida.append(siguiente_palabra)
+                palabras_partida.append(siguiente_palabra)
 
 def calcularFila(fila_anterior,indice,direccion):
     if direccion in ["horizontal-sur" ,"horizontal-norte"]:
@@ -211,7 +212,7 @@ def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direccion):
                 tablero[proxima_fila + j][proxima_columna][0] = lista_palabras[i][j]
                 
 
-            elif i == 3: #Cuarta Palabra - Horizontal - Depende de la Palabra N° 2
+            elif i == 3: #Cuarta Palabra - Horizontal - Depende de la Palabra N°2
                 proxima_fila = calcularFila(coordenadas[1][0],coincidencias[i][0],direcciones[i])
                 proxima_columna = calcularColumna(coordenadas[1][1],coincidencias[i][1],direcciones[i])
                 
@@ -221,7 +222,7 @@ def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direccion):
                 
                 tablero[proxima_fila][proxima_columna + j][0] = lista_palabras[i][j]
                 
-            elif i == 4: #Quinta Palabra - Horizontal - Depende de la plabra N 3
+            elif i == 4: #Quinta Palabra - Horizontal - Depende de la plabra N°3
                 proxima_fila = calcularFila(coordenadas[2][0],coincidencias[i][0],direcciones[i])
                 proxima_columna = calcularColumna(coordenadas[2][1],coincidencias[i][1],direcciones[i])
                 if len(coordenadas) == 4: #Guardo las coordenadas
@@ -229,13 +230,14 @@ def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direccion):
                 
                 
                 tablero[proxima_fila][proxima_columna + j][0] = lista_palabras[i][j]
+
 def IngresarPalabraNumero():
     '''Función encargada del Ingreso de la palabra a adivinar siguiendo la lógica de número - palabra (1 - C A S A)
         Devuelve la palabra Ingresada, el número de la palabra a adivinar y si el usuario necesita una pista. '''
     bandera = True
     while bandera:
         try:
-            SeleccionaNumero = int(input("Ingrese el número de la palabra que quiere adivinar: "))
+            SeleccionaNumero = int(input("Ingrese el número de la palabra que quiere adivinar ó de la que quiere consultar una Pista: "))
             if 1 <= SeleccionaNumero <= 10:
                 bandera = False
             else:
@@ -263,15 +265,16 @@ def IngresarPalabraNumero():
     ValidarPalabra(IngresaPalabra)
 
 def ValidarPalabra(palabras_partida, IngresaPalabra, SeleccionaNumero):
+    flag_palabra = False
     palabra_con_numero= f"{SeleccionaNumero}-{IngresaPalabra}"
     for palabra_con_numero in palabras_partida:
         if IngresaPalabra == palabras_partida:
-            print("Correcto! La palabra adivinada es la correcta")
-            ImpresionTablero()
+            print("Correcto! La palabra adivinada es correcta")
+            flag_palabra = True
     else: 
         print("Incorrecto! La palabra adivinada no es correcta")
-        ImpresionTablero()
-
+        
+    return flag_palabra
 
 '''Función lambda que verifica si el primer carácter de una cadena es un dígito'''
 IniciaConNumero = lambda palabra_a_analizar: palabra_a_analizar[0].isdigit()
@@ -287,7 +290,8 @@ def AgregoIndice(palabras_partida):
         if IniciaConNumero(palabra) == True:
             devolucion_palabras.append(palabra)
         else:
-            devolucion_palabras.append(f"{i+1}"- + palabra)
+            devolucion_palabras.append(list(f"{i+1}"+ "-" + palabra))
+
     return devolucion_palabras
 
 def ConstruccionTableroVacio():
@@ -303,12 +307,61 @@ def ConstruccionTableroVacio():
         print(fila)
 
 
-def ImpresionTablero():
-    pass
+def ImpresionTablero(tablero, flag_palabra, palabras_partida, coordenadas, lista_direcciones, SeleccionaNumero):
+    nueva_fila = []
+    numero_indice = 0
+    numero_indice = SeleccionaNumero - 1
 
+    for fila in tablero:
+        for elemento in fila:
+            if any(caracter.isdigit() for caracter in elemento) or "-" in elemento:
+                nueva_fila.append(elemento)  
+            else:
+                nueva_fila.append(" ")
+
+    print(" ".join(nueva_fila))
+
+    if flag_palabra == True:
+        palabra = palabras_partida[numero_indice]
+        coordenadas = coordenadas[numero_indice]
+        direccion = lista_direcciones[numero_indice]
+        if direccion == "vertical-norte" or "vertical-sur":
+            direccion = "flag-vertical"
+        elif direccion == "horizontal-norte" or "horizontal-sur":
+            direccion = "flag-horizontal"
+
+        if SeleccionaNumero == 0:
+            coordenadas = [12, 12]
+            direccion = "flag-horizontal"
+
+        x, y = coordenadas
+        
+        for letra in palabra:
+            tablero [x][y] = letra
+
+            if direccion == "flag-horizontal":
+                y = y + 1
+
+            elif direccion == "flag-vertical":
+                x = x + 1
+
+    for fila in tablero:
+        nueva_fila = []
+        for celda in fila:
+            nueva_fila.append(celda[0])
+        print(" ".join(nueva_fila))
+
+
+
+
+
+
+        
+        
+        
 
     #Función que se encarga de buscar letras dentro de las palabras de forma que guarde el Indice
- def BuscoCoincidencias(palabras):
+def BuscoCoincidencias(palabras):
     coincidencias = {}
 
     # Recorre cada palabra buscando coincidencias de letras
