@@ -295,89 +295,100 @@ def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direcciones):
 IniciaConNumero = lambda palabra_a_analizar: palabra_a_analizar[0].isdigit()
 
 def AgregoIndice(palabras_partida):
-    '''Función encargada de colocar el prefijo utilizando una palabra a analizar. (1 - C A S A)
-       Esta función llama a la función lambda IniciaConNumero que devuelve True
-        o False que verifica si la palabra a analizar tiene un dígito en el indice 0 o no.'''
+    '''Función encargada de colocar el prefijo utilizando una palabra a analizar. (1-casa)
+       Utiliza como valor de entrada palabras_partida(palabras sin prefijo, ejemplo: casa)'''
 
     devolucion_palabras = []
 
-    for i, palabra in enumerate(palabras_partida):
+    for i, palabra in enumerate(palabras_partida): #recorre palabras_partida y devuelve el indice y la palabra en la posición i
        
-        devolucion_palabras.append(list(f"{i+1}"+ "-" + palabra))
-    return devolucion_palabras
+        devolucion_palabras.append(list(f"{i+1}"+ "-" + palabra)) #appendea a la lista las palabras de la siguiente forma: (0+1)-casa, (1+1)-gato, (2+1)-plaza
+    return devolucion_palabras 
 
 def ImpresionTablero(tablero):
+    '''Función encargada de la impresión del tablero utilizado como parámetros de entrada: tablero(matriz con todas las palabras puestas en su lugar)
+       A partir del tablero con todas las palabras en su lugar, se crea un tablero nuevo que tenga solamente guiones y números, y cuando hay
+       una letra, se appendea un guión bajo. Si no hay nada se deja el espacio en blanco. '''
+    
     tablero_actualizado = []
 
-    for fila in tablero:
-        nueva_fila = []
+    for fila in tablero: #Se recorre el tablero principal dónde están todas las palabras ya posicionadas
+        nueva_fila = [] #Se crea una lista para almacenar los elementos de tablero
         for elemento in fila:
-            if elemento[0].isdigit() or elemento[0] == "-":
-                nueva_fila.append(elemento[0])
+            if elemento[0].isdigit() or elemento[0] == "-": #Si es un número o un guión, se appendea.
+                nueva_fila.append(elemento[0]) 
 
-            elif elemento[0].isalpha():
+            elif elemento[0].isalpha(): #Si es una letra, se appendea un _
                 nueva_fila.append("_")
             else:
-                nueva_fila.append(" ")
+                nueva_fila.append(" ") #Y si no hay nada se deja el espacio vacío.
 
-        tablero_actualizado.append(nueva_fila)
+        tablero_actualizado.append(nueva_fila) #Se appendean todas las filas al tablero_actualizado.
 
     for fila in tablero_actualizado:
-        print(" ".join(fila))
+        print(" ".join(fila)) #Convierto el tablero_actualizado en una cadena de texto separada con " "
 
     return tablero_actualizado
 
 def ImprimirTableroActualizado(tablero_actualizado, flag_palabra, palabras_con_indice, coordenadas, lista_direcciones, SeleccionaNumero):
+    '''Función encargada de la impresión del tablero utilizado como parámetros de entrada: tablero_actualizado (tablero con números y guiones)
+                                                                                           flag_palabra (True si es adivinada correctamente)
+                                                                                           palabras_con_indice (Ejemplo: 1-casa)
+                                                                                           coordenadas (Ejemplo: [5,5]) 
+                                                                                           lista_direcciones (Ejemplo: "horizontal-norte")
+                                                                                           SeleccionaNumero (Ejemplo: 3)
+       A partir de estos valores, se seleccionan los datos de la palabra con el número ingresado por el usuario.
+       se setean las coordenadas, y si la palabra es horizontal, se suma 1 por cada letra al eje y, lo mismo con el eje x
+       luego lo printeo como si fuese un string para lograr una mejor visualización.'''
     numero_indice = SeleccionaNumero - 1
 
     if flag_palabra == True:
         palabra = palabras_con_indice[numero_indice]
         coordenadas = coordenadas[numero_indice]
-        direccion = lista_direcciones[numero_indice]
+        direccion = lista_direcciones[numero_indice] #Busco datos de la palabra
 
         if direccion in ["vertical-norte", "vertical-sur"]:
             direccion = "flag-vertical"
         elif direccion in ["horizontal-norte", "horizontal-sur"]:
-            direccion = "flag-horizontal"
-
-        print(direccion, coordenadas, palabra)
+            direccion = "flag-horizontal" #Cambio flags
 
         if SeleccionaNumero == 1:
             coordenadas = [12, 12]
-            direccion = "flag-horizontal"
+            direccion = "flag-horizontal" #Coordenadas de primer palabra.
 
         x, y = coordenadas
         
         for letra in palabra:
             tablero_actualizado [x][y] = str(letra)
 
-            if direccion == "flag-horizontal":
+            if direccion == "flag-horizontal": #Suma eje y
                 y = y + 1
 
-            elif direccion == "flag-vertical":
+            elif direccion == "flag-vertical": #Suma eje x
                 x = x + 1
                 
-        for fila in tablero_actualizado:
-            nueva_fila = [celda[0] if isinstance(celda, list) else celda for celda in fila]
-            print(" ".join(nueva_fila))
+        for fila in tablero_actualizado: #Recorro filas en tablero_actualizado
+            nueva_fila = [celda for celda in fila] #Se toma cada elemento de la fila y se incluye en nueva_fila
+            print(" ".join(nueva_fila)) #Convierto nueva_fila en una cadena de texto separado con " "
 
         return tablero_actualizado
-    
-
 
 def IngresarPalabraNumero(numero_palabra_encontrada):
-    '''Función encargada del Ingreso de la palabra a adivinar siguiendo la lógica de número - palabra (1 - C A S A)
-        Devuelve la palabra Ingresada, el número de la palabra a adivinar y si el usuario necesita una pista. '''
+    '''Función encargada de controles e ingreso de datos del usuario. Se ingresa el número de la palabra que se quiere adivinar,
+       si se quiere pedir una pista extra y la palabra a adivinar. Cada uno de estos ingresos tiene su validación correspondiente.
+       Devuelve la palabra Ingresada, el número de la palabra a adivinar y si el usuario necesita una pista. '''
+    
+
     bandera = True
     while bandera:
         try:
-            SeleccionaNumero = int(input("Ingrese el número de la palabra que quiere adivinar ó de la que quiere consultar una Pista: "))
-            if 1 <= SeleccionaNumero <= 5 and SeleccionaNumero not in numero_palabra_encontrada:
+            SeleccionaNumero = int(input("Ingrese el número de la palabra que quiere adivinar ó de la que quiere consultar una Pista: ")) #se le pide ingresar el número al usuario.
+            if 1 <= SeleccionaNumero <= 5 and SeleccionaNumero not in numero_palabra_encontrada: #se valida que el número sea de 0 a 5 y que no se haya adivinado previamente.
                 bandera = False
             else:
-                print("El número ingresado debe corresponder a uno de los números que se muestran en el tablero.")
+                print("El número ingresado debe corresponder a uno de los números que se muestran en el tablero.") 
         except ValueError:
-            print("Por favor ingrese un número. Vuelva a intentarlo.")
+            print("Por favor ingrese un número. Vuelva a intentarlo.") #si hay un error por ingresar un caracter, se muestra error.
 
     bandera2 = True
     while bandera2:
@@ -385,11 +396,11 @@ def IngresarPalabraNumero(numero_palabra_encontrada):
         if PedirPista == "S" or PedirPista == "N":
             bandera2 = False
         else:
-            print("Por favor, ingrese 'S' para Sí o 'N'  para No.")
+            print("Por favor, ingrese 'S' para Sí o 'N'  para No.") #si no ingresa s o n, no puede continuar.
 
     bandera3 = True
     while bandera3:
-        IngresaPalabra = input("Ingrese la palabra que quiere adivinar: ")
+        IngresaPalabra = input("Ingrese la palabra que quiere adivinar: ") #tiene que ingresar si o si una palabra.
         if IngresaPalabra.isalpha():
             bandera3 = False
             return IngresaPalabra, SeleccionaNumero, PedirPista
@@ -398,19 +409,22 @@ def IngresarPalabraNumero(numero_palabra_encontrada):
 
 
 def ValidarPalabra(palabras_con_indice, IngresaPalabra, SeleccionaNumero):
+    '''Función encargada de controles sobre la palabra ingresada. Sirve para verificar si la palabra es correcta. Utiliza: palabras_con_indice (1-casa, 2-techo)
+                                                                                                                           IngresaPalabra (Palabra ingresada por el usuario)
+                                                                                                                           SeleccionaNumero (Número que corresponde a la palabra)'''
     numero_palabra_encontrada = []
     numero_indice = SeleccionaNumero - 1
     flag_palabra = False
-    palabra_con_numero= f"{SeleccionaNumero}-{IngresaPalabra}"
+    palabra_con_numero= f"{SeleccionaNumero}-{IngresaPalabra}" #convierte en un string el número y la palabra ingresados por el usuario (1-casa)
 
-    palabrita = "".join(palabras_con_indice[numero_indice])
+    palabrita = "".join(palabras_con_indice[numero_indice]) #accede a la palabra con el número correspondiente y la formatea para que no tenga espacios y sea un string (1-casa)
 
-    if palabra_con_numero == palabrita:
+    if palabra_con_numero == palabrita: #si son iguales la palabra es correcta.
         print("Correcto! La palabra adivinada es correcta")
         flag_palabra = True
 
-        numero_palabra_encontrada.append(SeleccionaNumero)
-    else: 
+        numero_palabra_encontrada.append(SeleccionaNumero) #se apendea en número de palabras encontradas.
+    else: #si no son iguales la palabra es incorrecta.
         print("Incorrecto! La palabra adivinada no es correcta")
         
     return flag_palabra, numero_palabra_encontrada
