@@ -448,7 +448,10 @@ def cargarListas(lista):
     return palabras,definiciones_1,definiciones_2,definiciones_3
 
 
-
+def reiniciar_partida():
+    print("\nReiniciando la partida...\n")
+    main()
+    
 def main():
     # lista =[
     #     "abaco", "abandonar", "abogado", "acuerdo", "acusar",
@@ -632,20 +635,44 @@ def main():
     tablero = ConstruccionTableroVacio()
     palabras_para_jugar,lista_direcciones,lista_coincidencias = LogicaConstruccion(palabras,diccionario_coincidencias)
     palabras_con_indice = AgregoIndice(palabras_para_jugar)
-    producto_final, coordenadas = ConstruirTablero(tablero,palabras_con_indice,lista_coincidencias,lista_direcciones)
+    producto_final, coordenadas = ConstruirTablero(tablero, palabras_con_indice, lista_coincidencias, lista_direcciones)
     tablero_actualizado = ImpresionTablero(tablero)
 
-    #esto lo dejo para saber las respuestas:
     for fila in producto_final:
-       print(fila)
+        print(fila)
 
-    #while para jugar:
     numero_palabra_encontrada = []
+    continuar_jugando = 'sí'
+    primer_intento = True  # Variable para controlar el primer intento
 
-    while len(numero_palabra_encontrada) < 5:
-        param1, param2, param3 = IngresarPalabraNumero(numero_palabra_encontrada) #return IngresaPalabra, SeleccionaNumero, PedirPista
-        validation, param4  = ValidarPalabra(palabras_con_indice, param1, param2) #return flag_palabra, contador, numero_palabra_encontrada
-                                                                                           
+    while continuar_jugando == 'sí' and len(numero_palabra_encontrada) < 5:
+        param1, param2, param3 = IngresarPalabraNumero(numero_palabra_encontrada)
+        validation, param4 = ValidarPalabra(palabras_con_indice, param1, param2)
+
         tablero_actualizado_final = ImprimirTableroActualizado(tablero_actualizado, validation, palabras_con_indice, coordenadas, lista_direcciones, param2)
 
-main()
+        if validation:
+            numero_palabra_encontrada.append(param1)
+
+        if len(numero_palabra_encontrada) >= 5:
+            print("¡Has encontrado todas las palabras!")
+            continuar_jugando = 'no'  # Cambia la variable para salir del bucle
+
+        # Preguntar si quiere continuar, reiniciar o salir después del primer intento
+        if not primer_intento:
+            opcion = input("¿Deseas continuar jugando, reiniciar la partida o salir? (continuar/reiniciar/salir): ").strip().lower()
+            if opcion == 'reiniciar':
+                reiniciar_partida()  # Llama a la función para reiniciar
+                return  # Finaliza la ejecución actual de main
+            elif opcion == 'salir':
+                print("Gracias por jugar. ¡Hasta la próxima!")
+                return  # Finaliza la ejecución actual de main
+        else:
+            primer_intento = False  # Cambiar a False después del primer intento
+
+    if continuar_jugando == 'no':
+        print("Gracias por jugar. ¡Hasta la próxima!")
+
+# Inicia el juego
+if __name__ == "__main__":
+    main()
