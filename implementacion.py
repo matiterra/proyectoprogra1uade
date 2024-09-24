@@ -90,6 +90,22 @@ def calcularFila(fila_anterior,indice,direccion):
     return fila_siguiente
 
 
+def calcularColumna(columna_anterior,indice,direccion):
+    '''Función que permite calcular las columnas desde donde ubicarse a partir de las coordenadas de la palabra anterior'''
+    #En todos los casos, se suma o resta 2 para compensar y evitar tener en cuenta que cada palabra comienza con: "Número", "-"
+
+
+    #En caso de ser vertical, el calculo se hace a partir de la columna donde inicia la primer palabra y el indice donde se encuentra la letra coincidente en ella
+    if direccion in ["vertical-norte","vertical-sur"]:
+        columna_siguiente = columna_anterior + indice + 2
+     #En caso de ser horizontal, el calculo se hace a partir de la resta de la columna anterior y el indice donde se encuentra la letra en la segunda palabra
+    else:
+        columna_siguiente = columna_anterior - indice - 2
+
+
+   
+    return columna_siguiente
+
 def ConstruccionTableroVacio():
     '''Función encargada de generar un tablero vacio con el centro marcado con un *'''
 
@@ -99,21 +115,7 @@ def ConstruccionTableroVacio():
 
     return tablero_vacio
 
-def calcularColumna(columna_anterior,indice,direccion):
-    '''Función que permite calcular las columnas desde donde ubicarse a partir de las coordenadas de la palabra anterior'''
-    #En todos los casos, se suma o resta 2 para compensar y evitar tener en cuenta que cada palabra comienza con: "Número", "-"
 
-
-    #En caso de ser vertical, el calculo se hace a partir de la columna donde inicia la primer palabra y el indice donde se encuentra la letra coincidente en ella
-    if direccion in ["vertical-norte","vertical-sur"]:
-        columna_siguiente = columna_anterior + indice + 2
-
-    else:
-        columna_siguiente = columna_anterior - indice - 2
-
-
-   
-    return columna_siguiente
 
 def LogicaConstruccion(lista_palabras,diccionario):
     '''Esta función delimitará la lógica de construcción partida a partida a partir del primer 
@@ -246,6 +248,7 @@ def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direcciones):
     fila_anterior = indice_fila_inicial
     columna_anterior = indice_columna_inicial
     coordenadas = []
+    
     for i in range(len(lista_palabras)):
         
         for j in range(len(lista_palabras[i])):
@@ -280,7 +283,7 @@ def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direcciones):
                     coordenadas.append([proxima_fila,proxima_columna])
                 tablero[proxima_fila][proxima_columna + j][0] = lista_palabras[i][j]
                 
-
+    
 
     return tablero, coordenadas
 
@@ -665,8 +668,9 @@ def main():
     palabras_para_jugar,lista_direcciones,lista_coincidencias = LogicaConstruccion(palabras,diccionario_coincidencias)
     palabras_con_indice = AgregoIndice(palabras_para_jugar)
     producto_final, coordenadas = ConstruirTablero(tablero, palabras_con_indice, lista_coincidencias, lista_direcciones)
+    
     tablero_actualizado = ImpresionTablero(tablero)
-
+    
     numero_palabra_encontrada = []
     continuar_jugando = 'sí'
     primer_intento = True  # Variable para controlar el primer intento
