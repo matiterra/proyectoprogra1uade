@@ -49,7 +49,7 @@ def Buscolista_coincidencias(palabras):
     return resultado
 
 def BuscarPrimerPalabra(lista):
-    '''Esta función eligirá la primera letra de maner aleatoría y la retornará como la primer posición de la lista para iniciar la construcción del crucigrama por cada partida'''
+    '''Esta función eligirá la primera letra de maner aleatoría siempre que tenga 7 o más letras y la retornará como la primer posición de la lista para iniciar la construcción del crucigrama por cada partida'''
     palabras_para_jugar = []
     while len(palabras_para_jugar) == 0:
         palabra = random.choice(lista)
@@ -60,9 +60,9 @@ def BuscarPrimerPalabra(lista):
 def definir_direccion(palabra,indice_coincidencia): 
     '''Función para definir la dirección de la palabra evaluando la cantidad de letra correspondientes antes y despues de la letra coincidente'''
     flag_direccion = ""
-    if len(palabra[:indice_coincidencia]) + 2 > len(palabra[indice_coincidencia + 1:]): 
+    if len(palabra[:indice_coincidencia]) + 2 > len(palabra[indice_coincidencia + 1:]): #En el caso de que tenga más letras por encima o a la izquierda del punto de intersección, será de dirección "norte"
         flag_direccion = "norte" 
-    elif len(palabra[:indice_coincidencia]) + 2 == len(palabra[indice_coincidencia + 1:]): 
+    elif len(palabra[:indice_coincidencia]) + 2 == len(palabra[indice_coincidencia + 1:]): #En el caso que queden la misma cantidad de letras de ambos lados desde el punto de intersección, se asignará al azar
         
         random_flag = random.randint(1,2)
         if random_flag == 1:
@@ -70,15 +70,19 @@ def definir_direccion(palabra,indice_coincidencia):
         else:
             flag_direccion = "sur"
             
-    else: flag_direccion = "sur"
+    else: flag_direccion = "sur" #En el caso de tener más letras por debajo o a la derecha del punto de intersección, se asignará la dirección "sur"
     return flag_direccion
             
 def calcularFila(fila_anterior,indice,direccion):
-    
+    '''Función que permite calcular las filas desde donde ubicarse a partir de las coordenadas de la palabra anterior'''
 
+    #En todos los casos, se suma o resta 2 para compensar y evitar tener en cuenta que cada palabra comienza con: "Número", "-"
+     
+    #En caso de ser horizontal, se hará el calculo de filas a partir de la fila de inicio  y se suma el indice que ocupa en la primer palabra la letra que coincide 
     if direccion in ["horizontal-sur" ,"horizontal-norte"]:
         fila_siguiente = fila_anterior + indice + 2
     
+    #En caso de ser vertical, se hará el calculo de filas a partir de la resta de la fila de inicio y el indice que ocupa la letra en la segunda palabra
     else: 
         fila_siguiente = fila_anterior - indice  - 2
     
@@ -96,6 +100,11 @@ def ConstruccionTableroVacio():
     return tablero_vacio
 
 def calcularColumna(columna_anterior,indice,direccion):
+    '''Función que permite calcular las columnas desde donde ubicarse a partir de las coordenadas de la palabra anterior'''
+    #En todos los casos, se suma o resta 2 para compensar y evitar tener en cuenta que cada palabra comienza con: "Número", "-"
+
+
+    #En caso de ser vertical, el calculo se hace a partir de la columna donde inicia la primer palabra y el indice donde se encuentra la letra coincidente en ella
     if direccion in ["vertical-norte","vertical-sur"]:
         columna_siguiente = columna_anterior + indice + 2
 
@@ -110,16 +119,17 @@ def LogicaConstruccion(lista_palabras,diccionario):
     '''Esta función delimitará la lógica de construcción partida a partida a partir del primer 
     llamado a la función anterior: "BuscarPrimerPalabra" que devolverá una palabra que minimamente tenga 7 caracteres o más. La palabras irán de a pares: Horizontales y Verticales'''
     
-    #La primer palabra siempre se utilizará de manera horizontal
+
+    #La primer palabra siempre se utilizará de manera horizontal y tendrá 7 o más caracteres
     palabras_partida = BuscarPrimerPalabra(lista_palabras)
     lista_direcciones = ["-"]
     lista_coincidencias = ["-"]
     
     flag_direccion = ""
     while len(palabras_partida) != 5:
-        if len(palabras_partida) == 1: #segunda palabra
+        if len(palabras_partida) == 1: #Segunda palabra - Vertical
             indice_letra_a_buscar = random.randint(0,2) 
-            letra_palabra = palabras_partida[0][indice_letra_a_buscar] #
+            letra_palabra = palabras_partida[0][indice_letra_a_buscar] 
             siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))
             palabras_partida.append(siguiente_palabra)
             if len(indice_coincidencia) == 1:
@@ -132,29 +142,29 @@ def LogicaConstruccion(lista_palabras,diccionario):
                 flag_direccion = definir_direccion(siguiente_palabra,indice_coincidencia[indice_random])
             lista_direcciones.append("vertical-"+flag_direccion)
             
-        if len(palabras_partida) == 2: #tercera palabra - depende de como se formó la primera
-            if lista_direcciones[1].count("norte") > 0:
+        if len(palabras_partida) == 2: #Tercera palabra - Vertical - Depende de como se formó la primera y el flag de dirección de la segunda
+            if lista_direcciones[1].count("norte") > 0: #Si la palabra N°2 tiene dirección "norte", a esta le asignare "sur" para evitar colisiones a futuro
                 flag_direccion = "sur"
                 indice_letra_a_buscar = random.choice([-1,-2])
                 letra_palabra = palabras_partida[0][indice_letra_a_buscar]
                 siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))
                 while (siguiente_palabra[0] != letra_palabra and siguiente_palabra[1] != letra_palabra) or siguiente_palabra in palabras_partida:
-                    siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))#esto tendría que ser una palabra que empiece con la última letra de la primer palabra horizontal
-                 #índice que tiene la letra de la palabra que voy a traer del diccionario de lista_coincidencias
+                    siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))#Se buscará una palabra que en su indice 0 o 1 coincidan con la letra que se busca de la palabra (última o anteúltima de la primer palabra)
+              
                 lista_coincidencias.append([palabras_partida[0].rindex(letra_palabra),indice_coincidencia[0]])
                 palabras_partida.append(siguiente_palabra)
                 lista_direcciones.append("vertical-"+flag_direccion)
                 
             else:
-                flag_direccion = "norte"
+                flag_direccion = "norte" #Si la palabra N°2 tiene dirección "sur", a esta le asignaré "norte" para evitar colisiones
                 lista_direcciones.append("vertical-"+flag_direccion)
                 indice_letra_a_buscar = random.choice([-1,-2])
                 letra_palabra = palabras_partida[0][indice_letra_a_buscar]
                 siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))
                 while (siguiente_palabra[-1] != letra_palabra and  siguiente_palabra[-2] != letra_palabra ) or siguiente_palabra in palabras_partida:
-                    siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items())) #esto tendría que ser una palabra que termine con la última letra de la primer palabra horizontal
+                    siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items())) #Se buscará una palabra que en su último o anteúltimo índice coíncida con la letra buscada (última o anteúltima de la primer palabra)
                 if len(indice_coincidencia) == 1:
-                   lista_coincidencias.append([palabras_partida[0].rindex(letra_palabra),indice_coincidencia[0]])
+                   lista_coincidencias.append([palabras_partida[0].rindex(letra_palabra),indice_coincidencia[0]])#Uso de rindex para que busque el primer índice coincidente desde la derecha
                 else:
                     lista_coincidencias.append([palabras_partida[0].rindex(letra_palabra),indice_coincidencia[-1]])
                 flag_direccion = definir_direccion(siguiente_palabra,indice_coincidencia[0])
@@ -165,63 +175,64 @@ def LogicaConstruccion(lista_palabras,diccionario):
                 
                 
         if len(palabras_partida) == 3:
-            if lista_direcciones[1].count("norte") > 0: #cuarta palabra, depende de como se formó la segunda
-                if len(palabras_partida[1]) > 6:
+            if lista_direcciones[1].count("norte") > 0: #Cuarta palabra - Horizontal - Depende de como se formó la segunda
+                #En caso de que la palabra N°2 tenga dirección "Norte", buscaré palabras que coíncidan con las primeras letras de la palabra N°2
+                if len(palabras_partida[1]) > 6: #En caso de que la palabra N°2 tenga una longitud de caracteres mayor a 6, habilitare la busqueda de letra entre sus índice 0 y 1
                     indice_letra_a_buscar = random.randint(0,1)
                 else:
-                    indice_letra_a_buscar = 0
+                    indice_letra_a_buscar = 0 #Caso contrario, solo buscare una letra coincidente en el índice 0
                 letra_palabra = palabras_partida[1][indice_letra_a_buscar]
-                siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items())) #se buscará un coincidencia con la primer letra de la palabra N° 2
-                while siguiente_palabra in palabras_partida:
-                    siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))
-                # if len(indice_coincidencia) == 1:
+                siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items())) 
+                while siguiente_palabra in palabras_partida: 
+                    siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items())) #Se buscará una palabra que no esté repetida
+                
                 lista_coincidencias.append([palabras_partida[1].index(letra_palabra),indice_coincidencia[0]])
-                # else:
-                #     lista_coincidencias.append([indice_letra_a_buscar,indice_coincidencia[0][0]])
+                
                 flag_direccion = definir_direccion(siguiente_palabra,indice_coincidencia[0])
                 lista_direcciones.append("horizontal-"+ flag_direccion)
                 
                 palabras_partida.append(siguiente_palabra)
            
             else:
+                #En caso de que la palabra N°2 tenga dirección "sur", buscaré palabras que coíncidan con las últimas letras de la palabra N°2
                 if len(palabras_partida[1]) > 6:
-                    indice_letra_a_buscar = random.randint(-2,-1)
+                    indice_letra_a_buscar = random.randint(-2,-1) #En caso de que la palabra N°2 tenga una longitud de caracteres mayor a 6, habilitare la busqueda de letra entre su último y anteúltimo índices
                 else:
-                   indice_letra_a_buscar = -1
+                   indice_letra_a_buscar = -1 #Caso contrario, solo buscare una letra coincidente en el último índice
                 letra_palabra = palabras_partida[1][indice_letra_a_buscar]
-                siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))#Se buscará una coincidencia con la última letra de la palabra N°2
+                siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))#Se buscará una palabra que no esté repetida
                 while siguiente_palabra in palabras_partida:
                     siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))
-                # if len(indice_coincidencia) == 1:
+               
                 lista_coincidencias.append([palabras_partida[1].rindex(letra_palabra),indice_coincidencia[0]])
-                # else:
-                #     lista_coincidencias.append([indice_letra_a_buscar,indice_coincidencia[0][0]])
+                
                 flag_direccion = definir_direccion(siguiente_palabra,indice_coincidencia[0])
                 lista_direcciones.append("horizontal-"+flag_direccion)
                 palabras_partida.append(siguiente_palabra)
-        if len(palabras_partida) == 4: #Quinta palabra, depende de la palabra 3
-            if lista_direcciones[2].count("norte") > 0:
-                if len(palabras_partida[2]) > 6:
-                    indice_letra_a_buscar = random.randint(0,1)
+        if len(palabras_partida) == 4: #Quinta palabra - Horizontal - Depende de como se formó la tercera palabra
+            if lista_direcciones[2].count("norte") > 0: #En caso de que la palabra N°3 tenga dirección "Norte", buscaré palabras que coíncidan con las primeras letras de la palabra N°3
+                if len(palabras_partida[2]) > 6: #En caso de que la palabra N°3 tenga una longitud de caracteres mayor a 6, habilitare la busqueda de letra entre sus índice 0 y 1
+                    indice_letra_a_buscar = random.randint(0,1) 
                 else:
-                   indice_letra_a_buscar = 0
+                   indice_letra_a_buscar = 0 #Caso contrario, solo buscare una letra coincidente en el índice 0
                 letra_palabra = palabras_partida[2][indice_letra_a_buscar]
                 siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items())) 
                 while siguiente_palabra in palabras_partida:
-                    siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items())) 
+                    siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))  #Se buscará una palabra que no esté repetida
                 lista_coincidencias.append([palabras_partida[2].index(letra_palabra),indice_coincidencia[0]])
                 flag_direccion = definir_direccion(siguiente_palabra,indice_coincidencia[0])
                 lista_direcciones.append("horizontal" + flag_direccion)
                 palabras_partida.append(siguiente_palabra)
             else:
+                #En caso de que la palabra N°2 tenga dirección "sur", buscaré palabras que coíncidan con las últimas letras de la palabra N°3
                 if len(palabras_partida[2]) > 6:
-                    indice_letra_a_buscar = random.randint(-2,-1)
+                    indice_letra_a_buscar = random.randint(-2,-1) #En caso de que la palabra N°3 tenga una longitud de caracteres mayor a 6, habilitare la busqueda de letra entre su último y anteúltimo índices
                 else:
-                   indice_letra_a_buscar = -1
+                   indice_letra_a_buscar = -1 #Caso contrario, solo buscare una letra coincidente en el último índice
                 letra_palabra = palabras_partida[2][indice_letra_a_buscar]
                 siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))
                 while siguiente_palabra in palabras_partida:
-                    siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))
+                    siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items())) #Se buscará una palabra que no esté repetida
                 lista_coincidencias.append([palabras_partida[2].rindex(letra_palabra),indice_coincidencia[0]])
                 flag_direccion = definir_direccion(siguiente_palabra,indice_coincidencia[0])
                 lista_direcciones.append("horizontal-"+flag_direccion)
@@ -229,6 +240,7 @@ def LogicaConstruccion(lista_palabras,diccionario):
     return palabras_partida,lista_direcciones,lista_coincidencias
 
 def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direcciones):
+    '''Función que parte desde un índice de fila y columna inicial y que sucesivamente sumará nuevos caracteres en las listas que contiene la matriz'''
     indice_fila_inicial = 12
     indice_columna_inicial = 12
     fila_anterior = indice_fila_inicial
@@ -414,11 +426,13 @@ def ValidarPalabra(palabras_con_indice, IngresaPalabra, SeleccionaNumero):
     return flag_palabra, numero_palabra_encontrada
 
 def LeerDict(diccionario):
+    '''Función para traducir los datos en formato clave-valor del diccionario en una lista de listas'''
     lista_extraida = []
     for clave,valor in diccionario.items():
         lista_extraida.append([clave,valor])
     return lista_extraida
 def cargarListas(lista):
+    '''Función que recibirá una lista de listas de palabras y definiciones la cual retornara listas individuales de distintas categorías pero que comparten los índices de los elementos entre ellas: Palabras - Definiciones1 - Definiciones2- Definiciones3. En caso de que la palabra no contenga una definición, se imprimirá un "-"'''
     palabras = []
     definiciones_1 = []
     definiciones_2 = []
@@ -615,7 +629,30 @@ def main():
   "sentido" : ["Capacidad para percibir estímulos externos o internos mediante determinados órganos"],
   "sueño" : ["Período de inconsciencia durante el cual el cerebro permanece sumamente activo", "Ganas de dormir."],
   "sorpresa" : ["Acción y efecto de sorprender."],
-  "sostenible" : ["Que se puede sostener."]
+  "sostenible" : ["Que se puede sostener."],
+   "sumar": ["Realizar la acción de añadir o agregar cantidades para obtener un total."],
+  "superar": ["Vencer un obstáculo o dificultad.", "Sobrepasar un límite o nivel."],
+  "sustento": ["Apoyo o base que proporciona lo necesario para vivir.", "Conjunto de elementos que sustentan una idea o proyecto."],
+  "suerte": ["Accidente favorable o desgraciado que afecta a una persona.", "Fortuna que se tiene en las decisiones o eventos."],
+  "tarea": ["Actividad o trabajo que debe realizarse.", "Deber que se asigna a alguien."],
+  "tiempo": ["Duración en la que se desarrollan los acontecimientos.", "Condición atmosférica en un momento específico."],
+  "trabajo": ["Actividad física o mental realizada a cambio de una remuneración.", "Esfuerzo destinado a lograr un objetivo."],
+  "tranquilidad": ["Estado de calma y sosiego.", "Ausencia de preocupaciones o agitación."],
+  "tratar": ["Intentar hacer algo o abordar un tema.", "Establecer una relación o comunicación con alguien."],
+  "unir": ["Juntar o combinar cosas para formar un todo.", "Establecer una conexión entre elementos."],
+  "valer": ["Tener un precio o un valor determinado.", "Ser útil o tener importancia."],
+  "valor": ["Cualidad de lo que es útil, deseable o apreciado.", "Precio de una cosa en dinero."],
+  "variar": ["Cambiar o modificar algo.", "Tener diferentes formas o manifestaciones."],
+  "viajar": ["Desplazarse de un lugar a otro, generalmente por placer o trabajo.", "Conocer diferentes culturas y lugares."],
+  "vida": ["Estado de los seres que tienen funciones biológicas.", "Conjunto de experiencias y eventos que se viven."],
+  "vivir": ["Existir o tener vida.", "Experimentar la vida en sus diferentes facetas."],
+  "volver": ["Regresar a un lugar o situación anterior.", "Repetir una acción."],
+  "voto": ["Expresión de una opinión, especialmente en una elección.", "Decisión que se toma en una asamblea o reunión."],
+  "yacer": ["Estar tendido o reclinado en un lugar.", "Estar en estado de reposo."],
+  "zanahoria": ["Planta herbácea cuyas raíces son comestibles y de color anaranjado.", "Símbolo de recompensa o incentivo."],
+  "zapato": ["Calzado que cubre el pie.", "Elemento de vestimenta utilizado para protección."],
+  "zona": ["Área o región determinada por ciertas características.", "División geográfica."],
+  "zénit": ["Punto más alto en el cielo o en la vida de alguien.", "Momento culminante o de mayor desarrollo."],
   }
 
 #Funciones que se deben ejecutar al principio del programa:
