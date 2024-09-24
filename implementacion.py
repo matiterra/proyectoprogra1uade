@@ -589,7 +589,7 @@ def main():
   "luz" : ["Agente físico que hace visibles los objetos.", "Claridad que irradian los cuerpos en combustión, ignición o incandescencia."],
   "magia" : ["Creencia en el poder sobrenatural para producir efectos que van más allá de las leyes de la naturaleza", "Arte o ciencia oculta con que se pretende producir, valiéndose de ciertos actos o palabras, o con la intervención de seres imaginables, resultados contrarios a las leyes naturales."],
   "maravilla" : ["Suceso o cosa extraordinarios que causan admiración.", "Acción y efecto de maravillar o maravillarse."],
-  "medida" : ["Acción y efecto de maravillar o maravillarse."],
+  "medida" : ["Acción y efecto de medir." , "Expresión del resultado de una medición."],
   "mientras" : ["Durante el tiempo que transcurre hasta la realización de lo que se expresa.", "Durante el tiempo en que."],
   "misterio" : ["Aquello que no se puede explicar, comprender o descubrir", "Algo que no se entiende o que está más allá de la comprensión"],
   "modificar" : ["Transformar o cambiar algo mudando alguna de sus características"],
