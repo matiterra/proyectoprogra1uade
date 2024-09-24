@@ -107,7 +107,7 @@ def calcularColumna(columna_anterior,indice,direccion):
     #En caso de ser vertical, el calculo se hace a partir de la columna donde inicia la primer palabra y el indice donde se encuentra la letra coincidente en ella
     if direccion in ["vertical-norte","vertical-sur"]:
         columna_siguiente = columna_anterior + indice + 2
-
+    #En caso de ser horizontal, el calculo se hace a partir de la resta de la columna anterior y el índice donde se encuentra la letra en la segunda palabra
     else:
         columna_siguiente = columna_anterior - indice - 2
 
