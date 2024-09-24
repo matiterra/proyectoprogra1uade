@@ -90,22 +90,6 @@ def calcularFila(fila_anterior,indice,direccion):
     return fila_siguiente
 
 
-def calcularColumna(columna_anterior,indice,direccion):
-    '''Función que permite calcular las columnas desde donde ubicarse a partir de las coordenadas de la palabra anterior'''
-    #En todos los casos, se suma o resta 2 para compensar y evitar tener en cuenta que cada palabra comienza con: "Número", "-"
-
-
-    #En caso de ser vertical, el calculo se hace a partir de la columna donde inicia la primer palabra y el indice donde se encuentra la letra coincidente en ella
-    if direccion in ["vertical-norte","vertical-sur"]:
-        columna_siguiente = columna_anterior + indice + 2
-     #En caso de ser horizontal, el calculo se hace a partir de la resta de la columna anterior y el indice donde se encuentra la letra en la segunda palabra
-    else:
-        columna_siguiente = columna_anterior - indice - 2
-
-
-   
-    return columna_siguiente
-
 def ConstruccionTableroVacio():
     '''Función encargada de generar un tablero vacio con el centro marcado con un *'''
 
@@ -115,7 +99,21 @@ def ConstruccionTableroVacio():
 
     return tablero_vacio
 
+def calcularColumna(columna_anterior,indice,direccion):
+    '''Función que permite calcular las columnas desde donde ubicarse a partir de las coordenadas de la palabra anterior'''
+    #En todos los casos, se suma o resta 2 para compensar y evitar tener en cuenta que cada palabra comienza con: "Número", "-"
 
+
+    #En caso de ser vertical, el calculo se hace a partir de la columna donde inicia la primer palabra y el indice donde se encuentra la letra coincidente en ella
+    if direccion in ["vertical-norte","vertical-sur"]:
+        columna_siguiente = columna_anterior + indice + 2
+
+    else:
+        columna_siguiente = columna_anterior - indice - 2
+
+
+   
+    return columna_siguiente
 
 def LogicaConstruccion(lista_palabras,diccionario):
     '''Esta función delimitará la lógica de construcción partida a partida a partir del primer 
@@ -248,7 +246,6 @@ def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direcciones):
     fila_anterior = indice_fila_inicial
     columna_anterior = indice_columna_inicial
     coordenadas = []
-    
     for i in range(len(lista_palabras)):
         
         for j in range(len(lista_palabras[i])):
@@ -283,7 +280,7 @@ def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direcciones):
                     coordenadas.append([proxima_fila,proxima_columna])
                 tablero[proxima_fila][proxima_columna + j][0] = lista_palabras[i][j]
                 
-    
+
 
     return tablero, coordenadas
 
@@ -592,7 +589,7 @@ def main():
   "luz" : ["Agente físico que hace visibles los objetos.", "Claridad que irradian los cuerpos en combustión, ignición o incandescencia."],
   "magia" : ["Creencia en el poder sobrenatural para producir efectos que van más allá de las leyes de la naturaleza", "Arte o ciencia oculta con que se pretende producir, valiéndose de ciertos actos o palabras, o con la intervención de seres imaginables, resultados contrarios a las leyes naturales."],
   "maravilla" : ["Suceso o cosa extraordinarios que causan admiración.", "Acción y efecto de maravillar o maravillarse."],
-  "medida" : ["Acción y efecto de medir." , "Expresión del resultado de una medición."],
+  "medida" : ["Acción y efecto de maravillar o maravillarse."],
   "mientras" : ["Durante el tiempo que transcurre hasta la realización de lo que se expresa.", "Durante el tiempo en que."],
   "misterio" : ["Aquello que no se puede explicar, comprender o descubrir", "Algo que no se entiende o que está más allá de la comprensión"],
   "modificar" : ["Transformar o cambiar algo mudando alguna de sus características"],
@@ -668,9 +665,8 @@ def main():
     palabras_para_jugar,lista_direcciones,lista_coincidencias = LogicaConstruccion(palabras,diccionario_coincidencias)
     palabras_con_indice = AgregoIndice(palabras_para_jugar)
     producto_final, coordenadas = ConstruirTablero(tablero, palabras_con_indice, lista_coincidencias, lista_direcciones)
-    
     tablero_actualizado = ImpresionTablero(tablero)
-    
+
     numero_palabra_encontrada = []
     continuar_jugando = 'sí'
     primer_intento = True  # Variable para controlar el primer intento
@@ -688,17 +684,33 @@ def main():
             print("¡Has encontrado todas las palabras!")
             continuar_jugando = 'no'  # Cambia la variable para salir del bucle
 
-        # Preguntar si quiere continuar, reiniciar o salir después del primer intento
+        #Preguntar si quiere continuar, reiniciar o salir después del primer intento
         if not primer_intento:
-            opcion = input("¿Deseas continuar jugando, reiniciar la partida o salir? (continuar/reiniciar/salir): ").strip().lower()
-            if opcion == 'reiniciar':
-                reiniciar_partida()  # Llama a la función para reiniciar
-                return  # Finaliza la ejecución actual de main
-            elif opcion == 'salir':
-                print("Gracias por jugar. ¡Hasta la próxima!")
-                return  # Finaliza la ejecución actual de main
+            bandera = True
+            while bandera == True:
+
+                opcion = input("¿Deseas continuar jugando, reiniciar la partida o salir? (C/R/S): ").strip().lower()
+
+
+                if opcion not in ['c', 'r', 's']:
+                    print("Ingrese una opción correcta.")
+
+                else:
+                
+                    if opcion == 'r':
+                        reiniciar_partida() #Llama a la función para reiniciar  
+                     
+                    elif opcion == 's':
+
+                        print("Gracias por jugar. ¡Hasta la próxima!")
+                        bandera = False
+    
+                
+                    elif opcion == 'c':
+                        print("Continua el juego.")
+                        bandera = False
         else:
-            primer_intento = False  # Cambiar a False después del primer intento
+            primer_intento = False  #Cambiar a False después del primer intento
 
     if continuar_jugando == 'no':
         print("Gracias por jugar. ¡Hasta la próxima!")
