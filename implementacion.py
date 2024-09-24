@@ -375,7 +375,7 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
             SeleccionaNumero = int(input("Ingrese el número de la palabra que quiere adivinar ó de la que quiere consultar una Pista: ")) #se le pide ingresar el número al usuario.
             if 1 <= SeleccionaNumero <= 5 and SeleccionaNumero not in numero_palabra_encontrada: #se valida que el número sea de 0 a 5 y que no se haya adivinado previamente.
                 
-                LogicaPrimerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones1, definiciones2, definiciones3)
+                LogicaPrimerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones1)
 
                 bandera = False
             else:
@@ -388,7 +388,7 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
         PedirPista = input("¿Desea pedir una pista extra? S = Sí / N = No: ").strip().upper()
         if PedirPista == "S" or PedirPista == "N":
 
-            LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones1, definiciones2, definiciones3, PedirPista)
+            LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras,definiciones2, PedirPista)
 
             bandera2 = False
         else:
@@ -460,7 +460,7 @@ def cargarListas(lista):
     return palabras,definiciones_1,definiciones_2,definiciones_3
 
 
-def LogicaPrimerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones1, definiciones2, definiciones3):
+def LogicaPrimerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones1):
 
     indice_palabra = SeleccionaNumero - 1
     palabra_elegida = palabras_para_jugar[indice_palabra]
@@ -469,7 +469,7 @@ def LogicaPrimerPista(SeleccionaNumero, palabras_para_jugar, palabras, definicio
 
     print(pista1)
 
-def LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones1, definiciones2, definiciones3, PedirPista):
+def LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones2, PedirPista):
 
     indice_palabra = SeleccionaNumero - 1
     palabra_elegida = palabras_para_jugar[indice_palabra]
@@ -672,13 +672,13 @@ def main():
     primer_intento = True  # Variable para controlar el primer intento
 
     while continuar_jugando == 'sí' or len(numero_palabra_encontrada) < 5:
-        param1, param2, param3 = IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones_1, definiciones_2, definiciones_3)
-        validation, param4 = ValidarPalabra(palabras_con_indice, param1, param2)
+        palabra_ingresada, numero_ingresado, pista_pedido = IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones_1, definiciones_2, definiciones_3)
+        validation, param4 = ValidarPalabra(palabras_con_indice, palabra_ingresada, numero_ingresado)
 
-        tablero_actualizado_final = ImprimirTableroActualizado(tablero_actualizado, validation, palabras_con_indice, coordenadas, lista_direcciones, param2)
+        tablero_actualizado_final = ImprimirTableroActualizado(tablero_actualizado, validation, palabras_con_indice, coordenadas, lista_direcciones, numero_ingresado)
 
         if validation:
-            numero_palabra_encontrada.append(param1)
+            numero_palabra_encontrada.append(palabra_ingresada)
 
         if len(numero_palabra_encontrada) >= 5:
             print("¡Has encontrado todas las palabras!")
