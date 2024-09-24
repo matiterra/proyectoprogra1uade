@@ -671,7 +671,7 @@ def main():
     continuar_jugando = 'sí'
     primer_intento = True  # Variable para controlar el primer intento
 
-    while continuar_jugando == 'sí' and len(numero_palabra_encontrada) < 5:
+    while continuar_jugando == 'sí' or len(numero_palabra_encontrada) < 5:
         param1, param2, param3 = IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones_1, definiciones_2, definiciones_3)
         validation, param4 = ValidarPalabra(palabras_con_indice, param1, param2)
 
@@ -689,10 +689,10 @@ def main():
             bandera = True
             while bandera == True:
 
-                opcion = input("¿Deseas continuar jugando, reiniciar la partida o salir? (C/R/S): ").strip().lower()
+                opcion = input("¿Deseas continuar jugando o reiniciar la partida? (C/R): ").strip().lower()
 
 
-                if opcion not in ['c', 'r', 's']:
+                if opcion not in ['c', 'r']:
                     print("Ingrese una opción correcta.")
 
                 else:
@@ -700,12 +700,6 @@ def main():
                     if opcion == 'r':
                         reiniciar_partida() #Llama a la función para reiniciar  
                      
-                    elif opcion == 's':
-
-                        print("Gracias por jugar. ¡Hasta la próxima!")
-                        bandera = False
-    
-                
                     elif opcion == 'c':
                         print("Continua el juego.")
                         bandera = False
