@@ -637,7 +637,7 @@ def main():
   "sentido" : ["Capacidad para percibir estímulos externos o internos mediante determinados órganos"],
   "sueño" : ["Período de inconsciencia durante el cual el cerebro permanece sumamente activo", "Ganas de dormir."],
   "sorpresa" : ["Acción y efecto de sorprender."],
-  "sostenible" : ["Que se puede sostener."]
+  "sostenible" : ["Que se puede sostener."],
   "sumar": ["Realizar la acción de añadir o agregar cantidades para obtener un total."],    
   "ramificación": ["Acción y efecto de ramificar o ramificarse.", "Dividirse en ramas"],
   "resultado": ["Efecto y consecuencia de un hecho, operación o deliberación.", "Efecto o consecuencia de una acción, proceso o situación"],
