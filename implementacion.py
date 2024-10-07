@@ -93,8 +93,8 @@ def calcularFila(fila_anterior,indice,direccion):
 def ConstruccionTableroVacio():
     '''Función encargada de generar un tablero vacio con el centro marcado con un *'''
 
-    filas = 30
-    columnas = 30
+    filas = 50
+    columnas = 75
     tablero_vacio = [[list(" ") for i in range(columnas)] for i in range(filas)]
 
     return tablero_vacio
@@ -279,8 +279,6 @@ def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direcciones):
                 if len(coordenadas) == i: #Guardo las coordenadas
                     coordenadas.append([proxima_fila,proxima_columna])
                 tablero[proxima_fila][proxima_columna + j][0] = lista_palabras[i][j]
-                
-
 
     return tablero, coordenadas
 
@@ -325,7 +323,7 @@ def ImprimirTableroActualizado(tablero_actualizado, flag_palabra, palabras_con_i
     '''Función encargada de la impresión del tablero utilizado como parámetros de entrada: tablero_actualizado (tablero con números y guiones)
                                                                                            flag_palabra (True si es adivinada correctamente)
                                                                                            palabras_con_indice (Ejemplo: 1-casa)
-                                                                                           coordenadas (Ejemplo: [5,5]) 
+                                                                                           coordenadas (Ejemplo: [5,5])    ([F,C]) 
                                                                                            lista_direcciones (Ejemplo: "horizontal-norte")
                                                                                            SeleccionaNumero (Ejemplo: 3)
        A partir de estos valores, se seleccionan los datos de la palabra con el número ingresado por el usuario.
@@ -363,42 +361,102 @@ def ImprimirTableroActualizado(tablero_actualizado, flag_palabra, palabras_con_i
             print(" ".join(nueva_fila)) #Convierto nueva_fila en una cadena de texto separado con " "
 
         return tablero_actualizado
+    
+
+def PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar, palabras):
+    definiciones_jugables = []
+    coordenadas = [2,30]
+    coordenadas2 = [3,33]
+    j, z = coordenadas2
+    x, y = coordenadas
+    for fila in tablero_actualizado:
+        if x < 35:
+            tablero_actualizado [x][y] = '|'
+            x = x + 1
+
+    for num in range(5):
+        indice_palabra = num
+        palabra_elegida = palabras_para_jugar[indice_palabra]
+        indice_palabra_elegida = palabras.index(palabra_elegida)
+        definiciones_jugables.append((definiciones_1[indice_palabra_elegida]))
+        lista_definiciones = list(AgregoIndice(definiciones_jugables))
+
+        fila_inicio = 2
+        columna_inicio = 33
+
+
+        fila = fila_inicio
+        col = columna_inicio
+        for definicion in lista_definiciones:
+            for letra in definicion:
+                
+                if letra.isdigit():
+                    fila += 2
+                    col = columna_inicio
+
+                if col < 74:
+                    tablero_actualizado[fila][col] = letra
+                    col += 1
+                else:
+                    fila += 1
+                    col = columna_inicio
+                    if fila < 49:  
+                        tablero_actualizado[fila][col] = letra
+                        col += 1
+
+    return tablero_actualizado
 
 def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones1, definiciones2, definiciones3):
     '''Función encargada de controles e ingreso de datos del usuario. Se ingresa el número de la palabra que se quiere adivinar,
        si se quiere pedir una pista extra y la palabra a adivinar. Cada uno de estos ingresos tiene su validación correspondiente.
        Devuelve la palabra Ingresada, el número de la palabra a adivinar y si el usuario necesita una pista. '''
 
-    bandera = True
-    while bandera:
+    comodin = False
+    bandera1 = True
+    while bandera1:
+        try:
+            IngresaOpcion = int(input("Ingrese una opción:\n 1) Ingresar número de palabra a adivinar\n 2) Pedir Pista Extra\n 3) Utilizar Comodín\n"))
+            if 1 <= IngresaOpcion <= 3:
+                bandera1 = False
+            else:
+                print("El número ingresado debe corresponder a uno de los números que se muestran en las opciones.") 
+
+            if IngresaOpcion == 3:
+                comodin = True
+
+        except ValueError:
+            print("Por favor ingrese un número. Vuelva a intentarlo.")
+
+    bandera2 = True
+    while bandera2:
         try:
             SeleccionaNumero = int(input("Ingrese el número de la palabra que quiere adivinar ó de la que quiere consultar una Pista: ")) #se le pide ingresar el número al usuario.
             if 1 <= SeleccionaNumero <= 5 and SeleccionaNumero not in numero_palabra_encontrada: #se valida que el número sea de 0 a 5 y que no se haya adivinado previamente.
                 
                 LogicaPrimerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones1)
 
-                bandera = False
+                bandera2 = False
             else:
                 print("El número ingresado debe corresponder a uno de los números que se muestran en el tablero.") 
         except ValueError:
             print("Por favor ingrese un número. Vuelva a intentarlo.") #si hay un error por ingresar un caracter, se muestra error.
 
-    bandera2 = True
-    while bandera2:
+    bandera3 = True
+    while bandera3:
         PedirPista = input("¿Desea pedir una pista extra? S = Sí / N = No: ").strip().upper()
         if PedirPista == "S" or PedirPista == "N":
 
             LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras,definiciones2, PedirPista)
 
-            bandera2 = False
+            bandera3 = False
         else:
             print("Por favor, ingrese 'S' para Sí o 'N'  para No.") #si no ingresa s o n, no puede continuar.
 
-    bandera3 = True
-    while bandera3:
+    bandera4 = True
+    while bandera4:
         IngresaPalabra = input("Ingrese la palabra que quiere adivinar: ") #tiene que ingresar si o si una palabra.
         if IngresaPalabra.isalpha():
-            bandera3 = False
+            bandera4 = False
             return IngresaPalabra, SeleccionaNumero, PedirPista
         else: 
             print("Por favor ingrese una palabra. Vuelva a intentarlo.")
@@ -482,6 +540,8 @@ def LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras, definici
         else:
             print(pista2)
 
+def Comodin(SeleccionaNumero, palabras_para_jugar, pregunta_comodin, tablero_actualizado, coordenadas, lista_direcciones, flag_palabra):
+    pass
 
 
 
@@ -666,6 +726,7 @@ def main():
     palabras_con_indice = AgregoIndice(palabras_para_jugar)
     producto_final, coordenadas = ConstruirTablero(tablero, palabras_con_indice, lista_coincidencias, lista_direcciones)
     tablero_actualizado = ImpresionTablero(tablero)
+    PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar, palabras)
 
     numero_palabra_encontrada = []
     continuar_jugando = 'sí'
