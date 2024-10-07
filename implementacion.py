@@ -314,8 +314,6 @@ def ImpresionTablero(tablero):
 
         tablero_actualizado.append(nueva_fila) #Se appendean todas las filas al tablero_actualizado.
 
-    for fila in tablero_actualizado:
-        print(" ".join(fila)) #Convierto el tablero_actualizado en una cadena de texto separada con " "
 
     return tablero_actualizado
 
@@ -370,7 +368,7 @@ def PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar,
     j, z = coordenadas2
     x, y = coordenadas
     for fila in tablero_actualizado:
-        if x < 35:
+        if x < 30:
             tablero_actualizado [x][y] = '|'
             x = x + 1
 
@@ -394,15 +392,19 @@ def PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar,
                     fila += 2
                     col = columna_inicio
 
-                if col < 74:
+                if col < 75:
                     tablero_actualizado[fila][col] = letra
                     col += 1
                 else:
                     fila += 1
                     col = columna_inicio
-                    if fila < 49:  
+                    if fila < 50:  
                         tablero_actualizado[fila][col] = letra
                         col += 1
+
+
+    for fila in tablero_actualizado:
+        print(" ".join(fila)) #Convierto el tablero_actualizado en una cadena de texto separada con " "
 
     return tablero_actualizado
 
@@ -410,57 +412,52 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
     '''Función encargada de controles e ingreso de datos del usuario. Se ingresa el número de la palabra que se quiere adivinar,
        si se quiere pedir una pista extra y la palabra a adivinar. Cada uno de estos ingresos tiene su validación correspondiente.
        Devuelve la palabra Ingresada, el número de la palabra a adivinar y si el usuario necesita una pista. '''
+    
+    PedirPista = "S"
+    IngresaPalabra = " "
 
     comodin = False
     bandera1 = True
+    bandera2 = True
+    bandera3 = True
     while bandera1:
-        try:
             IngresaOpcion = int(input("Ingrese una opción:\n 1) Ingresar número de palabra a adivinar\n 2) Pedir Pista Extra\n 3) Utilizar Comodín\n"))
             if 1 <= IngresaOpcion <= 3:
                 bandera1 = False
             else:
                 print("El número ingresado debe corresponder a uno de los números que se muestran en las opciones.") 
 
+            if IngresaOpcion == 1:
+                while bandera2:
+                    try:
+                        SeleccionaNumero = int(input("Ingrese el número de la palabra que quiere adivinar: ")) #se le pide ingresar el número al usuario.
+                        if 1 <= SeleccionaNumero <= 5 and SeleccionaNumero not in numero_palabra_encontrada: #se valida que el número sea de 0 a 5 y que no se haya adivinado previamente.
+                            IngresaPalabra = input("Ingrese la palabra que quiere adivinar: ")
+                            if IngresaPalabra.isalpha():
+                                bandera2 = False
+                            else: 
+                                print("Por favor ingrese una palabra. Vuelva a intentarlo.")
+                        else:
+                            print("El número ingresado debe corresponder a uno de los números que se muestran en el tablero.") 
+                    except ValueError:
+                        print("Por favor ingrese un número. Vuelva a intentarlo.") #si hay un error por ingresar un caracter, se muestra error.
+
+            if IngresaOpcion == 2:
+                while bandera3:
+                    PedirPista = "S"
+                    SeleccionaNumero = int(input("Ingrese el número de la palabra que quiere consultar la Pista Extra: "))
+                    LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras,definiciones2, PedirPista)
+                    PedirPista = input("¿Desea pedir una pista extra? S = Sí / N = No: ").strip().upper()
+                    if PedirPista == "S" or PedirPista == "N":
+                        LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones3, PedirPista)
+                        bandera3 = False
+                    else:
+                        print("Por favor, ingrese 'S' para Sí o 'N'  para No.")
+
             if IngresaOpcion == 3:
-                comodin = True
+                comodin = True      
 
-        except ValueError:
-            print("Por favor ingrese un número. Vuelva a intentarlo.")
-
-    bandera2 = True
-    while bandera2:
-        try:
-            SeleccionaNumero = int(input("Ingrese el número de la palabra que quiere adivinar ó de la que quiere consultar una Pista: ")) #se le pide ingresar el número al usuario.
-            if 1 <= SeleccionaNumero <= 5 and SeleccionaNumero not in numero_palabra_encontrada: #se valida que el número sea de 0 a 5 y que no se haya adivinado previamente.
-                
-                LogicaPrimerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones1)
-
-                bandera2 = False
-            else:
-                print("El número ingresado debe corresponder a uno de los números que se muestran en el tablero.") 
-        except ValueError:
-            print("Por favor ingrese un número. Vuelva a intentarlo.") #si hay un error por ingresar un caracter, se muestra error.
-
-    bandera3 = True
-    while bandera3:
-        PedirPista = input("¿Desea pedir una pista extra? S = Sí / N = No: ").strip().upper()
-        if PedirPista == "S" or PedirPista == "N":
-
-            LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras,definiciones2, PedirPista)
-
-            bandera3 = False
-        else:
-            print("Por favor, ingrese 'S' para Sí o 'N'  para No.") #si no ingresa s o n, no puede continuar.
-
-    bandera4 = True
-    while bandera4:
-        IngresaPalabra = input("Ingrese la palabra que quiere adivinar: ") #tiene que ingresar si o si una palabra.
-        if IngresaPalabra.isalpha():
-            bandera4 = False
-            return IngresaPalabra, SeleccionaNumero, PedirPista
-        else: 
-            print("Por favor ingrese una palabra. Vuelva a intentarlo.")
-
+    return IngresaPalabra, SeleccionaNumero, PedirPista
 
 def ValidarPalabra(palabras_con_indice, IngresaPalabra, SeleccionaNumero):
     '''Función encargada de controles sobre la palabra ingresada. Sirve para verificar si la palabra es correcta. Utiliza: palabras_con_indice (1-casa, 2-techo)
@@ -518,14 +515,18 @@ def cargarListas(lista):
     return palabras,definiciones_1,definiciones_2,definiciones_3
 
 
-def LogicaPrimerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones1):
+def LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones3, PedirPista):
 
     indice_palabra = SeleccionaNumero - 1
     palabra_elegida = palabras_para_jugar[indice_palabra]
     indice_palabra_elegida = palabras.index(palabra_elegida)
-    pista1 = definiciones1[indice_palabra_elegida]
 
-    print(pista1)
+    if PedirPista == "S":
+        pista3 = definiciones3[indice_palabra_elegida]
+        if pista3 == "-":
+            print("No hay definiciones extras para esta palabra.")
+        else:
+            print(pista3)
 
 def LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones2, PedirPista):
 
