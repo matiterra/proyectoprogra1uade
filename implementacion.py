@@ -94,7 +94,7 @@ def ConstruccionTableroVacio():
     '''Función encargada de generar un tablero vacio con el centro marcado con un *'''
 
     filas = 50
-    columnas = 75
+    columnas = 80
     tablero_vacio = [[list(" ") for i in range(columnas)] for i in range(filas)]
 
     return tablero_vacio
@@ -392,7 +392,7 @@ def PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar,
                     fila += 2
                     col = columna_inicio
 
-                if col < 75:
+                if col < 80:
                     tablero_actualizado[fila][col] = letra
                     col += 1
                 else:
@@ -402,9 +402,14 @@ def PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar,
                         tablero_actualizado[fila][col] = letra
                         col += 1
 
-
     for fila in tablero_actualizado:
-        print(" ".join(fila)) #Convierto el tablero_actualizado en una cadena de texto separada con " "
+        try:
+            indice_pipe = fila.index('|')
+            parte_izquierda = " ".join(fila[:indice_pipe])
+            parte_derecha = "".join(fila[indice_pipe:])
+            print(parte_izquierda + parte_derecha)
+        except ValueError:
+            print(" ".join(fila))
 
     return tablero_actualizado
 
