@@ -403,12 +403,6 @@ def PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar,
                         col += 1
 
     for fila in tablero_actualizado:
-        try:
-            indice_pipe = fila.index('|')
-            parte_izquierda = " ".join(fila[:indice_pipe])
-            parte_derecha = "".join(fila[indice_pipe:])
-            print(parte_izquierda + parte_derecha)
-        except ValueError:
             print(" ".join(fila))
 
     return tablero_actualizado
@@ -418,6 +412,7 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
        si se quiere pedir una pista extra y la palabra a adivinar. Cada uno de estos ingresos tiene su validación correspondiente.
        Devuelve la palabra Ingresada, el número de la palabra a adivinar y si el usuario necesita una pista. '''
     
+    SeleccionaNumero = -1
     PedirPista = "S"
     IngresaPalabra = " "
 
@@ -468,20 +463,21 @@ def ValidarPalabra(palabras_con_indice, IngresaPalabra, SeleccionaNumero):
     '''Función encargada de controles sobre la palabra ingresada. Sirve para verificar si la palabra es correcta. Utiliza: palabras_con_indice (1-casa, 2-techo)
                                                                                                                            IngresaPalabra (Palabra ingresada por el usuario)
                                                                                                                            SeleccionaNumero (Número que corresponde a la palabra)'''
-    numero_palabra_encontrada = []
-    numero_indice = SeleccionaNumero - 1
-    flag_palabra = False
-    palabra_con_numero= f"{SeleccionaNumero}-{IngresaPalabra}" #convierte en un string el número y la palabra ingresados por el usuario (1-casa)
+    if SeleccionaNumero != -1:
+        numero_palabra_encontrada = []
+        numero_indice = SeleccionaNumero - 1
+        flag_palabra = False
+        palabra_con_numero= f"{SeleccionaNumero}-{IngresaPalabra}" #convierte en un string el número y la palabra ingresados por el usuario (1-casa)
 
-    palabrita = "".join(palabras_con_indice[numero_indice]) #accede a la palabra con el número correspondiente y la formatea para que no tenga espacios y sea un string (1-casa)
+        palabrita = "".join(palabras_con_indice[numero_indice]) #accede a la palabra con el número correspondiente y la formatea para que no tenga espacios y sea un string (1-casa)
 
-    if palabra_con_numero == palabrita: #si son iguales la palabra es correcta.
-        print("Correcto! La palabra adivinada es correcta")
-        flag_palabra = True
+        if palabra_con_numero == palabrita: #si son iguales la palabra es correcta.
+            print("Correcto! La palabra adivinada es correcta")
+            flag_palabra = True
 
-        numero_palabra_encontrada.append(SeleccionaNumero) #se apendea en número de palabras encontradas.
-    else: #si no son iguales la palabra es incorrecta.
-        print("Incorrecto! La palabra adivinada no es correcta")
+            numero_palabra_encontrada.append(SeleccionaNumero) #se apendea en número de palabras encontradas.
+        else: #si no son iguales la palabra es incorrecta.
+            print("Incorrecto! La palabra adivinada no es correcta")
         
     return flag_palabra, numero_palabra_encontrada
 
