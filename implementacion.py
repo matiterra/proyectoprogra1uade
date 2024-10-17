@@ -1,4 +1,4 @@
-
+import os
 import re
 import random
 def Buscolista_coincidencias(palabras):
@@ -407,12 +407,11 @@ def PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar,
 
     return tablero_actualizado
 
-def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones2, definiciones3):
+def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones2, definiciones3, lista_comodin):
     '''Función encargada de controles e ingreso de datos del usuario. Se ingresa el número de la palabra que se quiere adivinar,
        si se quiere pedir una pista extra y la palabra a adivinar. Cada uno de estos ingresos tiene su validación correspondiente.
        Devuelve la palabra Ingresada, el número de la palabra a adivinar y si el usuario necesita una pista. '''
     
-    lista_comodin = []
     SeleccionaNumero = -1
     PedirPista = "S"
     IngresaPalabra = ""
@@ -440,31 +439,38 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
                             else: 
                                 print("Por favor ingrese una palabra. Vuelva a intentarlo.")
                         else:
-                            print("El número ingresado debe corresponder a uno de los números que se muestran en el tablero.") 
+                            print("El número ingresado debe corresponder a uno de los números que se muestran en el tablero y no corresponder a uno de los adivinados anteriormente.") 
                     except ValueError:
                         print("Por favor ingrese un número. Vuelva a intentarlo.") #si hay un error por ingresar un caracter, se muestra error.
 
             if IngresaOpcion == 2:
                 while bandera3:
                     PedirPista = "S"
-                    SeleccionaNumero = int(input("Ingrese el número de la palabra que quiere consultar la Pista Extra: "))
-                    LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras,definiciones2, PedirPista)
-                    PedirPista = input("¿Desea pedir una pista extra? S = Sí / N = No: ").strip().upper()
-                    if PedirPista == "S" or PedirPista == "N":
-                        LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones3, PedirPista)
-                        bandera3 = False
-                    else:
-                        print("Por favor, ingrese 'S' para Sí o 'N'  para No.")
+                    try:
+                        SeleccionaNumero = int(input("Ingrese el número de la palabra que quiere consultar la Pista Extra: "))
+                        if 1 <= SeleccionaNumero <= 5 and SeleccionaNumero not in numero_palabra_encontrada:
+
+                            LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras,definiciones2, PedirPista)
+    
+                            PedirPista = input("¿Desea pedir una pista extra? S = Sí / N = No: ").strip().upper()
+
+                            if PedirPista == "S" or PedirPista == "N":
+                                LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones3, PedirPista)
+                                bandera3 = False
+                            else:
+                                print("Por favor, ingrese 'S' para Sí o 'N'  para No.")
+                        else:
+                            print("El número ingresado debe corresponder a uno de los números que se muestran en el tablero y no corresponder a uno de los adivinados anteriormente.")
+                    except ValueError:
+                        print("Por favor ingrese un número. Vuelva a intentarlo.")
 
             if IngresaOpcion == 3:
                 if len(lista_comodin) < 1:
                     comodin = True
                     lista_comodin.append("-")
-                    print(lista_comodin)
+
                 else:
                     print("Ya se utilizaron todos los comodines disponibles para esta partida")
-
-    print(IngresaPalabra, SeleccionaNumero, comodin)
 
     return IngresaPalabra, SeleccionaNumero, comodin
 
@@ -472,7 +478,7 @@ def ValidarPalabra(palabras_con_indice, IngresaPalabra, SeleccionaNumero):
     '''Función encargada de controles sobre la palabra ingresada. Sirve para verificar si la palabra es correcta. Utiliza: palabras_con_indice (1-casa, 2-techo)
                                                                                                                            IngresaPalabra (Palabra ingresada por el usuario)
                                                                                                                            SeleccionaNumero (Número que corresponde a la palabra)'''
-    numero_palabra_encontrada = []
+
     flag_palabra = False
     if SeleccionaNumero != -1:
         
@@ -486,11 +492,10 @@ def ValidarPalabra(palabras_con_indice, IngresaPalabra, SeleccionaNumero):
             print("Correcto! La palabra adivinada es correcta")
             flag_palabra = True
 
-            numero_palabra_encontrada.append(SeleccionaNumero) #se apendea en número de palabras encontradas.
-        else: #si no son iguales la palabra es incorrecta.
+        elif palabra_con_numero != palabrita and IngresaPalabra != "": #si no son iguales la palabra es incorrecta.
             print("Incorrecto! La palabra adivinada no es correcta")
         
-    return flag_palabra, numero_palabra_encontrada
+    return flag_palabra
 
 def LeerDict(diccionario):
     '''Función para traducir los datos en formato clave-valor del diccionario en una lista de listas'''
@@ -540,6 +545,7 @@ def LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definicio
         else:
             print("La pista extra es: ", pista3)
 
+
 def LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones2, PedirPista):
 
     indice_palabra = SeleccionaNumero - 1
@@ -552,6 +558,9 @@ def LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras, definici
             print("No hay definiciones extras para esta palabra.")
         else:
             print("La pista extra es: ", pista2)
+
+
+    return pista2
 
 def Comodin(SeleccionaNumero, palabras_con_indice, comodin, tablero_actualizado, coordenadas, lista_direcciones, flag_palabra, numero_palabra_encontrada):
     if comodin == True:
@@ -567,6 +576,10 @@ def Comodin(SeleccionaNumero, palabras_con_indice, comodin, tablero_actualizado,
         ImprimirTableroActualizado(tablero_actualizado, flag_palabra, palabras_con_indice, coordenadas, lista_direcciones, SeleccionaNumero)
 
     return tablero_actualizado
+
+def LimpioPantalla():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
 
 def reiniciar_partida():
     print("\nReiniciando la partida...\n")
@@ -753,14 +766,21 @@ def main():
     numero_palabra_encontrada = []
     continuar_jugando = 'sí'
     primer_intento = True  # Variable para controlar el primer intento
-
+    lista_comodin = []
+    palabra_ingresada = " "
     while continuar_jugando == 'sí' or len(numero_palabra_encontrada) < 5:
-        palabra_ingresada, numero_ingresado, comodin = IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones_2, definiciones_3)
 
-        validation, numero_palabra_encontrada_apennd = ValidarPalabra(palabras_con_indice, palabra_ingresada, numero_ingresado)
-        numero_palabra_encontrada.append(numero_palabra_encontrada_apennd)
+        palabra_ingresada, numero_ingresado, comodin = IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones_2, definiciones_3, lista_comodin)
+
+    
+        validation = ValidarPalabra(palabras_con_indice, palabra_ingresada, numero_ingresado)
+
         ImprimirTableroActualizado(tablero_actualizado, validation, palabras_con_indice, coordenadas, lista_direcciones, numero_ingresado)
         
+        if validation == True:
+            numero_palabra_encontrada.append(numero_ingresado)
+
+
         if comodin == True:
             Comodin(numero_ingresado, palabras_con_indice, comodin, tablero_actualizado, coordenadas, lista_direcciones, validation, numero_palabra_encontrada)
 

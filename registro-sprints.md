@@ -30,11 +30,11 @@ Puntos totales: 29, 5 a dividir entre los 3 integrantes sin tener en cuenta que 
 
 Funciones necesarias para la primer entrega:
 
--Listas avanzadas y métodos de caracteres: 1 y 2 (maquetas, sin uso de archivos externos)
+-Listas avanzadas y métodos de caracteres: 1 y 2 
 
--Funciones lambda, math, filter y reduce: 5(a modularizar)
+-Funciones lambda, math, filter y reduce: 5
 
--Expresiones regulares: 7 y 5 (a modularizar)
+-Expresiones regulares: 7 y 5 
 
 -Manipulación avanzada de diccionarios: 3
 
@@ -54,7 +54,7 @@ Funciones asignadas:
 
 -Luciano Perrella: N° 1 y 2 ---> 2.5 puntos de esfuerzo
 
--Matias terranova: N° 7 ---> 2.5 puntos de esfuerzo
+-Matias Terranova: N° 7 ---> 2.5 puntos de esfuerzo
 
 ---
 
@@ -64,4 +64,38 @@ Sprint 2
 
 -Luciano Perrella: N° 1 y 2 ---> ContruccionTablero, BuscarPrimerPalabra, LogicaConstruccion
 
--Matias terranova: N° 7 ---> Imprirtablero, ConstruccionTableroVacio, AgregoIndice
+-Matias Terranova: N° 7 ---> Imprimirtablero, ConstruccionTableroVacio, AgregoIndice
+
+
+Sprint 3
+
+
+-Martin Schauvinhold  ---> Rework de código para limpiar
+
+-Luciano Perrella ---> Rework para cantidad de palabras y evitar colisiones
+
+-Matias Terranova ---> Rework de diccionario en archivo Json
+
+
+
+Sprint 4
+
+
+-Martin Schauvinhold  ---> 
+
+-Luciano Perrella ---> 
+
+-Matias Terranova ---> 
+
+
+
+
+
+Sprint 5 
+
+
+-Martin Schauvinhold  ---> 
+
+-Luciano Perrella ---> 
+
+-Matias Terranova ---> 
