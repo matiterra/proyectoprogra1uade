@@ -364,8 +364,7 @@ def ImprimirTableroActualizado(tablero_actualizado, flag_palabra, palabras_con_i
 def PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar, palabras):
     definiciones_jugables = []
     coordenadas = [2,30]
-    coordenadas2 = [3,33]
-    j, z = coordenadas2
+
     x, y = coordenadas
     for fila in tablero_actualizado:
         if x < 30:
@@ -451,6 +450,8 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
                         if 1 <= SeleccionaNumero <= 5 and SeleccionaNumero not in numero_palabra_encontrada:
 
                             LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras,definiciones2, PedirPista)
+
+
     
                             PedirPista = input("¿Desea pedir una pista extra? S = Sí / N = No: ").strip().upper()
 
