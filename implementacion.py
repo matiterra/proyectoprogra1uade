@@ -2,6 +2,62 @@ import os
 import re
 import random
 import json
+# Función para registrar un nuevo usuario
+def registrar_usuario(nombre_usuario, contrasenia):
+    # Intentar cargar las credenciales existentes
+    try:
+        with open('credenciales.json', 'r', encoding='utf-8') as archivo_json:
+            contenido = archivo_json.read()
+            if contenido:  # Verifica si el archivo no está vacío
+                credenciales = json.loads(contenido)
+                print("Archivo cargado correctamente.")
+            else:
+                print("Archivo vacío, creando nuevo diccionario.")
+                credenciales = {}
+    except FileNotFoundError:
+        # Si el archivo no existe, crear un diccionario vacío
+        print("Archivo no encontrado, creando nuevo diccionario.")
+        credenciales = {}
+
+    # Agregar las nuevas credenciales al diccionario
+    credenciales[nombre_usuario] = {
+        "nombre_usuario": nombre_usuario,
+        "contraseña": contrasenia
+    }
+    
+    # Mostrar las credenciales agregadas
+    print(f"Nuevas credenciales agregadas: {credenciales}")
+
+    # Sobrescribir el archivo JSON con todas las credenciales (viejas + nuevas)
+    with open('credenciales.json', 'w', encoding='utf-8') as archivo_json:
+        json.dump(credenciales, archivo_json, indent=4, ensure_ascii=False)
+    print("Archivo actualizado correctamente.")
+
+# Función para iniciar sesión
+def iniciar_sesion(nombre_usuario, contrasenia):
+    try:
+        # Cargar el archivo JSON que contiene las credenciales
+        with open('credenciales.json', 'r', encoding='utf-8') as archivo_json:
+            credenciales = json.load(archivo_json)
+    except FileNotFoundError:
+        print("No se encontraron usuarios registrados.")
+        return False
+    except json.JSONDecodeError:
+        print("Error al leer el archivo de credenciales.")
+        return False
+
+    # Verificar si el nombre de usuario existe y la contraseña es correcta
+    if nombre_usuario in credenciales:
+        if credenciales[nombre_usuario]['contraseña'] == contrasenia:
+            print(f"Bienvenido, {nombre_usuario}!")
+            return True
+        else:
+            print("Contraseña incorrecta.")
+            return False
+    else:
+        print("El nombre de usuario no existe.")
+        return False
+        
 def Buscolista_coincidencias(palabras):
 
     lista_coincidencias = {}
@@ -628,6 +684,24 @@ def reiniciar_partida():
 def main():
 
 #Funciones que se deben ejecutar al principio del programa: 
+    # Opción de registro o inicio de sesión
+    opcion = input("Seleccione una opción (1-Registrar, 2-Iniciar sesión): ")
+
+    if opcion == '1':
+        # Registro de usuario
+        nombre_usuario = input("Ingrese un nombre de usuario: ")
+        contrasenia = input("Ingrese una contraseña: ")
+        registrar_usuario(nombre_usuario, contrasenia)
+    elif opcion == '2':
+        # Inicio de sesión
+        nombre_usuario = input("Ingrese su nombre de usuario: ")
+        contrasenia = input("Ingrese su contraseña: ")
+        if iniciar_sesion(nombre_usuario, contrasenia):
+            print("Inicio de sesión exitoso.")
+        else:
+            print("Error en el inicio de sesión.")
+    else:
+        print("Opción no válida.")
 
     tematica = ElegirTematicas()
     lista_cargada = LeerJSON(tematica)
