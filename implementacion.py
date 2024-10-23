@@ -685,7 +685,7 @@ def reiniciar_partida():
 def main():
 
 #Funciones que se deben ejecutar al principio del programa: 
-    # Opción de registro o inicio de sesión
+   # Opción de registro o inicio de sesión
     opcion = input("Seleccione una opción (1-Registrar, 2-Iniciar sesión): ")
 
     if opcion == '1':
@@ -694,15 +694,18 @@ def main():
         contrasenia = input("Ingrese una contraseña: ")
         registrar_usuario(nombre_usuario, contrasenia)
     elif opcion == '2':
-        # Inicio de sesión
-        nombre_usuario = input("Ingrese su nombre de usuario: ")
-        contrasenia = input("Ingrese su contraseña: ")
-        if iniciar_sesion(nombre_usuario, contrasenia):
-            print("Inicio de sesión exitoso.")
-        else:
-            print("Error en el inicio de sesión.")
+        # Intento de inicio de sesión con bucle para reintentar si falla
+        while True:
+            nombre_usuario = input("Ingrese su nombre de usuario: ")
+            contrasenia = input("Ingrese su contraseña: ")
+            if iniciar_sesion(nombre_usuario, contrasenia):
+                print("Inicio de sesión exitoso.")
+                break  # Salir del bucle si las credenciales son correctas
+            else:
+                print("Error en el inicio de sesión. Intente nuevamente.")
     else:
         print("Opción no válida.")
+
 
     tematica = ElegirTematicas()
     lista_cargada = LeerJSON(tematica)
