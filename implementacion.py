@@ -686,6 +686,7 @@ def main():
 
 #Funciones que se deben ejecutar al principio del programa: 
    # Opción de registro o inicio de sesión
+    bandera=True
     opcion = input("Seleccione una opción (1-Registrar, 2-Iniciar sesión): ")
 
     if opcion == '1':
@@ -700,7 +701,7 @@ def main():
             contrasenia = input("Ingrese su contraseña: ")
             if iniciar_sesion(nombre_usuario, contrasenia):
                 print("Inicio de sesión exitoso.")
-                break  # Salir del bucle si las credenciales son correctas
+                
             else:
                 print("Error en el inicio de sesión. Intente nuevamente.")
     else:
