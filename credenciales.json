@@ -3,5 +3,8 @@
         "nombre_usuario": "user01",
         "contraseña": "test"
     },
-   
+    "mati": {
+        "nombre_usuario": "mati",
+        "contraseña": "mati"
+    }
 }

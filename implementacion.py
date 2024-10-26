@@ -681,12 +681,10 @@ def LimpioPantalla():
 def reiniciar_partida():
     print("\nReiniciando la partida...\n")
     main()
-    
-def main():
 
-#Funciones que se deben ejecutar al principio del programa: 
-   # Opción de registro o inicio de sesión
-    bandera=True
+def Login():
+    bandera = True
+       # Opción de registro o inicio de sesión
     opcion = input("Seleccione una opción (1-Registrar, 2-Iniciar sesión): ")
 
     if opcion == '1':
@@ -696,11 +694,12 @@ def main():
         registrar_usuario(nombre_usuario, contrasenia)
     elif opcion == '2':
         # Intento de inicio de sesión con bucle para reintentar si falla
-        while True:
+        while bandera:
             nombre_usuario = input("Ingrese su nombre de usuario: ")
             contrasenia = input("Ingrese su contraseña: ")
             if iniciar_sesion(nombre_usuario, contrasenia):
                 print("Inicio de sesión exitoso.")
+                bandera = False
                 
             else:
                 print("Error en el inicio de sesión. Intente nuevamente.")
@@ -708,6 +707,25 @@ def main():
         print("Opción no válida.")
 
 
+def Score(palabras_para_jugar, flag_palabra, SeleccionaNumero):
+    puntaje = 0
+    if flag_palabra == True:
+        indice = SeleccionaNumero - 1
+        palabra = palabras_para_jugar[indice]
+
+        lista_palabra = list(palabra)
+
+        for letra in lista_palabra:
+            puntaje = puntaje + 1
+
+    return puntaje
+
+
+
+def main():
+
+#Funciones que se deben ejecutar al principio del programa: 
+    Login()
     tematica = ElegirTematicas()
     lista_cargada = LeerJSON(tematica)
     
@@ -722,6 +740,7 @@ def main():
     PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar, palabras)
 
     numero_palabra_encontrada = []
+    puntaje_total = 0
     continuar_jugando = 'sí'
     primer_intento = True  # Variable para controlar el primer intento
     lista_comodin = []
@@ -732,6 +751,12 @@ def main():
 
     
         validation = ValidarPalabra(palabras_con_indice, palabra_ingresada, numero_ingresado)
+
+        puntaje = Score(palabras_para_jugar, validation, numero_ingresado)
+
+        puntaje_total = puntaje + puntaje_total
+
+        print ("Su puntaje en esta partida es: ", puntaje_total)
 
         ImprimirTableroActualizado(tablero_actualizado, validation, palabras_con_indice, coordenadas, lista_direcciones, numero_ingresado)
         
@@ -744,6 +769,8 @@ def main():
 
         if len(numero_palabra_encontrada) >= 5:
             print("¡Has encontrado todas las palabras!")
+            print("Su puntaje en esta partida fue: ", puntaje_total)
+
             continuar_jugando = 'no'  # Cambia la variable para salir del bucle
 
         #Preguntar si quiere continuar, reiniciar o salir después del primer intento
