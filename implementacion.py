@@ -118,9 +118,9 @@ def BuscarPrimerPalabra(lista):
 def definir_direccion(palabra,indice_coincidencia): 
     '''Función para definir la dirección de la palabra evaluando la cantidad de letra correspondientes antes y despues de la letra coincidente'''
     flag_direccion = ""
-    if len(palabra[:indice_coincidencia]) + 2 > len(palabra[indice_coincidencia + 1:]): #En el caso de que tenga más letras por encima o a la izquierda del punto de intersección, será de dirección "norte"
+    if len(palabra[:indice_coincidencia])  > len(palabra[indice_coincidencia + 1:]): #En el caso de que tenga más letras por encima o a la izquierda del punto de intersección, será de dirección "norte"
         flag_direccion = "norte" 
-    elif len(palabra[:indice_coincidencia]) + 2 == len(palabra[indice_coincidencia + 1:]): #En el caso que queden la misma cantidad de letras de ambos lados desde el punto de intersección, se asignará al azar
+    elif len(palabra[:indice_coincidencia])  == len(palabra[indice_coincidencia + 1 :]): #En el caso que queden la misma cantidad de letras de ambos lados desde el punto de intersección, se asignará al azar
         
         random_flag = random.randint(1,2)
         if random_flag == 1:
@@ -151,8 +151,8 @@ def calcularFila(fila_anterior,indice,direccion):
 def ConstruccionTableroVacio():
     '''Función encargada de generar un tablero vacio con el centro marcado con un *'''
 
-    filas = 50
-    columnas = 80
+    filas = 100
+    columnas = 100
     tablero_vacio = [[list(" ") for i in range(columnas)] for i in range(filas)]
 
     return tablero_vacio
@@ -173,134 +173,271 @@ def calcularColumna(columna_anterior,indice,direccion):
    
     return columna_siguiente
 
+def elegir_palabra_e_indice (diccionario,letra,palabras_partida,dependencia = "si",primer_indice = 0, segundo_indice = 1):
+    siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra).items()))
+
+    if dependencia == "no":
+        while siguiente_palabra in palabras_partida:
+            siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra).items()))
+    else:
+
+        while (siguiente_palabra[primer_indice] != letra and siguiente_palabra[segundo_indice] != letra) or     siguiente_palabra in palabras_partida:
+            siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra).items()))
+
+    return siguiente_palabra, indice_coincidencia
+
+def elegir_coincidencia (palabras_partida,indice_coincidencia,letra_palabra,indice_palabra,seleccion_posicion = "principio"):
+
+    
+    if seleccion_posicion == "principio":
+        if len(indice_coincidencia) == 1:
+            coincidencias= [palabras_partida[indice_palabra].index(letra_palabra),indice_coincidencia[0]]
+        else:
+            indice_random = random.randint(0,len(indice_coincidencia) - 1)
+            
+            coincidencias=[palabras_partida[indice_palabra].index(letra_palabra),indice_coincidencia[indice_random]]
+    
+    elif seleccion_posicion == "final":
+        if len(indice_coincidencia) == 1:
+            coincidencias= [palabras_partida[indice_palabra].rindex(letra_palabra),indice_coincidencia[0]]
+        else:
+            indice_random = random.randint(0, len(indice_coincidencia) - 1)
+            
+            coincidencias=[palabras_partida[indice_palabra].rindex(letra_palabra),indice_coincidencia[indice_random]]
+    
+    
+    elif seleccion_posicion == "principio-norte":
+        if len(indice_coincidencia) == 1:
+            coincidencias = [palabras_partida[indice_palabra].index(letra_palabra), indice_coincidencia[0]]
+        else:
+            coincidencias = [palabras_partida[indice_palabra].index(letra_palabra), indice_coincidencia[-1]]
+    elif seleccion_posicion == "final-norte":
+        if len(indice_coincidencia) == 1:
+            coincidencias = [palabras_partida[indice_palabra].rindex(letra_palabra), indice_coincidencia[0]]
+        else:
+            coincidencias = [palabras_partida[indice_palabra].rindex(letra_palabra), indice_coincidencia[-1]]
+    elif seleccion_posicion == "principio-sur":
+        coincidencias = [palabras_partida[indice_palabra].index(letra_palabra), indice_coincidencia[0]]
+    else:
+        coincidencias = [palabras_partida[indice_palabra].rindex(letra_palabra), indice_coincidencia[0]]
+
+    return coincidencias
+
+
+
+
+
+
+def elegir_indice_y_letra(palabras_partida,indice_palabra,direccion = "norte"):
+    if direccion == "norte":
+        if len(palabras_partida[indice_palabra]) > 7:
+            indice_letra_a_buscar = random.randint(0,1)
+        else:
+            indice_letra_a_buscar = 0
+
+    else:
+        if len(palabras_partida[indice_palabra]) > 7:
+            indice_letra_a_buscar = random.choice([-1,-2])
+        else:
+            indice_letra_a_buscar = -1
+    
+    letra_palabra = palabras_partida[indice_palabra][indice_letra_a_buscar]
+
+    return letra_palabra
+
 def LogicaConstruccion(lista_palabras,diccionario):
     '''Esta función delimitará la lógica de construcción partida a partida a partir del primer 
     llamado a la función anterior: "BuscarPrimerPalabra" que devolverá una palabra que minimamente tenga 7 caracteres o más. La palabras irán de a pares: Horizontales y Verticales'''
-    
-
-    #La primer palabra siempre se utilizará de manera horizontal y tendrá 7 o más caracteres
     palabras_partida = BuscarPrimerPalabra(lista_palabras)
     lista_direcciones = ["-"]
     lista_coincidencias = ["-"]
-    
     flag_direccion = ""
-    while len(palabras_partida) != 5:
-        if len(palabras_partida) == 1: #Segunda palabra - Vertical
-            indice_letra_a_buscar = random.randint(0,2) 
-            letra_palabra = palabras_partida[0][indice_letra_a_buscar] 
-            siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))
-            palabras_partida.append(siguiente_palabra)
-            if len(indice_coincidencia) == 1:
-                lista_coincidencias.append([palabras_partida[0].index(letra_palabra),indice_coincidencia[0]])
-                flag_direccion = definir_direccion(siguiente_palabra,indice_coincidencia[0])
-            else:
-                indice_random = random.randint(0,len(indice_coincidencia) - 1)
-                
-                lista_coincidencias.append([palabras_partida[0].index(letra_palabra),indice_coincidencia[indice_random]])
-                flag_direccion = definir_direccion(siguiente_palabra,indice_coincidencia[indice_random])
-            lista_direcciones.append("vertical-"+flag_direccion)
-            
-        if len(palabras_partida) == 2: #Tercera palabra - Vertical - Depende de como se formó la primera y el flag de dirección de la segunda
-            if lista_direcciones[1].count("norte") > 0: #Si la palabra N°2 tiene dirección "norte", a esta le asignare "sur" para evitar colisiones a futuro
-                flag_direccion = "sur"
-                indice_letra_a_buscar = random.choice([-1,-2])
-                letra_palabra = palabras_partida[0][indice_letra_a_buscar]
-                siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))
-                while (siguiente_palabra[0] != letra_palabra and siguiente_palabra[1] != letra_palabra) or siguiente_palabra in palabras_partida:
-                    siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))#Se buscará una palabra que en su indice 0 o 1 coincidan con la letra que se busca de la palabra (última o anteúltima de la primer palabra)
-              
-                lista_coincidencias.append([palabras_partida[0].rindex(letra_palabra),indice_coincidencia[0]])
-                palabras_partida.append(siguiente_palabra)
-                lista_direcciones.append("vertical-"+flag_direccion)
-                
-            else:
-                flag_direccion = "norte" #Si la palabra N°2 tiene dirección "sur", a esta le asignaré "norte" para evitar colisiones
-                lista_direcciones.append("vertical-"+flag_direccion)
-                indice_letra_a_buscar = random.choice([-1,-2])
-                letra_palabra = palabras_partida[0][indice_letra_a_buscar]
-                siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))
-                while (siguiente_palabra[-1] != letra_palabra and  siguiente_palabra[-2] != letra_palabra ) or siguiente_palabra in palabras_partida:
-                    siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items())) #Se buscará una palabra que en su último o anteúltimo índice coíncida con la letra buscada (última o anteúltima de la primer palabra)
-                if len(indice_coincidencia) == 1:
-                   lista_coincidencias.append([palabras_partida[0].rindex(letra_palabra),indice_coincidencia[0]])#Uso de rindex para que busque el primer índice coincidente desde la derecha
-                else:
-                    lista_coincidencias.append([palabras_partida[0].rindex(letra_palabra),indice_coincidencia[-1]])
-                flag_direccion = definir_direccion(siguiente_palabra,indice_coincidencia[0])
-                lista_direcciones.append("horizontal-"+flag_direccion)
 
+    while len(palabras_partida) != 9:
+        if len(palabras_partida) == 1: #Segunda palabra - Vertical
+            letra_palabra = elegir_indice_y_letra(palabras_partida,0)
+            siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,
+            "no")
+            coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,0,"principio")
+            print(coincidencia)
+            flag_direccion = definir_direccion(siguiente_palabra,coincidencia[1])
+            lista_coincidencias.append(coincidencia)
+            lista_direcciones.append("vertical-" + flag_direccion)
+            palabras_partida.append(siguiente_palabra)
+
+        elif len(palabras_partida) == 2: #Tercer palabra - vertical
+            letra_palabra = elegir_indice_y_letra(palabras_partida,0,"sur")
+            if lista_direcciones[1].count("norte"):
+                flag_direccion = "sur"
+                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,
+            "si",0,1)
+                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,0,"final-sur")
                 
-                palabras_partida.append(siguiente_palabra)
-                
-                
-        if len(palabras_partida) == 3:
-            if lista_direcciones[1].count("norte") > 0: #Cuarta palabra - Horizontal - Depende de como se formó la segunda
-                #En caso de que la palabra N°2 tenga dirección "Norte", buscaré palabras que coíncidan con las primeras letras de la palabra N°2
-                if len(palabras_partida[1]) > 6: #En caso de que la palabra N°2 tenga una longitud de caracteres mayor a 6, habilitare la busqueda de letra entre sus índice 0 y 1
-                    indice_letra_a_buscar = random.randint(0,1)
-                else:
-                    indice_letra_a_buscar = 0 #Caso contrario, solo buscare una letra coincidente en el índice 0
-                letra_palabra = palabras_partida[1][indice_letra_a_buscar]
-                siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items())) 
-                while siguiente_palabra in palabras_partida: 
-                    siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items())) #Se buscará una palabra que no esté repetida
-                
-                lista_coincidencias.append([palabras_partida[1].index(letra_palabra),indice_coincidencia[0]])
-                
-                flag_direccion = definir_direccion(siguiente_palabra,indice_coincidencia[0])
-                lista_direcciones.append("horizontal-"+ flag_direccion)
-                
-                palabras_partida.append(siguiente_palabra)
-           
             else:
-                #En caso de que la palabra N°2 tenga dirección "sur", buscaré palabras que coíncidan con las últimas letras de la palabra N°2
-                if len(palabras_partida[1]) > 6:
-                    indice_letra_a_buscar = random.randint(-2,-1) #En caso de que la palabra N°2 tenga una longitud de caracteres mayor a 6, habilitare la busqueda de letra entre su último y anteúltimo índices
-                else:
-                   indice_letra_a_buscar = -1 #Caso contrario, solo buscare una letra coincidente en el último índice
-                letra_palabra = palabras_partida[1][indice_letra_a_buscar]
-                siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))#Se buscará una palabra que no esté repetida
-                while siguiente_palabra in palabras_partida:
-                    siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))
-               
-                lista_coincidencias.append([palabras_partida[1].rindex(letra_palabra),indice_coincidencia[0]])
+                flag_direccion = "norte"
+                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,
+                                                                                 "si", -1, -1)
+                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,0,"final-norte")
+            
+            lista_coincidencias.append(coincidencia)
+            lista_direcciones.append("vertical-" + flag_direccion)
+            palabras_partida.append(siguiente_palabra)
                 
-                flag_direccion = definir_direccion(siguiente_palabra,indice_coincidencia[0])
-                lista_direcciones.append("horizontal-"+flag_direccion)
-                palabras_partida.append(siguiente_palabra)
-        if len(palabras_partida) == 4: #Quinta palabra - Horizontal - Depende de como se formó la tercera palabra
-            if lista_direcciones[2].count("norte") > 0: #En caso de que la palabra N°3 tenga dirección "Norte", buscaré palabras que coíncidan con las primeras letras de la palabra N°3
-                if len(palabras_partida[2]) > 6: #En caso de que la palabra N°3 tenga una longitud de caracteres mayor a 6, habilitare la busqueda de letra entre sus índice 0 y 1
-                    indice_letra_a_buscar = random.randint(0,1) 
-                else:
-                   indice_letra_a_buscar = 0 #Caso contrario, solo buscare una letra coincidente en el índice 0
-                letra_palabra = palabras_partida[2][indice_letra_a_buscar]
-                siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items())) 
-                while siguiente_palabra in palabras_partida:
-                    siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))  #Se buscará una palabra que no esté repetida
-                lista_coincidencias.append([palabras_partida[2].index(letra_palabra),indice_coincidencia[0]])
-                flag_direccion = definir_direccion(siguiente_palabra,indice_coincidencia[0])
-                lista_direcciones.append("horizontal" + flag_direccion)
+        elif len(palabras_partida) == 3: #Cuarta palabra
+            if lista_direcciones[1].count("norte"):
+                letra_palabra = elegir_indice_y_letra(palabras_partida,1,"norte")
+                
+                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"no")
+                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,1,"principio")
+                flag_direccion = definir_direccion(siguiente_palabra,coincidencia[1])
+                lista_coincidencias.append(coincidencia)
+                lista_direcciones.append("horizontal-" + flag_direccion)
                 palabras_partida.append(siguiente_palabra)
             else:
-                #En caso de que la palabra N°2 tenga dirección "sur", buscaré palabras que coíncidan con las últimas letras de la palabra N°3
-                if len(palabras_partida[2]) > 6:
-                    indice_letra_a_buscar = random.randint(-2,-1) #En caso de que la palabra N°3 tenga una longitud de caracteres mayor a 6, habilitare la busqueda de letra entre su último y anteúltimo índices
-                else:
-                   indice_letra_a_buscar = -1 #Caso contrario, solo buscare una letra coincidente en el último índice
-                letra_palabra = palabras_partida[2][indice_letra_a_buscar]
-                siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items()))
-                while siguiente_palabra in palabras_partida:
-                    siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra_palabra).items())) #Se buscará una palabra que no esté repetida
-                lista_coincidencias.append([palabras_partida[2].rindex(letra_palabra),indice_coincidencia[0]])
-                flag_direccion = definir_direccion(siguiente_palabra,indice_coincidencia[0])
-                lista_direcciones.append("horizontal-"+flag_direccion)
+                letra_palabra = elegir_indice_y_letra(palabras_partida,1,"sur")
+                
+                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"no")
+                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,1,"final")
+                flag_direccion = definir_direccion(siguiente_palabra,coincidencia[1])
+                lista_coincidencias.append(coincidencia)
+                lista_direcciones.append("horizontal-" + flag_direccion)
                 palabras_partida.append(siguiente_palabra)
+
+        elif len(palabras_partida) == 4: #Quinta palabra
+            if lista_direcciones[2].count("norte"):
+                letra_palabra = elegir_indice_y_letra(palabras_partida,2,"norte")
+                
+                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"no")
+                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,2,"principio")
+                flag_direccion = definir_direccion(siguiente_palabra,coincidencia[1])
+                lista_coincidencias.append(coincidencia)
+                lista_direcciones.append("horizontal-" + flag_direccion)
+                palabras_partida.append(siguiente_palabra)
+            else:
+                letra_palabra = elegir_indice_y_letra(palabras_partida,2,"sur")
+                
+                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"no")
+                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,2,"final")
+                flag_direccion = definir_direccion(siguiente_palabra,coincidencia[1])
+                lista_coincidencias.append(coincidencia)
+                lista_direcciones.append("horizontal-" + flag_direccion)
+                palabras_partida.append(siguiente_palabra)
+
+        elif len(palabras_partida) == 5: #Sexta palabra
+            if lista_direcciones[1].count("norte") and lista_direcciones[3].count("norte"):
+                letra_palabra = elegir_indice_y_letra(palabras_partida,3,"norte")
+                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",-1,-2)
+                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,3,"principio-norte")
+                lista_coincidencias.append(coincidencia)
+                lista_direcciones.append("vertical-norte")
+                palabras_partida.append(siguiente_palabra)
+            
+            elif lista_direcciones[1].count("norte") and lista_direcciones[3].count("sur"):
+                letra_palabra = elegir_indice_y_letra(palabras_partida,3,"sur")
+                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",-1,-2)
+                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,3,"final-norte")
+                lista_coincidencias.append(coincidencia)
+                lista_direcciones.append("vertical-norte")
+                palabras_partida.append(siguiente_palabra)
+
+            elif lista_direcciones[1].count("sur") and lista_direcciones[3].count("norte"):
+                letra_palabra = elegir_indice_y_letra(palabras_partida,3,"norte")
+                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",0,1)
+                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,3,"principio-sur")
+                lista_coincidencias.append(coincidencia)
+                lista_direcciones.append("vertical-sur")
+                palabras_partida.append(siguiente_palabra)
+            else:
+                letra_palabra = elegir_indice_y_letra(palabras_partida,3,"sur")
+                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",0,1)
+                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,3,"final-sur")
+                lista_coincidencias.append(coincidencia)
+                lista_direcciones.append("vertical-sur")
+                palabras_partida.append(siguiente_palabra)
+
+        elif len(palabras_partida) == 6: #Séptima palabra
+            if lista_direcciones[2].count("norte") and lista_direcciones[4].count("norte"):
+                letra_palabra = elegir_indice_y_letra(palabras_partida,4,"norte")
+                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",-2,-1)
+                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,4,"principio-norte")
+                lista_coincidencias.append(coincidencia)
+                lista_direcciones.append("vertical-norte")
+                palabras_partida.append(siguiente_palabra)
+            
+            elif lista_direcciones[2].count("norte") and lista_direcciones[4].count("sur"):
+                letra_palabra = elegir_indice_y_letra(palabras_partida,4,"sur")
+                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",-1,-2)
+                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,4,"final-norte")
+                lista_coincidencias.append(coincidencia)
+                lista_direcciones.append("vertical-norte")
+                palabras_partida.append(siguiente_palabra)
+
+            elif lista_direcciones[2].count("sur") and lista_direcciones[4].count("norte"):
+                letra_palabra = elegir_indice_y_letra(palabras_partida,4,"norte")
+                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",0,1)
+                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,4,"principio-sur")
+                lista_coincidencias.append(coincidencia)
+                lista_direcciones.append("vertical-sur")
+                palabras_partida.append(siguiente_palabra)
+            else:
+                letra_palabra = elegir_indice_y_letra(palabras_partida,4,"sur")
+                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",0,1)
+                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,4,"final-sur")
+                lista_coincidencias.append(coincidencia)
+                lista_direcciones.append("vertical-sur")
+                palabras_partida.append(siguiente_palabra)
+
+        elif len(palabras_partida) == 7: #Octava palabra
+            if lista_direcciones[5].count("norte"):
+                letra_palabra = elegir_indice_y_letra(palabras_partida,5,"norte")
+                
+                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"no")
+                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,5,"principio")
+                flag_direccion = definir_direccion(siguiente_palabra,coincidencia[1])
+                lista_coincidencias.append(coincidencia)
+                lista_direcciones.append("horizontal-" + flag_direccion)
+                palabras_partida.append(siguiente_palabra)
+            else:
+                letra_palabra = elegir_indice_y_letra(palabras_partida,5,"sur")
+                
+                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"no")
+                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,5,"final")
+                flag_direccion = definir_direccion(siguiente_palabra,coincidencia[1])
+                lista_coincidencias.append(coincidencia)
+                lista_direcciones.append("horizontal-" + flag_direccion)
+                palabras_partida.append(siguiente_palabra)
+
+        elif len(palabras_partida) == 8: #Novena palabra
+            if lista_direcciones[6].count("norte"):
+                letra_palabra = elegir_indice_y_letra(palabras_partida,6,"norte")
+                
+                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"no")
+                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,6,"principio")
+                flag_direccion = definir_direccion(siguiente_palabra,coincidencia[1])
+                lista_coincidencias.append(coincidencia)
+                lista_direcciones.append("horizontal-" + flag_direccion)
+                palabras_partida.append(siguiente_palabra)
+            else:
+                letra_palabra = elegir_indice_y_letra(palabras_partida,6,"sur")
+                
+                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"no")
+                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,6,"final")
+                flag_direccion = definir_direccion(siguiente_palabra,coincidencia[1])
+                lista_coincidencias.append(coincidencia)
+                lista_direcciones.append("horizontal-" + flag_direccion)
+                palabras_partida.append(siguiente_palabra)
+        
+        
+
+
+
     return palabras_partida,lista_direcciones,lista_coincidencias
+
 
 def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direcciones):
     '''Función que parte desde un índice de fila y columna inicial y que sucesivamente sumará nuevos caracteres en las listas que contiene la matriz'''
-    indice_fila_inicial = 12
-    indice_columna_inicial = 12
+    indice_fila_inicial = 45
+    indice_columna_inicial = 45
     fila_anterior = indice_fila_inicial
     columna_anterior = indice_columna_inicial
     coordenadas = []
@@ -338,8 +475,36 @@ def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direcciones):
                     coordenadas.append([proxima_fila,proxima_columna])
                 tablero[proxima_fila][proxima_columna + j][0] = lista_palabras[i][j]
 
-    return tablero, coordenadas
+            elif i == 5: #Sexta palabra
+                proxima_fila = calcularFila(coordenadas[3][0],lista_coincidencias[i][1],direcciones[i])
+                proxima_columna = calcularColumna(coordenadas[3][1],lista_coincidencias[i][0],direcciones[i])
+                if len(coordenadas) == i: #Guardo las coordenadas
+                    coordenadas.append([proxima_fila,proxima_columna])
+                tablero[proxima_fila + j][proxima_columna][0] = lista_palabras[i][j]
+                
+            elif i == 6: #Séptima palabra
+                proxima_fila = calcularFila(coordenadas[4][0],lista_coincidencias[i][1],direcciones[i])
+                proxima_columna = calcularColumna(coordenadas[4][1],lista_coincidencias[i][0],direcciones[i])
+                if len(coordenadas) == i: #Guardo las coordenadas
+                    coordenadas.append([proxima_fila,proxima_columna])
+                tablero[proxima_fila + j][proxima_columna][0] = lista_palabras[i][j]
 
+            elif i == 7: #Octava palabra
+                proxima_fila = calcularFila(coordenadas[5][0],lista_coincidencias[i][0],direcciones[i])
+                proxima_columna = calcularColumna(coordenadas[5][1],lista_coincidencias[i][1],direcciones[i])
+                if len(coordenadas) == i: #Guardo las coordenadas
+                    coordenadas.append([proxima_fila,proxima_columna])
+                tablero[proxima_fila][proxima_columna + j][0] = lista_palabras[i][j]
+
+            elif i == 8: #Novena palabra
+                proxima_fila = calcularFila(coordenadas[6][0],lista_coincidencias[i][0],direcciones[i])
+                proxima_columna = calcularColumna(coordenadas[6][1],lista_coincidencias[i][1],direcciones[i])
+                if len(coordenadas) == i: #Guardo las coordenadas
+                    coordenadas.append([proxima_fila,proxima_columna])
+                tablero[proxima_fila][proxima_columna + j][0] = lista_palabras[i][j]
+
+
+    return tablero, coordenadas
 
 def AgregoIndice(palabras_partida):
     '''Función encargada de colocar el prefijo utilizando una palabra a analizar. (1-casa)
