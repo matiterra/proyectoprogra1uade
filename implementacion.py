@@ -10,7 +10,7 @@ def registrar_usuario(nombre_usuario, contrasenia):
             contenido = archivo_json.read()
             if contenido:  # Verifica si el archivo no está vacío
                 credenciales = json.loads(contenido)
-                print("Archivo cargado correctamente.")
+                print("Archivo verficado correctamente.")
             else:
                 print("Archivo vacío, creando nuevo diccionario.")
                 credenciales = {}
