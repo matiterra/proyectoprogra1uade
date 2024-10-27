@@ -838,27 +838,33 @@ def reiniciar_partida():
 
 def Login():
     bandera = True
-       # Opción de registro o inicio de sesión
-    opcion = input("Seleccione una opción (1-Registrar, 2-Iniciar sesión): ")
+    opcion_valida = False  # Variable para controlar la selección de opción válida
 
-    if opcion == '1':
-        # Registro de usuario
-        nombre_usuario = input("Ingrese un nombre de usuario: ")
-        contrasenia = input("Ingrese una contraseña: ")
-        registrar_usuario(nombre_usuario, contrasenia)
-    elif opcion == '2':
-        # Intento de inicio de sesión con bucle para reintentar si falla
-        while bandera:
-            nombre_usuario = input("Ingrese su nombre de usuario: ")
-            contrasenia = input("Ingrese su contraseña: ")
-            if iniciar_sesion(nombre_usuario, contrasenia):
-                print("Inicio de sesión exitoso.")
-                bandera = False
-                
-            else:
-                print("Error en el inicio de sesión. Intente nuevamente.")
-    else:
-        print("Opción no válida.")
+    # Bucle para asegurar que el usuario elige una opción válida
+    while not opcion_valida:
+        # Opción de registro o inicio de sesión
+        opcion = input("Seleccione una opción (1-Registrar, 2-Iniciar sesión): ")
+        
+        if opcion == '1':
+            # Registro de usuario
+            nombre_usuario = input("Ingrese un nombre de usuario: ")
+            contrasenia = input("Ingrese una contraseña: ")
+            registrar_usuario(nombre_usuario, contrasenia)
+            opcion_valida = True  # Marca la opción como válida para salir del bucle
+        elif opcion == '2':
+            # Intento de inicio de sesión con bucle para reintentar si falla
+            while bandera:
+                nombre_usuario = input("Ingrese su nombre de usuario: ")
+                contrasenia = input("Ingrese su contraseña: ")
+                if iniciar_sesion(nombre_usuario, contrasenia):
+                    print("Inicio de sesión exitoso.")
+                    bandera = False  # Termina el bucle de intento de inicio de sesión
+                    opcion_valida = True  # Marca la opción como válida para salir del bucle principal
+                else:
+                    print("Error en el inicio de sesión. Intente nuevamente.")
+        else:
+            print("Opción no válida. Por favor, seleccione 1 o 2.")
+
 
 
 def Score(palabras_para_jugar, flag_palabra, SeleccionaNumero):
