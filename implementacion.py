@@ -633,57 +633,59 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
     bandera3 = True
 
     while bandera1:
-            IngresaOpcion = int(input("Ingrese una opción:\n 1) Ingresar número de palabra a adivinar\n 2) Pedir Pista Extra\n 3) Utilizar Comodín\n Opción: "))
-            if 1 <= IngresaOpcion <= 3:
-                bandera1 = False
-            else:
-                print("El número ingresado debe corresponder a uno de los números que se muestran en las opciones.") 
+            try:
+                IngresaOpcion = int(input("Ingrese una opción:\n 1) Ingresar número de palabra a adivinar\n 2) Pedir Pista Extra\n 3) Utilizar Comodín\n Opción: "))
+                if 1 <= IngresaOpcion <= 3:
+                    bandera1 = False
+                else:
+                    print("El número ingresado debe corresponder a uno de los números que se muestran en las opciones.") 
 
-            if IngresaOpcion == 1:
-                while bandera2:
-                    try:
-                        SeleccionaNumero = int(input("Ingrese el número de la palabra que quiere adivinar: ")) #se le pide ingresar el número al usuario.
-                        if 1 <= SeleccionaNumero <= 9 and SeleccionaNumero not in numero_palabra_encontrada: #se valida que el número sea de 0 a 5 y que no se haya adivinado previamente.
-                            IngresaPalabra = input("Ingrese la palabra que quiere adivinar: ")
-                            if IngresaPalabra.isalpha():
-                                bandera2 = False
-                            else: 
-                                print("Por favor ingrese una palabra. Vuelva a intentarlo.")
-                        else:
-                            print("El número ingresado debe corresponder a uno de los números que se muestran en el tablero y no corresponder a uno de los adivinados anteriormente.") 
-                    except ValueError:
-                        print("Por favor ingrese un número. Vuelva a intentarlo.") #si hay un error por ingresar un caracter, se muestra error.
+                if IngresaOpcion == 1:
+                    while bandera2:
+                        try:
+                            SeleccionaNumero = int(input("Ingrese el número de la palabra que quiere adivinar: ")) #se le pide ingresar el número al usuario.
+                            if 1 <= SeleccionaNumero <= 9 and SeleccionaNumero not in numero_palabra_encontrada: #se valida que el número sea de 0 a 5 y que no se haya adivinado previamente.
+                                IngresaPalabra = input("Ingrese la palabra que quiere adivinar: ")
+                                if IngresaPalabra.isalpha():
+                                    bandera2 = False
+                                else: 
+                                    print("Por favor ingrese una palabra. Vuelva a intentarlo.")
+                            else:
+                                print("El número ingresado debe corresponder a uno de los números que se muestran en el tablero y no corresponder a uno de los adivinados anteriormente.") 
+                        except ValueError:
+                            print("Por favor ingrese un número. Vuelva a intentarlo.") #si hay un error por ingresar un caracter, se muestra error.
 
-            if IngresaOpcion == 2:
-                while bandera3:
-                    PedirPista = "S"
-                    try:
-                        SeleccionaNumero = int(input("Ingrese el número de la palabra que quiere consultar la Pista Extra: "))
-                        if 1 <= SeleccionaNumero <= 5 and SeleccionaNumero not in numero_palabra_encontrada:
+                if IngresaOpcion == 2:
+                    while bandera3:
+                        PedirPista = "S"
+                        try:
+                            SeleccionaNumero = int(input("Ingrese el número de la palabra que quiere consultar la Pista Extra: "))
+                            if 1 <= SeleccionaNumero <= 5 and SeleccionaNumero not in numero_palabra_encontrada:
 
-                            LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras,definiciones2, PedirPista)
+                                LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras,definiciones2, PedirPista)
 
 
     
-                            PedirPista = input("¿Desea pedir una pista extra? S = Sí / N = No: ").strip().upper()
+                                PedirPista = input("¿Desea pedir una pista extra? S = Sí / N = No: ").strip().upper()
 
-                            if PedirPista == "S" or PedirPista == "N":
-                                LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones3, PedirPista)
-                                bandera3 = False
+                                if PedirPista == "S" or PedirPista == "N":
+                                    LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones3, PedirPista)
+                                    bandera3 = False
+                                else:
+                                    print("Por favor, ingrese 'S' para Sí o 'N'  para No.")
                             else:
-                                print("Por favor, ingrese 'S' para Sí o 'N'  para No.")
-                        else:
-                            print("El número ingresado debe corresponder a uno de los números que se muestran en el tablero y no corresponder a uno de los adivinados anteriormente.")
-                    except ValueError:
-                        print("Por favor ingrese un número. Vuelva a intentarlo.")
+                                print("El número ingresado debe corresponder a uno de los números que se muestran en el tablero y no corresponder a uno de los adivinados anteriormente.")
+                        except ValueError:
+                            print("Por favor ingrese un número. Vuelva a intentarlo.")
+            except ValueError:
+                print("Por favor ingrese un número. Vuelva a intentarlo.")
 
-            if IngresaOpcion == 3:
-                if len(lista_comodin) < 1:
-                    comodin = True
-                    lista_comodin.append("-")
-
-                else:
-                    print("Ya se utilizaron todos los comodines disponibles para esta partida")
+                if IngresaOpcion == 3:
+                    if len(lista_comodin) < 1:
+                        comodin = True
+                        lista_comodin.append("-")
+                    else:
+                        print("Ya se utilizaron todos los comodines disponibles para esta partida")
 
     return IngresaPalabra, SeleccionaNumero, comodin
 
