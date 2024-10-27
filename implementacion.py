@@ -892,6 +892,7 @@ def main():
     
     palabras,definiciones_1,definiciones_2,definiciones_3 = cargarListas(lista_cargada)
 
+
     diccionario_coincidencias = Buscolista_coincidencias(palabras)
     tablero = ConstruccionTableroVacio()
     #manejo errores por si no cuentra palabras
@@ -902,8 +903,8 @@ def main():
             bandera_errores = False
 
         except AttributeError:
-            palabras_para_jugar,lista_direcciones,lista_coincidencias = LogicaConstruccion(palabras,diccionario_coincidencias)
-    
+            print("No se encontró una combinación, reintentando...")
+
     palabras_con_indice = AgregoIndice(palabras_para_jugar)
     producto_final, coordenadas = ConstruirTablero(tablero, palabras_con_indice, lista_coincidencias, lista_direcciones)
     tablero_actualizado = ImpresionTablero(tablero)
@@ -915,7 +916,7 @@ def main():
     primer_intento = True  # Variable para controlar el primer intento
     lista_comodin = []
     palabra_ingresada = " "
-    while continuar_jugando == 'sí' or len(numero_palabra_encontrada) < 5:
+    while continuar_jugando == 'sí' or len(numero_palabra_encontrada) < 9:
 
         palabra_ingresada, numero_ingresado, comodin = IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones_2, definiciones_3, lista_comodin)
 
@@ -937,7 +938,7 @@ def main():
         if comodin == True:
             Comodin(numero_ingresado, palabras_con_indice, comodin, tablero_actualizado, coordenadas, lista_direcciones, validation, numero_palabra_encontrada)
 
-        if len(numero_palabra_encontrada) >= 5:
+        if len(numero_palabra_encontrada) >= 9:
             print("¡Has encontrado todas las palabras!")
             print("Su puntaje en esta partida fue: ", puntaje_total)
 
