@@ -884,7 +884,8 @@ def Score(palabras_para_jugar, flag_palabra, SeleccionaNumero):
 
 def main():
 
-#Funciones que se deben ejecutar al principio del programa: 
+#Funciones que se deben ejecutar al principio del programa:
+    bandera_errores = True
     Login()
     tematica = ElegirTematicas()
     lista_cargada = LeerJSON(tematica)
@@ -893,12 +894,15 @@ def main():
 
     diccionario_coincidencias = Buscolista_coincidencias(palabras)
     tablero = ConstruccionTableroVacio()
-    # manejo errores por si no cuentra palabras
-    try: 
-        palabras_para_jugar,lista_direcciones,lista_coincidencias = LogicaConstruccion(palabras,diccionario_coincidencias)
+    #manejo errores por si no cuentra palabras
+    while bandera_errores:
 
-    except AttributeError:
-        palabras_para_jugar,lista_direcciones,lista_coincidencias = LogicaConstruccion(palabras,diccionario_coincidencias)
+        try: 
+            palabras_para_jugar,lista_direcciones,lista_coincidencias = LogicaConstruccion(palabras,diccionario_coincidencias)
+            bandera_errores = False
+
+        except AttributeError:
+            palabras_para_jugar,lista_direcciones,lista_coincidencias = LogicaConstruccion(palabras,diccionario_coincidencias)
     
     palabras_con_indice = AgregoIndice(palabras_para_jugar)
     producto_final, coordenadas = ConstruirTablero(tablero, palabras_con_indice, lista_coincidencias, lista_direcciones)
