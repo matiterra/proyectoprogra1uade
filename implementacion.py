@@ -264,6 +264,8 @@ def LogicaConstruccion(lista_palabras,diccionario):
             lista_coincidencias.append(coincidencia)
             lista_direcciones.append("vertical-" + flag_direccion)
             palabras_partida.append(siguiente_palabra)
+        
+        ######################################
 
         elif len(palabras_partida) == 2: #Tercer palabra - vertical
             letra_palabra = elegir_indice_y_letra(palabras_partida,0,"sur")
@@ -282,7 +284,7 @@ def LogicaConstruccion(lista_palabras,diccionario):
             lista_coincidencias.append(coincidencia)
             lista_direcciones.append("vertical-" + flag_direccion)
             palabras_partida.append(siguiente_palabra)
-                
+        ######################################        
         elif len(palabras_partida) == 3: #Cuarta palabra
             if lista_direcciones[1].count("norte"):
                 letra_palabra = elegir_indice_y_letra(palabras_partida,1,"norte")
@@ -299,7 +301,7 @@ def LogicaConstruccion(lista_palabras,diccionario):
             lista_coincidencias.append(coincidencia)
             lista_direcciones.append("horizontal-" + flag_direccion)
             palabras_partida.append(siguiente_palabra)
-
+        ######################################
         elif len(palabras_partida) == 4: #Quinta palabra
             if lista_direcciones[2].count("norte"):
                 letra_palabra = elegir_indice_y_letra(palabras_partida,2,"norte")
@@ -316,71 +318,71 @@ def LogicaConstruccion(lista_palabras,diccionario):
             lista_coincidencias.append(coincidencia)
             lista_direcciones.append("horizontal-" + flag_direccion)
             palabras_partida.append(siguiente_palabra)
-
+        ######################################
         elif len(palabras_partida) == 5: #Sexta palabra
-            if lista_direcciones[1].count("norte") and lista_direcciones[3].count("norte"):
-                letra_palabra = elegir_indice_y_letra(palabras_partida,3,"norte")
-                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",-1,-2)
-                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,3,"principio-norte")
-                lista_coincidencias.append(coincidencia)
-                lista_direcciones.append("vertical-norte")
-                palabras_partida.append(siguiente_palabra)
+            if lista_direcciones[1].count("norte"):
+                if lista_direcciones[3].count("norte"):
+                    letra_palabra = elegir_indice_y_letra(palabras_partida,3,"norte")
+                    siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",-1,-2)
+                    coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,3,"principio-norte")
+                
             
-            elif lista_direcciones[1].count("norte") and lista_direcciones[3].count("sur"):
-                letra_palabra = elegir_indice_y_letra(palabras_partida,3,"sur")
-                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",-1,-2)
-                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,3,"final-norte")
+                elif lista_direcciones[3].count("sur"):
+                    letra_palabra = elegir_indice_y_letra(palabras_partida,3,"sur")
+                    siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",-1,-2)
+                    coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,3,"final-norte")
+                
                 lista_coincidencias.append(coincidencia)
                 lista_direcciones.append("vertical-norte")
                 palabras_partida.append(siguiente_palabra)
 
-            elif lista_direcciones[1].count("sur") and lista_direcciones[3].count("norte"):
-                letra_palabra = elegir_indice_y_letra(palabras_partida,3,"norte")
-                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",0,1)
-                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,3,"principio-sur")
+            elif lista_direcciones[1].count("sur"):
+                if lista_direcciones[3].count("norte"):
+                   letra_palabra = elegir_indice_y_letra(palabras_partida,3,"norte")
+                   siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",0,1)
+                   coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,3,"principio-sur")
+                
+                elif lista_direcciones[3].count("sur"):
+                    letra_palabra = elegir_indice_y_letra(palabras_partida,3,"sur")
+                    siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",0,1)
+                    coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,3,"final-sur")
+                
                 lista_coincidencias.append(coincidencia)
                 lista_direcciones.append("vertical-sur")
                 palabras_partida.append(siguiente_palabra)
-            else:
-                letra_palabra = elegir_indice_y_letra(palabras_partida,3,"sur")
-                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",0,1)
-                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,3,"final-sur")
-                lista_coincidencias.append(coincidencia)
-                lista_direcciones.append("vertical-sur")
-                palabras_partida.append(siguiente_palabra)
-
+        ######################################
         elif len(palabras_partida) == 6: #Séptima palabra
-            if lista_direcciones[2].count("norte") and lista_direcciones[4].count("norte"):
-                letra_palabra = elegir_indice_y_letra(palabras_partida,4,"norte")
-                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",-2,-1)
-                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,4,"principio-norte")
-                lista_coincidencias.append(coincidencia)
-                lista_direcciones.append("vertical-norte")
-                palabras_partida.append(siguiente_palabra)
+            if lista_direcciones[2].count("norte"):
+                if lista_direcciones[4].count("norte"):
+                    letra_palabra = elegir_indice_y_letra(palabras_partida,4,"norte")
+                    siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",-2,-1)
+                    coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,4,"principio-norte")
+                
             
-            elif lista_direcciones[2].count("norte") and lista_direcciones[4].count("sur"):
-                letra_palabra = elegir_indice_y_letra(palabras_partida,4,"sur")
-                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",-1,-2)
-                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,4,"final-norte")
+                elif lista_direcciones[4].count("sur"):
+                    letra_palabra = elegir_indice_y_letra(palabras_partida,4,"sur")
+                    siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",-1,-2)
+                    coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,4,"final-norte")
+                
                 lista_coincidencias.append(coincidencia)
                 lista_direcciones.append("vertical-norte")
                 palabras_partida.append(siguiente_palabra)
 
-            elif lista_direcciones[2].count("sur") and lista_direcciones[4].count("norte"):
-                letra_palabra = elegir_indice_y_letra(palabras_partida,4,"norte")
-                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",0,1)
-                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,4,"principio-sur")
+            elif lista_direcciones[2].count("sur"):
+                if lista_direcciones[4].count("norte"):
+                    letra_palabra = elegir_indice_y_letra(palabras_partida,4,"norte")
+                    siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",0,1)
+                    coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,4,"principio-sur")
+                
+                elif lista_direcciones[4].count("sur"):    
+                    letra_palabra = elegir_indice_y_letra(palabras_partida,4,"sur")
+                    siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",0,1)
+                    coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,4,"final-sur")
+                
                 lista_coincidencias.append(coincidencia)
                 lista_direcciones.append("vertical-sur")
                 palabras_partida.append(siguiente_palabra)
-            else:
-                letra_palabra = elegir_indice_y_letra(palabras_partida,4,"sur")
-                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",0,1)
-                coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,4,"final-sur")
-                lista_coincidencias.append(coincidencia)
-                lista_direcciones.append("vertical-sur")
-                palabras_partida.append(siguiente_palabra)
-
+        ######################################
         elif len(palabras_partida) == 7: #Octava palabra
             if lista_direcciones[5].count("norte"):
                 letra_palabra = elegir_indice_y_letra(palabras_partida,5,"norte")
@@ -397,7 +399,7 @@ def LogicaConstruccion(lista_palabras,diccionario):
             lista_coincidencias.append(coincidencia)
             lista_direcciones.append("horizontal-" + flag_direccion)
             palabras_partida.append(siguiente_palabra)
-
+        ######################################
         elif len(palabras_partida) == 8: #Novena palabra
             if lista_direcciones[6].count("norte"):
                 letra_palabra = elegir_indice_y_letra(palabras_partida,6,"norte")
