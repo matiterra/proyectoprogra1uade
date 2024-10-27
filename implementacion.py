@@ -425,8 +425,8 @@ def LogicaConstruccion(lista_palabras,diccionario):
 
 def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direcciones):
     '''Función que parte desde un índice de fila y columna inicial y que sucesivamente sumará nuevos caracteres en las listas que contiene la matriz'''
-    indice_fila_inicial = 45
-    indice_columna_inicial = 45
+    indice_fila_inicial = 25
+    indice_columna_inicial = 25
     fila_anterior = indice_fila_inicial
     columna_anterior = indice_columna_inicial
     coordenadas = []
@@ -491,11 +491,11 @@ def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direcciones):
                 if len(coordenadas) == i: #Guardo las coordenadas
                     coordenadas.append([proxima_fila,proxima_columna])
                 tablero[proxima_fila][proxima_columna + j][0] = lista_palabras[i][j]
-    print(coordenadas)
-    print(tablero)
+
     return tablero, coordenadas
 
 def AgregoIndice(palabras_partida):
+    print(palabras_partida)
     '''Función encargada de colocar el prefijo utilizando una palabra a analizar. (1-casa)
        Utiliza como valor de entrada palabras_partida(palabras sin prefijo, ejemplo: casa)'''
 
@@ -552,7 +552,7 @@ def ImprimirTableroActualizado(tablero_actualizado, flag_palabra, palabras_con_i
             direccion = "flag-horizontal" #Cambio flags
 
         if SeleccionaNumero == 1:
-            coordenadas = [45, 45]
+            coordenadas = [25, 25]
             direccion = "flag-horizontal" #Coordenadas de primer palabra.
 
         x, y = coordenadas
@@ -575,15 +575,15 @@ def ImprimirTableroActualizado(tablero_actualizado, flag_palabra, palabras_con_i
 
 def PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar, palabras):
     definiciones_jugables = []
-    coordenadas = [2,47]
+    coordenadas = [2,53]
 
     x, y = coordenadas
     for fila in tablero_actualizado:
-        if x < 30:
+        if x < 45:
             tablero_actualizado [x][y] = '|'
             x = x + 1
 
-    for num in range(5):
+    for num in range(9):
         indice_palabra = num
         palabra_elegida = palabras_para_jugar[indice_palabra]
         indice_palabra_elegida = palabras.index(palabra_elegida)
@@ -591,7 +591,7 @@ def PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar,
         lista_definiciones = list(AgregoIndice(definiciones_jugables))
 
         fila_inicio = 2
-        columna_inicio = 50
+        columna_inicio = 56
 
 
         fila = fila_inicio
@@ -603,7 +603,7 @@ def PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar,
                     fila += 2
                     col = columna_inicio
 
-                if col < 80:
+                if col < 90:
                     tablero_actualizado[fila][col] = letra
                     col += 1
                 else:
@@ -643,7 +643,7 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
                 while bandera2:
                     try:
                         SeleccionaNumero = int(input("Ingrese el número de la palabra que quiere adivinar: ")) #se le pide ingresar el número al usuario.
-                        if 1 <= SeleccionaNumero <= 5 and SeleccionaNumero not in numero_palabra_encontrada: #se valida que el número sea de 0 a 5 y que no se haya adivinado previamente.
+                        if 1 <= SeleccionaNumero <= 9 and SeleccionaNumero not in numero_palabra_encontrada: #se valida que el número sea de 0 a 5 y que no se haya adivinado previamente.
                             IngresaPalabra = input("Ingrese la palabra que quiere adivinar: ")
                             if IngresaPalabra.isalpha():
                                 bandera2 = False
