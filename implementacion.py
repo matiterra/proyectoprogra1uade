@@ -491,8 +491,8 @@ def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direcciones):
                 if len(coordenadas) == i: #Guardo las coordenadas
                     coordenadas.append([proxima_fila,proxima_columna])
                 tablero[proxima_fila][proxima_columna + j][0] = lista_palabras[i][j]
-
-
+    print(coordenadas)
+    print(tablero)
     return tablero, coordenadas
 
 def AgregoIndice(palabras_partida):
@@ -552,7 +552,7 @@ def ImprimirTableroActualizado(tablero_actualizado, flag_palabra, palabras_con_i
             direccion = "flag-horizontal" #Cambio flags
 
         if SeleccionaNumero == 1:
-            coordenadas = [12, 12]
+            coordenadas = [45, 45]
             direccion = "flag-horizontal" #Coordenadas de primer palabra.
 
         x, y = coordenadas
@@ -575,7 +575,7 @@ def ImprimirTableroActualizado(tablero_actualizado, flag_palabra, palabras_con_i
 
 def PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar, palabras):
     definiciones_jugables = []
-    coordenadas = [2,30]
+    coordenadas = [2,47]
 
     x, y = coordenadas
     for fila in tablero_actualizado:
@@ -591,7 +591,7 @@ def PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar,
         lista_definiciones = list(AgregoIndice(definiciones_jugables))
 
         fila_inicio = 2
-        columna_inicio = 33
+        columna_inicio = 50
 
 
         fila = fila_inicio
@@ -893,7 +893,13 @@ def main():
 
     diccionario_coincidencias = Buscolista_coincidencias(palabras)
     tablero = ConstruccionTableroVacio()
-    palabras_para_jugar,lista_direcciones,lista_coincidencias = LogicaConstruccion(palabras,diccionario_coincidencias)
+    # manejo errores por si no cuentra palabras
+    try: 
+        palabras_para_jugar,lista_direcciones,lista_coincidencias = LogicaConstruccion(palabras,diccionario_coincidencias)
+
+    except AttributeError:
+        palabras_para_jugar,lista_direcciones,lista_coincidencias = LogicaConstruccion(palabras,diccionario_coincidencias)
+    
     palabras_con_indice = AgregoIndice(palabras_para_jugar)
     producto_final, coordenadas = ConstruirTablero(tablero, palabras_con_indice, lista_coincidencias, lista_direcciones)
     tablero_actualizado = ImpresionTablero(tablero)
