@@ -19,19 +19,23 @@ def registrar_usuario(nombre_usuario, contrasenia):
         print("Archivo no encontrado, creando nuevo diccionario.")
         credenciales = {}
 
+    # Verificar si el nombre de usuario ya existe
+    while nombre_usuario in credenciales:
+        print(f"Error: El usuario '{nombre_usuario}' ya está registrado. Intente con otro nombre.")
+        nombre_usuario = input("Ingrese un nombre de usuario único: ")
+
     # Agregar las nuevas credenciales al diccionario
     credenciales[nombre_usuario] = {
         "nombre_usuario": nombre_usuario,
         "contraseña": contrasenia
     }
-    
-    # Mostrar las credenciales agregadas
     print(f"Nuevas credenciales agregadas: {credenciales}")
 
     # Sobrescribir el archivo JSON con todas las credenciales (viejas + nuevas)
     with open('credenciales.json', 'w', encoding='utf-8') as archivo_json:
         json.dump(credenciales, archivo_json, indent=4, ensure_ascii=False)
     print("Archivo actualizado correctamente.")
+
 
 # Función para iniciar sesión
 def iniciar_sesion(nombre_usuario, contrasenia):
