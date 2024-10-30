@@ -4,38 +4,25 @@ import random
 import json
 # Función para registrar un nuevo usuario
 def registrar_usuario(nombre_usuario, contrasenia):
-    # Intentar cargar las credenciales existentes
+    import json
     try:
         with open('credenciales.json', 'r', encoding='utf-8') as archivo_json:
             contenido = archivo_json.read()
-            if contenido:  # Verifica si el archivo no está vacío
-                credenciales = json.loads(contenido)
-                print("Archivo verficado correctamente.")
-            else:
-                print("Archivo vacío, creando nuevo diccionario.")
-                credenciales = {}
+            credenciales = json.loads(contenido) if contenido else {}
     except FileNotFoundError:
-        # Si el archivo no existe, crear un diccionario vacío
-        print("Archivo no encontrado, creando nuevo diccionario.")
         credenciales = {}
 
-    # Verificar si el nombre de usuario ya existe
+    ultimo_id = max((int(usuario.get("id", 0)) for usuario in credenciales.values()), default=0)
+    nuevo_id = ultimo_id + 1
+
     while nombre_usuario in credenciales:
-        print(f"Error: El usuario '{nombre_usuario}' ya está registrado. Intente con otro nombre.")
         nombre_usuario = input("Ingrese un nombre de usuario único: ")
 
-    # Agregar las nuevas credenciales al diccionario
     credenciales[nombre_usuario] = {
+        "id": nuevo_id,
         "nombre_usuario": nombre_usuario,
-        "contraseña": contrasenia
-    }
-    print(f"Nuevas credenciales agregadas: {credenciales}")
-
-    # Sobrescribir el archivo JSON con todas las credenciales (viejas + nuevas)
-    with open('credenciales.json', 'w', encoding='utf-8') as archivo_json:
-        json.dump(credenciales, archivo_json, indent=4, ensure_ascii=False)
-    print("Archivo actualizado correctamente.")
-
+        "contraseña": contrasenia,
+        "score": 0  # Inicializamos el puntaje en 0 al crear el usuario
 
 # Función para iniciar sesión
 def iniciar_sesion(nombre_usuario, contrasenia):
