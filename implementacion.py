@@ -23,7 +23,7 @@ def registrar_usuario(nombre_usuario, contrasenia):
         "nombre_usuario": nombre_usuario,
         "contraseña": contrasenia,
         "score": 0  # Inicializamos el puntaje en 0 al crear el usuario
-
+    }
 # Función para iniciar sesión
 def iniciar_sesion(nombre_usuario, contrasenia):
     try:
