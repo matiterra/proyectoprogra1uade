@@ -340,7 +340,15 @@ def logica_construccion_octava_y_novena_palabra(palabras_partida,diccionario,lis
     palabras_partida.append(siguiente_palabra)
     
     return palabras_partida,lista_coincidencias,lista_direcciones
-    
+
+
+def logica_construccion_decima_palabra(palabras_partida,diccionario,lista_direcciones,lista_coincidencias,indice_palabra_dependencia):
+    if indice_palabra_dependencia == 7:
+        palabras_partida,lista_coincidencias,lista_direcciones = logica_construccion_sexta_y_septima_palabra(palabras_partida,diccionario,lista_direcciones,lista_coincidencias,5,7)
+    else:
+        palabras_partida,lista_coincidencias,lista_direcciones = logica_construccion_sexta_y_septima_palabra(palabras_partida,diccionario,lista_direcciones,lista_coincidencias,6,8)
+        
+    return palabras_partida,lista_coincidencias,lista_direcciones
     
 
 def LogicaConstruccion(lista_palabras,diccionario):
@@ -351,7 +359,7 @@ def LogicaConstruccion(lista_palabras,diccionario):
     lista_coincidencias = ["-"]
     flag_direccion = ""
 
-    for i in range(1,9):
+    for i in range(1,10):
         if i == 1:
            palabras_partida,lista_coincidencias,lista_direcciones = logica_construccion_segunda_palabra(palabras_partida,diccionario,lista_direcciones,lista_coincidencias)
        
@@ -379,12 +387,22 @@ def LogicaConstruccion(lista_palabras,diccionario):
         elif i == 8: #Novena palabra
             palabras_partida,lista_coincidencias,lista_direcciones =  logica_construccion_octava_y_novena_palabra(palabras_partida,diccionario,lista_direcciones,lista_coincidencias,6)
 
+
+
+        elif i == 9:
+            if len(lista_palabras[7]) > len(lista_palabras[8]):
+                palabras_partida,lista_coincidencias,lista_direcciones = logica_construccion_sexta_y_septima_palabra(palabras_partida,diccionario,lista_direcciones,lista_coincidencias,5,7)
+                dependencia_decima_palabra = 7
+            else:
+                palabras_partida,lista_coincidencias,lista_direcciones = logica_construccion_sexta_y_septima_palabra(palabras_partida,diccionario,lista_direcciones,lista_coincidencias,6,8)
+                dependencia_decima_palabra = 8
+
         
         
 
 
 
-    return palabras_partida,lista_direcciones,lista_coincidencias
+    return palabras_partida,lista_direcciones,lista_coincidencias,dependencia_decima_palabra
 
 def Construccion_palabras_verticales(coordenada_dependencia,lista_coordenadas,tablero,direcciones,i,j,lista_palabras,lista_coincidencias): 
     proxima_fila = calcularFila(lista_coordenadas[coordenada_dependencia][0],lista_coincidencias[i][1],direcciones[i])
@@ -404,7 +422,7 @@ def Construccion_palabras_horizontales(coordenada_dependencia,lista_coordenadas,
     
     return tablero,lista_coordenadas    
 
-def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direcciones):
+def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direcciones,dependencia_decima_palabra):
     '''Función que parte desde un índice de fila y columna inicial y que sucesivamente sumará nuevos caracteres en las listas que contiene la matriz'''
     indice_fila_inicial = 25
     indice_columna_inicial = 25
@@ -444,6 +462,8 @@ def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direcciones):
 
             elif i == 8: #Novena palabra
                 tablero,coordenadas = Construccion_palabras_horizontales(6,coordenadas,tablero,direcciones,i,j,lista_palabras,lista_coincidencias)
+            elif i == 9:
+                tablero,coordenadas = tablero,coordenadas = Construccion_palabras_verticales(dependencia_decima_palabra,coordenadas,tablero,direcciones,i,j,lista_palabras,lista_coincidencias)
 
     return tablero, coordenadas
 def AgregoIndice(palabras_partida):
@@ -853,14 +873,14 @@ def main():
     while bandera_errores:
 
         try: 
-            palabras_para_jugar,lista_direcciones,lista_coincidencias = LogicaConstruccion(palabras,diccionario_coincidencias)
+            palabras_para_jugar,lista_direcciones,lista_coincidencias,dependencia_decima_palabra = LogicaConstruccion(palabras,diccionario_coincidencias)
             bandera_errores = False
 
         except AttributeError:
             print("No se encontró una combinación, reintentando...")
 
     palabras_con_indice = AgregoIndice(palabras_para_jugar)
-    producto_final, coordenadas = ConstruirTablero(tablero, palabras_con_indice, lista_coincidencias, lista_direcciones)
+    producto_final, coordenadas = ConstruirTablero(tablero, palabras_con_indice, lista_coincidencias, lista_direcciones,dependencia_decima_palabra)
     tablero_actualizado = ImpresionTablero(tablero)
     PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar, palabras)
 
