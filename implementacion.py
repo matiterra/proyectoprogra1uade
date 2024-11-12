@@ -555,7 +555,7 @@ def PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar,
             tablero_actualizado [x][y] = '|'
             x = x + 1
 
-    for num in range(9):
+    for num in range(10):
         indice_palabra = num
         palabra_elegida = palabras_para_jugar[indice_palabra]
         indice_palabra_elegida = palabras.index(palabra_elegida)
@@ -605,8 +605,10 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
     bandera3 = True
 
     while bandera1:
+            
             try:
                 IngresaOpcion = int(input("Ingrese una opción:\n 1) Ingresar número de palabra a adivinar\n 2) Pedir Pista Extra\n 3) Utilizar Comodín\n Opción: "))
+
                 if 1 <= IngresaOpcion <= 3:
                     bandera1 = False
                 else:
@@ -616,7 +618,7 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
                     while bandera2:
                         try:
                             SeleccionaNumero = int(input("Ingrese el número de la palabra que quiere adivinar: ")) #se le pide ingresar el número al usuario.
-                            if 1 <= SeleccionaNumero <= 9 and SeleccionaNumero not in numero_palabra_encontrada: #se valida que el número sea de 0 a 5 y que no se haya adivinado previamente.
+                            if 1 <= SeleccionaNumero <= 10 and SeleccionaNumero not in numero_palabra_encontrada: #se valida que el número sea de 0 a 5 y que no se haya adivinado previamente.
                                 IngresaPalabra = input("Ingrese la palabra que quiere adivinar: ")
                                 if IngresaPalabra.isalpha():
                                     bandera2 = False
@@ -649,8 +651,7 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
                                 print("El número ingresado debe corresponder a uno de los números que se muestran en el tablero y no corresponder a uno de los adivinados anteriormente.")
                         except ValueError:
                             print("Por favor ingrese un número. Vuelva a intentarlo.")
-            except ValueError:
-                print("Por favor ingrese un número. Vuelva a intentarlo.")
+
 
                 if IngresaOpcion == 3:
                     if len(lista_comodin) < 1:
@@ -658,6 +659,8 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
                         lista_comodin.append("-")
                     else:
                         print("Ya se utilizaron todos los comodines disponibles para esta partida")
+            except ValueError:
+                print("Por favor ingrese un número. Vuelva a intentarlo.")
 
     return IngresaPalabra, SeleccionaNumero, comodin
 
@@ -890,7 +893,7 @@ def main():
     primer_intento = True  # Variable para controlar el primer intento
     lista_comodin = []
     palabra_ingresada = " "
-    while continuar_jugando == 'sí' or len(numero_palabra_encontrada) < 9:
+    while continuar_jugando == 'sí' or len(numero_palabra_encontrada) < 10:
 
         palabra_ingresada, numero_ingresado, comodin = IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones_2, definiciones_3, lista_comodin)
 
@@ -912,7 +915,7 @@ def main():
         if comodin == True:
             Comodin(numero_ingresado, palabras_con_indice, comodin, tablero_actualizado, coordenadas, lista_direcciones, validation, numero_palabra_encontrada)
 
-        if len(numero_palabra_encontrada) >= 9:
+        if len(numero_palabra_encontrada) >= 10:
             print("¡Has encontrado todas las palabras!")
             print("Su puntaje en esta partida fue: ", puntaje_total)
 
