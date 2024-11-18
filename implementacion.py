@@ -4,6 +4,11 @@ import random
 import json
 # Función para registrar un nuevo usuario
 def registrar_usuario(nombre_usuario, contrasenia):
+    '''Función encargada del registro de nuevos usuarios en el sistema
+       Parámetros de entrada: nombre_usuario (string con el nombre de usuario a registrar)
+                             contrasenia (string con la contraseña del usuario)
+       Variables de salida: No retorna valores. Almacena en credenciales.json el usuario con su id, nombre, 
+                          contraseña y score inicial'''
     import json
     try:
         with open('credenciales.json', 'r', encoding='utf-8') as archivo_json:
@@ -26,6 +31,10 @@ def registrar_usuario(nombre_usuario, contrasenia):
     }
 # Función para iniciar sesión
 def iniciar_sesion(nombre_usuario, contrasenia):
+    '''Función encargada de la validación de credenciales de usuarios existentes
+       Parámetros de entrada: nombre_usuario (string con el nombre de usuario)
+                             contrasenia (string con la contraseña)
+       Variables de salida: flag_login (boolean True si las credenciales son correctas, False si son incorrectas)'''
     try:
         # Cargar el archivo JSON que contiene las credenciales
         with open('credenciales.json', 'r', encoding='utf-8') as archivo_json:
@@ -51,6 +60,10 @@ def iniciar_sesion(nombre_usuario, contrasenia):
 
         
 def Buscolista_coincidencias(palabras):
+    '''Función encargada de encontrar todas las coincidencias de letras entre las palabras
+       Parámetros de entrada: palabras (lista de strings con las palabras disponibles para el juego)
+       Variables de salida: resultado (diccionario con estructura {letra: {palabra: [indices]}} donde cada letra 
+                          mapea a las palabras donde aparece y sus posiciones)'''
 
     lista_coincidencias = {}
 
@@ -98,7 +111,10 @@ def Buscolista_coincidencias(palabras):
     return resultado
 
 def BuscarPrimerPalabra(lista):
-    '''Esta función eligirá la primera letra de maner aleatoría siempre que tenga 7 o más letras y la retornará como la primer posición de la lista para iniciar la construcción del crucigrama por cada partida'''
+    '''Función encargada de seleccionar la primera palabra del crucigrama
+       Parámetros de entrada: lista (lista de strings con todas las palabras disponibles)
+       Variables de salida: palabras_para_jugar (lista con un único string, palabra seleccionada aleatoriamente 
+                          de 7 o más letras)'''
     palabras_para_jugar = []
     while len(palabras_para_jugar) == 0:
         palabra = random.choice(lista)
@@ -107,7 +123,10 @@ def BuscarPrimerPalabra(lista):
     return palabras_para_jugar
 
 def definir_direccion(palabra,indice_coincidencia): 
-    '''Función para definir la dirección de la palabra evaluando la cantidad de letra correspondientes antes y despues de la letra coincidente'''
+    '''Función encargada de determinar la dirección de una palabra en el tablero
+       Parámetros de entrada: palabra (string con la palabra a posicionar)
+                             indice_coincidencia (entero con la posición de intersección)
+       Variables de salida: flag_direccion (string "norte" o "sur" según la dirección calculada)'''
     flag_direccion = ""
     if len(palabra[:indice_coincidencia])  > len(palabra[indice_coincidencia + 1:]): #En el caso de que tenga más letras por encima o a la izquierda del punto de intersección, será de dirección "norte"
         flag_direccion = "norte" 
@@ -123,7 +142,11 @@ def definir_direccion(palabra,indice_coincidencia):
     return flag_direccion
             
 def calcularFila(fila_anterior,indice,direccion):
-    '''Función que permite calcular las filas desde donde ubicarse a partir de las coordenadas de la palabra anterior'''
+    '''Función encargada de calcular la fila para ubicar la siguiente palabra
+       Parámetros de entrada: fila_anterior (entero con el número de fila actual)
+                             indice (entero con la posición de coincidencia)
+                             direccion (string con la orientación de la palabra)
+       Variables de salida: fila_siguiente (entero con el número de fila calculado para la nueva palabra)'''
 
     #En todos los casos, se suma o resta 2 para compensar y evitar tener en cuenta que cada palabra comienza con: "Número", "-"
      
@@ -140,7 +163,9 @@ def calcularFila(fila_anterior,indice,direccion):
 
 
 def ConstruccionTableroVacio():
-    '''Función encargada de generar un tablero vacio con el centro marcado con un *'''
+    '''Función encargada de crear la matriz inicial del tablero
+       Parámetros de entrada: No recibe parámetros
+       Variables de salida: tablero_vacio (matriz de 100x100 inicializada con espacios en blanco)'''
 
     filas = 100
     columnas = 100
@@ -149,7 +174,11 @@ def ConstruccionTableroVacio():
     return tablero_vacio
 
 def calcularColumna(columna_anterior,indice,direccion):
-    '''Función que permite calcular las columnas desde donde ubicarse a partir de las coordenadas de la palabra anterior'''
+    '''Función encargada de calcular la columna para ubicar la siguiente palabra
+       Parámetros de entrada: columna_anterior (entero con el número de columna actual)
+                             indice (entero con la posición de coincidencia)
+                             direccion (string con la orientación de la palabra)
+       Variables de salida: columna_siguiente (entero con el número de columna calculado para la nueva palabra)'''
     #En todos los casos, se suma o resta 2 para compensar y evitar tener en cuenta que cada palabra comienza con: "Número", "-"
 
 
@@ -165,6 +194,15 @@ def calcularColumna(columna_anterior,indice,direccion):
     return columna_siguiente
 
 def elegir_palabra_e_indice (diccionario,letra,palabras_partida,dependencia = "si",primer_indice = 0, segundo_indice = 1):
+    '''Función encargada de seleccionar una palabra y su índice de coincidencia
+       Parámetros de entrada: diccionario (dict con palabras y sus coincidencias)
+                             letra (char con la letra coincidente a buscar)
+                             palabras_partida (lista de palabras ya utilizadas)
+                             dependencia (string "si"/"no" para verificar dependencias)
+                             primer_indice (entero con posición inicial a verificar)
+                             segundo_indice (entero con posición final a verificar)
+       Variables de salida: siguiente_palabra (string con la palabra seleccionada)
+                          indice_coincidencia (lista con los índices de coincidencia)'''
     siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra).items()))
 
     if dependencia == "no":
@@ -178,6 +216,13 @@ def elegir_palabra_e_indice (diccionario,letra,palabras_partida,dependencia = "s
     return siguiente_palabra, indice_coincidencia
 
 def elegir_coincidencia (palabras_partida,indice_coincidencia,letra_palabra,indice_palabra,seleccion_posicion = "principio"):
+    '''Función encargada de determinar los índices de coincidencia entre palabras
+       Parámetros de entrada: palabras_partida (lista de palabras en el juego)
+                             indice_coincidencia (lista de índices posibles)
+                             letra_palabra (char con la letra coincidente)
+                             indice_palabra (entero con la posición de la palabra)
+                             seleccion_posicion (string con el criterio de selección)
+       Variables de salida: coincidencias (lista [indice1, indice2] con las posiciones de coincidencia)'''
 
     
     if seleccion_posicion == "principio":
@@ -220,6 +265,11 @@ def elegir_coincidencia (palabras_partida,indice_coincidencia,letra_palabra,indi
 
 
 def elegir_indice_y_letra(palabras_partida,indice_palabra,direccion = "norte"):
+    '''Función encargada de seleccionar un índice y letra de una palabra según su dirección
+       Parámetros de entrada: palabras_partida (lista de palabras en el juego)
+                             indice_palabra (entero con la posición de la palabra)
+                             direccion (string con la orientación deseada)
+       Variables de salida: letra_palabra (char con la letra seleccionada de la palabra)'''
     if direccion == "norte":
         if len(palabras_partida[indice_palabra]) > 8:
             indice_letra_a_buscar = random.randint(0,2)
@@ -237,58 +287,93 @@ def elegir_indice_y_letra(palabras_partida,indice_palabra,direccion = "norte"):
     return letra_palabra
 
 def logica_construccion_segunda_palabra(palabras_partida,diccionario,lista_direcciones,lista_coincidencias):
+    '''Función encargada de implementar la lógica para la segunda palabra del crucigrama
+       Parámetros de entrada: palabras_partida (lista de palabras en el juego)
+                             diccionario (dict con coincidencias entre palabras)
+                             lista_direcciones (lista de orientaciones actuales)
+                             lista_coincidencias (lista de intersecciones actuales)
+       Variables de salida: palabras_partida (lista actualizada con la nueva palabra)
+                          lista_coincidencias (lista actualizada con nuevas coincidencias)
+                          lista_direcciones (lista actualizada con nueva dirección)'''
     
-        letra_palabra = elegir_indice_y_letra(palabras_partida,0)
-        siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,
-        "no")
-        coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,0,"principio")
+    letra_palabra = elegir_indice_y_letra(palabras_partida,0)
+    siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,
+    "no")
+    coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,0,"principio")
 
-        flag_direccion = definir_direccion(siguiente_palabra,coincidencia[1])
-        lista_coincidencias.append(coincidencia)
-        lista_direcciones.append("vertical-" + flag_direccion)
-        palabras_partida.append(siguiente_palabra)
+    flag_direccion = definir_direccion(siguiente_palabra,coincidencia[1])
+    lista_coincidencias.append(coincidencia)
+    lista_direcciones.append("vertical-" + flag_direccion)
+    palabras_partida.append(siguiente_palabra)
         
-        return palabras_partida,lista_coincidencias,lista_direcciones
+    return palabras_partida,lista_coincidencias,lista_direcciones
     
 def logica_construccion_tercer_palabra(palabras_partida,diccionario,lista_direcciones,lista_coincidencias):
-        letra_palabra = elegir_indice_y_letra(palabras_partida,0,"sur")
-        if lista_direcciones[1].count("norte"):
+    '''Función encargada de implementar la lógica para la tercera palabra del crucigrama
+       Parámetros de entrada: palabras_partida (lista de palabras en el juego)
+                             diccionario (dict con coincidencias entre palabras)
+                             lista_direcciones (lista de orientaciones actuales)
+                             lista_coincidencias (lista de intersecciones actuales)
+       Variables de salida: palabras_partida (lista actualizada con la nueva palabra)
+                          lista_coincidencias (lista actualizada con nuevas coincidencias)
+                          lista_direcciones (lista actualizada con nueva dirección)'''
+    letra_palabra = elegir_indice_y_letra(palabras_partida,0,"sur")
+    if lista_direcciones[1].count("norte"):
             flag_direccion = "sur"
             siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,
         "si",0,1)
             coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,0,"final-sur")
                 
-        else:
+    else:
             flag_direccion = "norte"
             siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,
                                                                              "si", -1, -1)
             coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,0,"final-norte")
             
-        lista_coincidencias.append(coincidencia)
-        lista_direcciones.append("vertical-" + flag_direccion)
-        palabras_partida.append(siguiente_palabra)
+    lista_coincidencias.append(coincidencia)
+    lista_direcciones.append("vertical-" + flag_direccion)
+    palabras_partida.append(siguiente_palabra)
         
-        return palabras_partida,lista_coincidencias,lista_direcciones
+    return palabras_partida,lista_coincidencias,lista_direcciones
     
 def logica_construccion_cuarta_y_quinta_palabra(palabras_partida,diccionario,lista_direcciones,lista_coincidencias,indice_palabra_dependencia):
-            if lista_direcciones[indice_palabra_dependencia].count("norte"):
+    '''Función encargada de implementar la lógica para la cuarta y quinta palabra
+       Parámetros de entrada: palabras_partida (lista de palabras en el juego)
+                             diccionario (dict con coincidencias entre palabras)
+                             lista_direcciones (lista de orientaciones actuales)
+                             lista_coincidencias (lista de intersecciones actuales)
+                             indice_palabra_dependencia (entero con índice de palabra base)
+       Variables de salida: palabras_partida (lista actualizada con la nueva palabra)
+                          lista_coincidencias (lista actualizada con nuevas coincidencias)
+                          lista_direcciones (lista actualizada con nueva dirección)'''
+    if lista_direcciones[indice_palabra_dependencia].count("norte"):
                 letra_palabra = elegir_indice_y_letra(palabras_partida,indice_palabra_dependencia,"norte")
                 
                 siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"no")
                 coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,indice_palabra_dependencia,"principio")
                 
-            else:
+    else:
                 letra_palabra = elegir_indice_y_letra(palabras_partida,indice_palabra_dependencia,"sur")
                 
                 siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"no")
                 coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,indice_palabra_dependencia,"final")
-            flag_direccion = definir_direccion(siguiente_palabra,coincidencia[1])
-            lista_coincidencias.append(coincidencia)
-            lista_direcciones.append("horizontal-" + flag_direccion)
-            palabras_partida.append(siguiente_palabra)
-            return palabras_partida,lista_coincidencias,lista_direcciones
+    flag_direccion = definir_direccion(siguiente_palabra,coincidencia[1])
+    lista_coincidencias.append(coincidencia)
+    lista_direcciones.append("horizontal-" + flag_direccion)
+    palabras_partida.append(siguiente_palabra)
+    return palabras_partida,lista_coincidencias,lista_direcciones
         
 def logica_construccion_sexta_y_septima_palabra(palabras_partida,diccionario,lista_direcciones,lista_coincidencias,indice_primera_palabra_dependencia,indice_segunda_palabra_dependencia):
+    '''Función encargada de implementar la lógica para la sexta y séptima palabra
+       Parámetros de entrada: palabras_partida (lista de palabras en el juego)
+                             diccionario (dict con coincidencias entre palabras)
+                             lista_direcciones (lista de orientaciones actuales)
+                             lista_coincidencias (lista de intersecciones actuales)
+                             indice_primera_palabra_dependencia (entero con primer índice base)
+                             indice_segunda_palabra_dependencia (entero con segundo índice base)
+       Variables de salida: palabras_partida (lista actualizada con la nueva palabra)
+                          lista_coincidencias (lista actualizada con nuevas coincidencias)
+                          lista_direcciones (lista actualizada con nueva dirección)'''
     if lista_direcciones[indice_primera_palabra_dependencia].count("norte"):
             if lista_direcciones[indice_segunda_palabra_dependencia].count("norte"):
                     letra_palabra = elegir_indice_y_letra(palabras_partida,indice_segunda_palabra_dependencia,"norte")
@@ -323,6 +408,15 @@ def logica_construccion_sexta_y_septima_palabra(palabras_partida,diccionario,lis
     return palabras_partida,lista_coincidencias,lista_direcciones
     
 def logica_construccion_octava_y_novena_palabra(palabras_partida,diccionario,lista_direcciones,lista_coincidencias,indice_palabra_dependencia):
+    '''Función encargada de implementar la lógica para la octava y novena palabra
+       Parámetros de entrada: palabras_partida (lista de palabras en el juego)
+                             diccionario (dict con coincidencias entre palabras)
+                             lista_direcciones (lista de orientaciones actuales)
+                             lista_coincidencias (lista de intersecciones actuales)
+                             indice_palabra_dependencia (entero con índice de palabra base)
+       Variables de salida: palabras_partida (lista actualizada con la nueva palabra)
+                          lista_coincidencias (lista actualizada con nuevas coincidencias)
+                          lista_direcciones (lista actualizada con nueva dirección)'''
     if lista_direcciones[indice_palabra_dependencia].count("norte"):
                 letra_palabra = elegir_indice_y_letra(palabras_partida,indice_palabra_dependencia,"norte")
                 
@@ -343,6 +437,15 @@ def logica_construccion_octava_y_novena_palabra(palabras_partida,diccionario,lis
 
 
 def logica_construccion_decima_palabra(palabras_partida,diccionario,lista_direcciones,lista_coincidencias,indice_palabra_dependencia):
+    '''Función encargada de implementar la lógica para la décima palabra
+       Parámetros de entrada: palabras_partida (lista de palabras en el juego)
+                             diccionario (dict con coincidencias entre palabras)
+                             lista_direcciones (lista de orientaciones actuales)
+                             lista_coincidencias (lista de intersecciones actuales)
+                             indice_palabra_dependencia (entero con índice de palabra base)
+       Variables de salida: palabras_partida (lista actualizada con la nueva palabra)
+                          lista_coincidencias (lista actualizada con nuevas coincidencias)
+                          lista_direcciones (lista actualizada con nueva dirección)'''
     if indice_palabra_dependencia == 7:
         palabras_partida,lista_coincidencias,lista_direcciones = logica_construccion_sexta_y_septima_palabra(palabras_partida,diccionario,lista_direcciones,lista_coincidencias,5,7)
     else:
@@ -351,9 +454,14 @@ def logica_construccion_decima_palabra(palabras_partida,diccionario,lista_direcc
     return palabras_partida,lista_coincidencias,lista_direcciones
     
 
-def LogicaConstruccion(lista_palabras,diccionario):
-    '''Esta función delimitará la lógica de construcción partida a partida a partir del primer 
-    llamado a la función anterior: "BuscarPrimerPalabra" que devolverá una palabra que minimamente tenga 7 caracteres o más. La palabras irán de a pares: Horizontales y Verticales'''
+def LogicaConstruccion(lista_palabras, diccionario):
+    '''Función encargada de implementar la lógica principal de construcción del crucigrama
+       Parámetros de entrada: lista_palabras (lista de palabras disponibles)
+                             diccionario (dict con coincidencias entre palabras)
+       Variables de salida: palabras_partida (lista de palabras seleccionadas)
+                          lista_direcciones (lista de orientaciones de cada palabra)
+                          lista_coincidencias (lista de puntos de intersección)
+                          dependencia_decima_palabra (entero con índice de dependencia)'''
     palabras_partida = BuscarPrimerPalabra(lista_palabras)
     lista_direcciones = ["-"]
     lista_coincidencias = ["-"]
@@ -404,7 +512,18 @@ def LogicaConstruccion(lista_palabras,diccionario):
 
     return palabras_partida,lista_direcciones,lista_coincidencias,dependencia_decima_palabra
 
-def Construccion_palabras_verticales(coordenada_dependencia,lista_coordenadas,tablero,direcciones,i,j,lista_palabras,lista_coincidencias): 
+def Construccion_palabras_verticales(coordenada_dependencia, lista_coordenadas, tablero, direcciones, i, j, lista_palabras, lista_coincidencias):
+    '''Función encargada de construir las palabras en dirección vertical en el tablero
+       Parámetros de entrada: coordenada_dependencia (entero con índice de coordenada base)
+                             lista_coordenadas (lista de posiciones actuales)
+                             tablero (matriz del juego)
+                             direcciones (lista de orientaciones)
+                             i (entero con índice de palabra actual)
+                             j (entero con posición dentro de la palabra)
+                             lista_palabras (lista de palabras a colocar)
+                             lista_coincidencias (lista de intersecciones)
+       Variables de salida: tablero (matriz actualizada con palabras verticales)
+                          lista_coordenadas (lista actualizada con nuevas posiciones)'''
     proxima_fila = calcularFila(lista_coordenadas[coordenada_dependencia][0],lista_coincidencias[i][1],direcciones[i])
     proxima_columna = calcularColumna(lista_coordenadas[coordenada_dependencia][1],lista_coincidencias[i][0],direcciones[i])
     if len(lista_coordenadas) == i: #Guardo las coordenadas
@@ -413,7 +532,18 @@ def Construccion_palabras_verticales(coordenada_dependencia,lista_coordenadas,ta
     
     return tablero,lista_coordenadas
 
-def Construccion_palabras_horizontales(coordenada_dependencia,lista_coordenadas,tablero,direcciones,i,j,lista_palabras,lista_coincidencias):
+def Construccion_palabras_horizontales(coordenada_dependencia, lista_coordenadas, tablero, direcciones, i, j, lista_palabras, lista_coincidencias):
+    '''Función encargada de construir las palabras en dirección horizontal en el tablero
+       Parámetros de entrada: coordenada_dependencia (entero con índice de coordenada base)
+                             lista_coordenadas (lista de posiciones actuales)
+                             tablero (matriz del juego)
+                             direcciones (lista de orientaciones)
+                             i (entero con índice de palabra actual)
+                             j (entero con posición dentro de la palabra)
+                             lista_palabras (lista de palabras a colocar)
+                             lista_coincidencias (lista de intersecciones)
+       Variables de salida: tablero (matriz actualizada con palabras horizontales)
+                          lista_coordenadas (lista actualizada con nuevas posiciones)'''
     proxima_fila = calcularFila(lista_coordenadas[coordenada_dependencia][0],lista_coincidencias[i][0],direcciones[i])
     proxima_columna = calcularColumna(lista_coordenadas[coordenada_dependencia][1],lista_coincidencias[i][1],direcciones[i])
     if len(lista_coordenadas) == i: #Guardo las coordenadas
@@ -422,8 +552,15 @@ def Construccion_palabras_horizontales(coordenada_dependencia,lista_coordenadas,
     
     return tablero,lista_coordenadas    
 
-def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direcciones,dependencia_decima_palabra):
-    '''Función que parte desde un índice de fila y columna inicial y que sucesivamente sumará nuevos caracteres en las listas que contiene la matriz'''
+def ConstruirTablero(tablero, lista_palabras, lista_coincidencias, direcciones, dependencia_decima_palabra):
+    '''Función encargada de construir el tablero final del crucigrama
+       Parámetros de entrada: tablero (matriz inicial vacía)
+                             lista_palabras (lista de palabras a colocar)
+                             lista_coincidencias (lista de puntos de intersección)
+                             direcciones (lista de orientaciones de palabras)
+                             dependencia_decima_palabra (entero con dependencia final)
+       Variables de salida: tablero (matriz con el crucigrama completo)
+                          lista_coordenadas (lista de posiciones de cada palabra)'''
     indice_fila_inicial = 25
     indice_columna_inicial = 25
     fila_anterior = indice_fila_inicial
@@ -467,10 +604,9 @@ def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direcciones,depe
 
     return tablero, coordenadas
 def AgregoIndice(palabras_partida):
-
-    '''Función encargada de colocar el prefijo utilizando una palabra a analizar. (1-casa)
-       Utiliza como valor de entrada palabras_partida(palabras sin prefijo, ejemplo: casa)'''
-
+    '''Función encargada de agregar índices numéricos a las palabras
+       Parámetros de entrada: palabras_partida (lista de palabras sin índice)
+       Variables de salida: palabras_con_indice (lista de palabras con formato "número-palabra")'''
     devolucion_palabras = []
 
     for i, palabra in enumerate(palabras_partida): #recorre palabras_partida y devuelve el indice y la palabra en la posición i
@@ -480,9 +616,9 @@ def AgregoIndice(palabras_partida):
 
     
 def ImpresionTablero(tablero):
-    '''Función encargada de la impresión del tablero utilizado como parámetros de entrada: tablero(matriz con todas las palabras puestas en su lugar)
-       A partir del tablero con todas las palabras en su lugar, se crea un tablero nuevo que tenga solamente guiones y números, y cuando hay
-       una letra, se appendea un guión bajo. Si no hay nada se deja el espacio en blanco. '''
+    '''Función encargada de generar la versión del tablero para mostrar al jugador
+       Parámetros de entrada: tablero (matriz con el crucigrama completo)
+       Variables de salida: tablero_actualizado (matriz con guiones en lugar de letras y números visibles)'''
     
     tablero_actualizado = []
 
@@ -517,51 +653,13 @@ def ImpresionTablero(tablero):
     return tablero_actualizado
 
 
-def ImprimirTableroActualizado(tablero_actualizado, flag_palabra, palabras_con_indice, coordenadas, lista_direcciones, SeleccionaNumero):
-    '''Función encargada de la impresión del tablero utilizado como parámetros de entrada: tablero_actualizado (tablero con números y guiones)
-                                                                                           flag_palabra (True si es adivinada correctamente)
-                                                                                           palabras_con_indice (Ejemplo: 1-casa)
-                                                                                           coordenadas (Ejemplo: [5,5])    ([F,C]) 
-                                                                                           lista_direcciones (Ejemplo: "horizontal-norte")
-                                                                                           SeleccionaNumero (Ejemplo: 3)
-       A partir de estos valores, se seleccionan los datos de la palabra con el número ingresado por el usuario.
-       se setean las coordenadas, y si la palabra es horizontal, se suma 1 por cada letra al eje y, lo mismo con el eje x
-       luego lo printeo como si fuese un string para lograr una mejor visualización.'''
-    numero_indice = SeleccionaNumero - 1
-
-    if flag_palabra == True:
-        palabra = palabras_con_indice[numero_indice]
-        coordenadas = coordenadas[numero_indice]
-        direccion = lista_direcciones[numero_indice] #Busco datos de la palabra
-
-        if direccion in ["vertical-norte", "vertical-sur"]:
-            direccion = "flag-vertical"
-        elif direccion in ["horizontal-norte", "horizontal-sur"]:
-            direccion = "flag-horizontal" #Cambio flags
-
-        if SeleccionaNumero == 1:
-            coordenadas = [25, 25]
-            direccion = "flag-horizontal" #Coordenadas de primer palabra.
-
-        x, y = coordenadas
-        
-        for letra in palabra:
-            tablero_actualizado [x][y] = str(letra)
-
-            if direccion == "flag-horizontal": #Suma eje y
-                y = y + 1
-
-            elif direccion == "flag-vertical": #Suma eje x
-                x = x + 1
-                
-        for fila in tablero_actualizado: #Recorro filas en tablero_actualizado
-            nueva_fila = [celda for celda in fila] #Se toma cada elemento de la fila y se incluye en nueva_fila
-            print(" ".join(nueva_fila)) #Convierto nueva_fila en una cadena de texto separado con " "
-
-        return tablero_actualizado
-    
-
 def PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar, palabras):
+    '''Función encargada de imprimir el tablero con las definiciones de las palabras
+       Parámetros de entrada: tablero_actualizado (matriz actual del juego)
+                             definiciones_1 (lista de definiciones principales)
+                             palabras_para_jugar (lista de palabras en el crucigrama)
+                             palabras (lista completa de palabras disponibles)
+       Variables de salida: tablero_actualizado (matriz con las definiciones agregadas)'''
     definiciones_jugables = []
     coordenadas = [2, 53]
 
@@ -620,9 +718,16 @@ def PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar,
 
 
 def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones2, definiciones3, lista_comodin):
-    '''Función encargada de controles e ingreso de datos del usuario. Se ingresa el número de la palabra que se quiere adivinar,
-       si se quiere pedir una pista extra y la palabra a adivinar. Cada uno de estos ingresos tiene su validación correspondiente.
-       Devuelve la palabra Ingresada, el número de la palabra a adivinar y si el usuario necesita una pista. '''
+    '''Función encargada de manejar el ingreso de palabras y pistas por parte del usuario
+       Parámetros de entrada: numero_palabra_encontrada (lista de números ya adivinados)
+                             palabras_para_jugar (lista de palabras en juego)
+                             palabras (lista completa de palabras)
+                             definiciones2 (lista de segundas definiciones)
+                             definiciones3 (lista de terceras definiciones)
+                             lista_comodin (lista de comodines usados)
+       Variables de salida: palabra_ingresada (string con la palabra del usuario)
+                          numero_seleccionado (entero con el número elegido)
+                          comodin_usado (boolean indicando uso de comodín)'''
     
     SeleccionaNumero = -1
     PedirPista = "S"
@@ -694,9 +799,11 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
     return IngresaPalabra, SeleccionaNumero, comodin
 
 def ValidarPalabra(palabras_con_indice, IngresaPalabra, SeleccionaNumero):
-    '''Función encargada de controles sobre la palabra ingresada. Sirve para verificar si la palabra es correcta. Utiliza: palabras_con_indice (1-casa, 2-techo)
-                                                                                                                           IngresaPalabra (Palabra ingresada por el usuario)
-                                                                                                                           SeleccionaNumero (Número que corresponde a la palabra)'''
+    '''Función encargada de verificar si la palabra ingresada es correcta
+       Parámetros de entrada: palabras_con_indice (lista de palabras numeradas)
+                             IngresaPalabra (string con la palabra del usuario)
+                             SeleccionaNumero (entero con el número elegido)
+       Variables de salida: flag_palabra (boolean indicando si la palabra es correcta)'''
 
     flag_palabra = False
     if SeleccionaNumero != -1:
@@ -717,13 +824,20 @@ def ValidarPalabra(palabras_con_indice, IngresaPalabra, SeleccionaNumero):
     return flag_palabra
 
 def LeerDict(diccionario):
-    '''Función para traducir los datos en formato clave-valor del diccionario en una lista de listas'''
+    '''Función encargada de convertir un diccionario en una lista de pares clave-valor
+       Parámetros de entrada: diccionario (dict a convertir)
+       Variables de salida: lista_dict (lista de listas [clave, valor])'''
     lista_extraida = []
     for clave,valor in diccionario.items():
         lista_extraida.append([clave,valor])
     return lista_extraida
 def cargarListas(lista):
-    '''Función que recibirá una lista de listas de palabras y definiciones la cual retornara listas individuales de distintas categorías pero que comparten los índices de los elementos entre ellas: Palabras - Definiciones1 - Definiciones2- Definiciones3. En caso de que la palabra no contenga una definición, se imprimirá un "-"'''
+    '''Función encargada de separar una lista de palabras y definiciones en listas individuales
+       Parámetros de entrada: lista (lista de listas con palabras y sus definiciones)
+       Variables de salida: palabras (lista de palabras)
+                          definiciones_1 (lista de definiciones principales)
+                          definiciones_2 (lista de segundas definiciones)
+                          definiciones_3 (lista de terceras definiciones)'''
     palabras = []
     definiciones_1 = []
     definiciones_2 = []
@@ -752,6 +866,13 @@ def cargarListas(lista):
 
 
 def LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones3, PedirPista):
+    '''Función encargada de manejar la lógica de mostrar la tercera pista
+       Parámetros de entrada: SeleccionaNumero (entero con número de palabra)
+                             palabras_para_jugar (lista de palabras en juego)
+                             palabras (lista completa de palabras)
+                             definiciones3 (lista de terceras definiciones)
+                             PedirPista (string "S"/"N")
+       Variables de salida: No retorna valores. Imprime la pista si existe'''
 
     indice_palabra = SeleccionaNumero - 1
     palabra_elegida = palabras_para_jugar[indice_palabra]
@@ -766,6 +887,13 @@ def LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definicio
 
 
 def LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones2, PedirPista):
+    '''Función encargada de manejar la lógica de mostrar la segunda pista
+       Parámetros de entrada: SeleccionaNumero (entero con número de palabra)
+                             palabras_para_jugar (lista de palabras en juego)
+                             palabras (lista completa de palabras)
+                             definiciones2 (lista de segundas definiciones)
+                             PedirPista (string "S"/"N")
+       Variables de salida: pista (string con la segunda pista si existe)'''
 
     indice_palabra = SeleccionaNumero - 1
     palabra_elegida = palabras_para_jugar[indice_palabra]
@@ -782,6 +910,9 @@ def LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras, definici
     return pista2
 
 def ElegirTematicas():
+    '''Función encargada de permitir al usuario seleccionar la temática del juego
+       Parámetros de entrada: No recibe parámetros
+       Variables de salida: tematica (entero 1, 2 o 3 con la temática seleccionada)'''
     bandera1=True
 
     while bandera1 == True:
@@ -799,6 +930,9 @@ def ElegirTematicas():
 
 
 def LeerJSON(tematica):
+    '''Función encargada de leer el archivo JSON correspondiente a la temática elegida
+       Parámetros de entrada: tematica (entero con la opción elegida)
+       Variables de salida: lista_palabras_definiciones (lista de listas con palabras y definiciones del JSON)'''
     lista_json = []
     if tematica == 1:
         jsonabrir = "json_palabras_generales.json"
@@ -820,6 +954,16 @@ def LeerJSON(tematica):
 
 
 def Comodin(SeleccionaNumero, palabras_con_indice, comodin, tablero_actualizado, coordenadas, lista_direcciones, flag_palabra, numero_palabra_encontrada):
+    '''Función encargada de implementar la lógica del comodín para revelar una palabra
+       Parámetros de entrada: SeleccionaNumero (entero con número de palabra)
+                             palabras_con_indice (lista de palabras numeradas)
+                             comodin (boolean indicando si se usa comodín)
+                             tablero_actualizado (matriz actual del juego)
+                             coordenadas (lista de posiciones)
+                             lista_direcciones (lista de orientaciones)
+                             flag_palabra (boolean de palabra correcta)
+                             numero_palabra_encontrada (lista de números adivinados)
+       Variables de salida: tablero_actualizado (matriz con la palabra revelada)'''
     if comodin == True:
         a=1
         b=5
@@ -835,14 +979,23 @@ def Comodin(SeleccionaNumero, palabras_con_indice, comodin, tablero_actualizado,
     return tablero_actualizado
 
 def LimpioPantalla():
+    '''Función encargada de limpiar la pantalla de la consola
+       Parámetros de entrada: No recibe parámetros
+       Variables de salida: No retorna valores'''
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
 def reiniciar_partida():
+    '''Función encargada de reiniciar el juego desde el principio
+       Parámetros de entrada: No recibe parámetros
+       Variables de salida: No retorna valores. Llama a main()'''
     print("\nReiniciando la partida...\n")
     main()
 
 def Login():
+    '''Función encargada de manejar el registro e inicio de sesión de usuarios
+       Parámetros de entrada: No recibe parámetros
+       Variables de salida: No retorna valores'''
     bandera = True
     opcion_valida = False  # Variable para controlar la selección de opción válida
 
@@ -874,6 +1027,11 @@ def Login():
 
 
 def Score(palabras_para_jugar, flag_palabra, SeleccionaNumero):
+    '''Función encargada de calcular el puntaje por palabra adivinada
+       Parámetros de entrada: palabras_para_jugar (lista de palabras en juego)
+                             flag_palabra (boolean de palabra correcta)
+                             SeleccionaNumero (entero con número de palabra)
+       Variables de salida: puntaje (entero con el puntaje calculado)'''
     puntaje = 0
     if flag_palabra == True:
         indice = SeleccionaNumero - 1
@@ -889,6 +1047,9 @@ def Score(palabras_para_jugar, flag_palabra, SeleccionaNumero):
 
 
 def main():
+    '''Función principal encargada de controlar el flujo del juego
+       Parámetros de entrada: No recibe parámetros
+       Variables de salida: No retorna valores'''
 
 #Funciones que se deben ejecutar al principio del programa:
     bandera_errores = True
