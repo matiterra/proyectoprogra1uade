@@ -718,17 +718,6 @@ def PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar,
 
 
 def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones2, definiciones3, lista_comodin):
-    '''Función encargada de manejar el ingreso de palabras y pistas por parte del usuario
-       Parámetros de entrada: numero_palabra_encontrada (lista de números ya adivinados)
-                             palabras_para_jugar (lista de palabras en juego)
-                             palabras (lista completa de palabras)
-                             definiciones2 (lista de segundas definiciones)
-                             definiciones3 (lista de terceras definiciones)
-                             lista_comodin (lista de comodines usados)
-       Variables de salida: palabra_ingresada (string con la palabra del usuario)
-                          numero_seleccionado (entero con el número elegido)
-                          comodin_usado (boolean indicando uso de comodín)'''
-    
     SeleccionaNumero = -1
     PedirPista = "S"
     IngresaPalabra = ""
@@ -739,9 +728,16 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
     bandera3 = True
 
     while bandera1:
+        try:
+            print("\nEn cualquier momento puedes escribir 'B' para volver al menú de retroceso")
+            IngresaOpcion = input("Ingrese una opción:\n 1) Ingresar número de palabra a adivinar\n 2) Pedir Pista Extra\n 3) Utilizar Comodín\n Opción: ").strip()
             
-            try:
-                IngresaOpcion = int(input("Ingrese una opción:\n 1) Ingresar número de palabra a adivinar\n 2) Pedir Pista Extra\n 3) Utilizar Comodín\n Opción: "))
+            if IngresaOpcion.upper() == 'B':
+                if menu_retroceso():
+                    return "", -1, False
+                bandera1 = False
+            else:
+                IngresaOpcion = int(IngresaOpcion)
 
                 if 1 <= IngresaOpcion <= 3:
                     bandera1 = False
@@ -751,41 +747,57 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
                 if IngresaOpcion == 1:
                     while bandera2:
                         try:
-                            SeleccionaNumero = int(input("Ingrese el número de la palabra que quiere adivinar: ")) #se le pide ingresar el número al usuario.
-                            if 1 <= SeleccionaNumero <= 10 and SeleccionaNumero not in numero_palabra_encontrada: #se valida que el número sea de 0 a 5 y que no se haya adivinado previamente.
-                                IngresaPalabra = input("Ingrese la palabra que quiere adivinar: ")
-                                if IngresaPalabra.isalpha():
-                                    bandera2 = False
-                                else: 
-                                    print("Por favor ingrese una palabra. Vuelva a intentarlo.")
+                            entrada_numero = input("Ingrese el número de la palabra que quiere adivinar (o 'B' para volver): ").strip()
+                            if entrada_numero.upper() == 'B':
+                                if menu_retroceso():
+                                    return "", -1, False
+                                bandera2 = False
                             else:
-                                print("El número ingresado debe corresponder a uno de los números que se muestran en el tablero y no corresponder a uno de los adivinados anteriormente.") 
+                                SeleccionaNumero = int(entrada_numero)
+                                if 1 <= SeleccionaNumero <= 10 and SeleccionaNumero not in numero_palabra_encontrada:
+                                    entrada_palabra = input("Ingrese la palabra que quiere adivinar (o 'B' para volver): ").strip()
+                                    if entrada_palabra.upper() == 'B':
+                                        if menu_retroceso():
+                                            return "", -1, False
+                                        bandera2 = False
+                                    elif entrada_palabra.isalpha():
+                                        IngresaPalabra = entrada_palabra
+                                        bandera2 = False
+                                    else: 
+                                        print("Por favor ingrese una palabra válida. Vuelva a intentarlo.")
+                                else:
+                                    print("El número ingresado debe corresponder a uno de los números que se muestran en el tablero y no corresponder a uno de los adivinados anteriormente.") 
                         except ValueError:
-                            print("Por favor ingrese un número. Vuelva a intentarlo.") #si hay un error por ingresar un caracter, se muestra error.
+                            print("Por favor ingrese un número. Vuelva a intentarlo.")
 
                 if IngresaOpcion == 2:
                     while bandera3:
                         PedirPista = "S"
                         try:
-                            SeleccionaNumero = int(input("Ingrese el número de la palabra que quiere consultar la Pista Extra: "))
-                            if 1 <= SeleccionaNumero <= 5 and SeleccionaNumero not in numero_palabra_encontrada:
-
-                                LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras,definiciones2, PedirPista)
-
-
-    
-                                PedirPista = input("¿Desea pedir una pista extra? S = Sí / N = No: ").strip().upper()
-
-                                if PedirPista == "S" or PedirPista == "N":
-                                    LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones3, PedirPista)
-                                    bandera3 = False
-                                else:
-                                    print("Por favor, ingrese 'S' para Sí o 'N'  para No.")
+                            entrada_pista = input("Ingrese el número de la palabra que quiere consultar la Pista Extra (o 'B' para volver): ").strip()
+                            if entrada_pista.upper() == 'B':
+                                if menu_retroceso():
+                                    return "", -1, False
+                                bandera3 = False
                             else:
-                                print("El número ingresado debe corresponder a uno de los números que se muestran en el tablero y no corresponder a uno de los adivinados anteriormente.")
+                                SeleccionaNumero = int(entrada_pista)
+                                if 1 <= SeleccionaNumero <= 5 and SeleccionaNumero not in numero_palabra_encontrada:
+                                    LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones2, PedirPista)
+                                    entrada_pista_extra = input("¿Desea pedir una pista extra? S = Sí / N = No (o 'B' para volver): ").strip().upper()
+                                    if entrada_pista_extra == 'B':
+                                        if menu_retroceso():
+                                            return "", -1, False
+                                        bandera3 = False
+                                    elif entrada_pista_extra in ["S", "N"]:
+                                        PedirPista = entrada_pista_extra
+                                        LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones3, PedirPista)
+                                        bandera3 = False
+                                    else:
+                                        print("Por favor, ingrese 'S' para Sí o 'N' para No.")
+                                else:
+                                    print("El número ingresado debe corresponder a uno de los números que se muestran en el tablero y no corresponder a uno de los adivinados anteriormente.")
                         except ValueError:
                             print("Por favor ingrese un número. Vuelva a intentarlo.")
-
 
                 if IngresaOpcion == 3:
                     if len(lista_comodin) < 1:
@@ -793,8 +805,8 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
                         lista_comodin.append("-")
                     else:
                         print("Ya se utilizaron todos los comodines disponibles para esta partida")
-            except ValueError:
-                print("Por favor ingrese un número. Vuelva a intentarlo.")
+        except ValueError:
+            print("Por favor ingrese un número. Vuelva a intentarlo.")
 
     return IngresaPalabra, SeleccionaNumero, comodin
 
@@ -1069,14 +1081,27 @@ def Score(palabras_para_jugar, flag_palabra, SeleccionaNumero):
 
     return puntaje
 
-
+def menu_retroceso():
+    """Función que permite volver al menú principal o continuar jugando"""
+    opcion_valida = False
+    while not opcion_valida:
+        opcion = input("\n¿Qué deseas hacer?\n1. Volver al menú principal\n2. Continuar jugando\n3. Salir del juego\nOpción: ").strip()
+        
+        if opcion == "1":
+            LimpioPantalla()
+            main()
+            return True
+        elif opcion == "2":
+            LimpioPantalla()
+            return False
+        elif opcion == "3":
+            print("\n¡Gracias por jugar! Hasta pronto.")
+            exit()
+        else:
+            print("Opción no válida. Por favor, selecciona 1, 2 o 3.")
 
 def main():
-    '''Función principal encargada de controlar el flujo del juego
-       Parámetros de entrada: No recibe parámetros
-       Variables de salida: No retorna valores'''
-
-#Funciones que se deben ejecutar al principio del programa:
+    #Funciones que se deben ejecutar al principio del programa:
     bandera_errores = True
     Login()
     tematica = ElegirTematicas()
@@ -1084,16 +1109,13 @@ def main():
     
     palabras,definiciones_1,definiciones_2,definiciones_3 = cargarListas(lista_cargada)
 
-
     diccionario_coincidencias = Buscolista_coincidencias(palabras)
     tablero = ConstruccionTableroVacio()
-    #manejo errores por si no cuentra palabras
+    
     while bandera_errores:
-
         try: 
             palabras_para_jugar,lista_direcciones,lista_coincidencias,dependencia_decima_palabra = LogicaConstruccion(palabras,diccionario_coincidencias)
             bandera_errores = False
-
         except AttributeError:
             print("No se encontró una combinación, reintentando...")
 
@@ -1104,62 +1126,66 @@ def main():
 
     numero_palabra_encontrada = []
     puntaje_total = 0
-    continuar_jugando = 'sí'
-    primer_intento = True  # Variable para controlar el primer intento
+    continuar_jugando = True
+    primer_intento = True
     lista_comodin = []
     palabra_ingresada = " "
-    while continuar_jugando == 'sí' or len(numero_palabra_encontrada) < 10:
-
-        palabra_ingresada, numero_ingresado, comodin = IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones_2, definiciones_3, lista_comodin)
-
     
-        validation = ValidarPalabra(palabras_con_indice, palabra_ingresada, numero_ingresado)
-
-        puntaje = Score(palabras_para_jugar, validation, numero_ingresado)
-
-        puntaje_total = puntaje + puntaje_total
-
-        print ("Su puntaje en esta partida es: ", puntaje_total)
-
-        ImprimirTableroActualizado(tablero_actualizado, validation, palabras_con_indice, coordenadas, lista_direcciones, numero_ingresado)
+    while continuar_jugando and len(numero_palabra_encontrada) < 10:
+        print("\nPresiona 'B' en cualquier momento para acceder al menú de retroceso")
         
-        if validation == True:
-            numero_palabra_encontrada.append(numero_ingresado)
+        accion = input("\nPresiona Enter para continuar o 'B' para el menú de retroceso: ").strip().upper()
+        proceder_turno = True
+        
+        if accion == 'B':
+            if menu_retroceso():
+                return
+            proceder_turno = False
+            
+        if proceder_turno:
+            palabra_ingresada, numero_ingresado, comodin = IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones_2, definiciones_3, lista_comodin)
+            
+            if numero_ingresado != -1:
+                validation = ValidarPalabra(palabras_con_indice, palabra_ingresada, numero_ingresado)
+                puntaje = Score(palabras_para_jugar, validation, numero_ingresado)
+                puntaje_total = puntaje + puntaje_total
 
+                print ("Su puntaje en esta partida es: ", puntaje_total)
 
-        if comodin == True:
-            Comodin(numero_ingresado, palabras_con_indice, comodin, tablero_actualizado, coordenadas, lista_direcciones, validation, numero_palabra_encontrada)
-
-        if len(numero_palabra_encontrada) >= 10:
-            print("¡Has encontrado todas las palabras!")
-            print("Su puntaje en esta partida fue: ", puntaje_total)
-
-            continuar_jugando = 'no'  # Cambia la variable para salir del bucle
-
-        #Preguntar si quiere continuar, reiniciar o salir después del primer intento
-        if not primer_intento:
-            bandera = True
-            while bandera == True:
-
-                opcion = input("¿Deseas continuar jugando o reiniciar la partida? (C/R): ").strip().lower()
-
-
-                if opcion not in ['c', 'r']:
-                    print("Ingrese una opción correcta.")
-
-                else:
+                ImprimirTableroActualizado(tablero_actualizado, validation, palabras_con_indice, coordenadas, lista_direcciones, numero_ingresado)
                 
-                    if opcion == 'r':
-                        reiniciar_partida() #Llama a la función para reiniciar  
-                     
-                    elif opcion == 'c':
-                        print("Continua el juego.")
-                        bandera = False
-        else:
-            primer_intento = False  #Cambiar a False después del primer intento
+                if validation:
+                    numero_palabra_encontrada.append(numero_ingresado)
 
-    if continuar_jugando == 'no':
+                if comodin:
+                    Comodin(numero_ingresado, palabras_con_indice, comodin, tablero_actualizado, coordenadas, lista_direcciones, validation, numero_palabra_encontrada)
+
+                if len(numero_palabra_encontrada) >= 10:
+                    print("¡Has encontrado todas las palabras!")
+                    print("Su puntaje en esta partida fue: ", puntaje_total)
+                    continuar_jugando = False
+
+                if not primer_intento:
+                    opcion_valida = False
+                    while not opcion_valida:
+                        opcion = input("¿Deseas continuar jugando o reiniciar la partida? (C/R/B): ").strip().lower()
+                        if opcion == 'b':
+                            if menu_retroceso():
+                                return
+                        elif opcion in ['c', 'r']:
+                            if opcion == 'r':
+                                reiniciar_partida()
+                            else:
+                                print("Continua el juego.")
+                                opcion_valida = True
+                        else:
+                            print("Ingrese una opción correcta.")
+                else:
+                    primer_intento = False
+
+    if not continuar_jugando:
         print("Gracias por jugar. ¡Hasta la próxima!")
 
-# Inicia el juego
-main()
+# Llamada inicial al programa
+if __name__ == "__main__":
+    main()
