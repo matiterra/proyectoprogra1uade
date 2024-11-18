@@ -9,26 +9,43 @@ def registrar_usuario(nombre_usuario, contrasenia):
                              contrasenia (string con la contraseña del usuario)
        Variables de salida: No retorna valores. Almacena en credenciales.json el usuario con su id, nombre, 
                           contraseña y score inicial'''
-    import json
     try:
-        with open('credenciales.json', 'r', encoding='utf-8') as archivo_json:
-            contenido = archivo_json.read()
-            credenciales = json.loads(contenido) if contenido else {}
-    except FileNotFoundError:
-        credenciales = {}
+        # Intentar leer el archivo existente
+        try:
+            with open('credenciales.json', 'r', encoding='utf-8') as archivo_json:
+                contenido = archivo_json.read()
+                credenciales = json.loads(contenido) if contenido else {}
+        except FileNotFoundError:
+            credenciales = {}
 
-    ultimo_id = max((int(usuario.get("id", 0)) for usuario in credenciales.values()), default=0)
-    nuevo_id = ultimo_id + 1
+        # Verificar si el usuario ya existe
+        if nombre_usuario in credenciales:
+            print("Este usuario ya existe. Por favor, elija otro nombre de usuario.")
+            return False
 
-    while nombre_usuario in credenciales:
-        nombre_usuario = input("Ingrese un nombre de usuario único: ")
+        # Obtener el último ID y crear uno nuevo
+        ultimo_id = max((int(usuario.get("id", 0)) for usuario in credenciales.values()), default=0)
+        nuevo_id = ultimo_id + 1
 
-    credenciales[nombre_usuario] = {
-        "id": nuevo_id,
-        "nombre_usuario": nombre_usuario,
-        "contraseña": contrasenia,
-        "score": 0  # Inicializamos el puntaje en 0 al crear el usuario
-    }
+        # Crear nuevo registro de usuario
+        credenciales[nombre_usuario] = {
+            "id": nuevo_id,
+            "nombre_usuario": nombre_usuario,
+            "contraseña": contrasenia,
+            "score": 0
+        }
+        
+        # Guardar los cambios en el archivo
+        with open('credenciales.json', 'w', encoding='utf-8') as archivo_json:
+            json.dump(credenciales, archivo_json, indent=4, ensure_ascii=False)
+            
+        print(f"Usuario {nombre_usuario} registrado exitosamente!")
+        return True
+
+    except Exception as e:
+        print(f"Error al registrar usuario: {str(e)}")
+        return False
+
 # Función para iniciar sesión
 def iniciar_sesion(nombre_usuario, contrasenia):
     '''Función encargada de la validación de credenciales de usuarios existentes
@@ -1030,38 +1047,35 @@ def ImprimirTableroActualizado(tablero_actualizado, flag_palabra, palabras_con_i
             coordenadas = [25, 25]
 
 def Login():
-    '''Función encargada de manejar el registro e inicio de sesión de usuarios
-       Parámetros de entrada: No recibe parámetros
-       Variables de salida: No retorna valores'''
     bandera = True
-    opcion_valida = False  # Variable para controlar la selección de opción válida
+    opcion_valida = False
+    nombre_usuario = ""
 
-    # Bucle para asegurar que el usuario elige una opción válida
     while not opcion_valida:
-        # Opción de registro o inicio de sesión
         opcion = input("Seleccione una opción (1-Registrar, 2-Iniciar sesión): ")
         
         if opcion == '1':
-            # Registro de usuario
-            nombre_usuario = input("Ingrese un nombre de usuario: ")
-            contrasenia = input("Ingrese una contraseña: ")
-            registrar_usuario(nombre_usuario, contrasenia)
-            opcion_valida = True  # Marca la opción como válida para salir del bucle
+            registro_exitoso = False
+            while not registro_exitoso:
+                nombre_usuario = input("Ingrese un nombre de usuario: ")
+                contrasenia = input("Ingrese una contraseña: ")
+                registro_exitoso = registrar_usuario(nombre_usuario, contrasenia)
+            opcion_valida = True
+            
         elif opcion == '2':
-            # Intento de inicio de sesión con bucle para reintentar si falla
             while bandera:
                 nombre_usuario = input("Ingrese su nombre de usuario: ")
                 contrasenia = input("Ingrese su contraseña: ")
                 if iniciar_sesion(nombre_usuario, contrasenia):
                     print("Inicio de sesión exitoso.")
-                    bandera = False  # Termina el bucle de intento de inicio de sesión
-                    opcion_valida = True  # Marca la opción como válida para salir del bucle principal
+                    bandera = False
+                    opcion_valida = True
                 else:
                     print("Error en el inicio de sesión. Intente nuevamente.")
         else:
             print("Opción no válida. Por favor, seleccione 1 o 2.")
-
-
+    
+    return nombre_usuario
 
 def Score(palabras_para_jugar, flag_palabra, SeleccionaNumero):
     '''Función encargada de calcular el puntaje por palabra adivinada
@@ -1103,12 +1117,11 @@ def menu_retroceso():
 def main():
     #Funciones que se deben ejecutar al principio del programa:
     bandera_errores = True
-    Login()
+    nombre_usuario = Login()  # Guardamos el nombre de usuario
     tematica = ElegirTematicas()
     lista_cargada = LeerJSON(tematica)
     
     palabras,definiciones_1,definiciones_2,definiciones_3 = cargarListas(lista_cargada)
-
     diccionario_coincidencias = Buscolista_coincidencias(palabras)
     tablero = ConstruccionTableroVacio()
     
@@ -1135,56 +1148,107 @@ def main():
         print("\nPresiona 'B' en cualquier momento para acceder al menú de retroceso")
         
         accion = input("\nPresiona Enter para continuar o 'B' para el menú de retroceso: ").strip().upper()
-        proceder_turno = True
-        
         if accion == 'B':
+            print(f"\nGuardando puntaje final: {puntaje_total}")
+            actualizar_puntaje(nombre_usuario, puntaje_total)
             if menu_retroceso():
                 return
-            proceder_turno = False
+        
+        # Agregar la lógica principal del juego aquí
+        LimpioPantalla()
+        PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar, palabras)
+        
+        palabra_ingresada, numero_seleccionado, comodin = IngresarPalabraNumero(
+            numero_palabra_encontrada, 
+            palabras_para_jugar, 
+            palabras, 
+            definiciones_2, 
+            definiciones_3, 
+            lista_comodin
+        )
+        
+        flag_palabra = ValidarPalabra(palabras_con_indice, palabra_ingresada, numero_seleccionado)
+        
+        if flag_palabra or comodin:
+            if comodin:
+                tablero_actualizado = Comodin(
+                    numero_seleccionado,
+                    palabras_con_indice,
+                    comodin,
+                    tablero_actualizado,
+                    coordenadas,
+                    lista_direcciones,
+                    flag_palabra,
+                    numero_palabra_encontrada
+                )
+            else:
+                ImprimirTableroActualizado(
+                    tablero_actualizado,
+                    flag_palabra,
+                    palabras_con_indice,
+                    coordenadas,
+                    lista_direcciones,
+                    numero_seleccionado
+                )
             
-        if proceder_turno:
-            palabra_ingresada, numero_ingresado, comodin = IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones_2, definiciones_3, lista_comodin)
+            if numero_seleccionado not in numero_palabra_encontrada:
+                numero_palabra_encontrada.append(numero_seleccionado)
+                puntaje_total += Score(palabras_para_jugar, flag_palabra, numero_seleccionado)
+
+    print("Gracias por jugar. ¡Hasta la próxima!")
+    actualizar_puntaje(nombre_usuario, puntaje_total)
+
+def actualizar_puntaje(nombre_usuario, puntaje_nuevo):
+    """Función para actualizar el puntaje del usuario usando su ID"""
+    try:
+        with open('credenciales.json', 'r', encoding='utf-8') as archivo:
+            credenciales = json.load(archivo)
             
-            if numero_ingresado != -1:
-                validation = ValidarPalabra(palabras_con_indice, palabra_ingresada, numero_ingresado)
-                puntaje = Score(palabras_para_jugar, validation, numero_ingresado)
-                puntaje_total = puntaje + puntaje_total
+        if nombre_usuario in credenciales:
+            usuario_id = credenciales[nombre_usuario]['id']
+            puntaje_actual = int(credenciales[nombre_usuario].get('score', 0))
+            credenciales[nombre_usuario]['score'] = puntaje_actual + puntaje_nuevo
+            
+            with open('credenciales.json', 'w', encoding='utf-8') as archivo:
+                json.dump(credenciales, archivo, indent=4, ensure_ascii=False)
+            
+            # Cargar y mostrar todos los puntajes
+            puntajes = cargar_puntajes()
+            print("\n=== TABLA DE PUNTAJES ===")
+            for id_usuario, datos in sorted(puntajes.items(), key=lambda x: x[1]['score'], reverse=True):
+                print(f"Usuario: {datos['nombre']} - Puntaje: {datos['score']}")
+            print("=======================")
+            return True
+        else:
+            print("Error: Usuario no encontrado")
+            return False
+            
+    except FileNotFoundError:
+        print("Error: No se encontró el archivo de credenciales")
+        return False
+    except json.JSONDecodeError:
+        print("Error: Problema al leer el archivo de credenciales")
+        return False
 
-                print ("Su puntaje en esta partida es: ", puntaje_total)
-
-                ImprimirTableroActualizado(tablero_actualizado, validation, palabras_con_indice, coordenadas, lista_direcciones, numero_ingresado)
-                
-                if validation:
-                    numero_palabra_encontrada.append(numero_ingresado)
-
-                if comodin:
-                    Comodin(numero_ingresado, palabras_con_indice, comodin, tablero_actualizado, coordenadas, lista_direcciones, validation, numero_palabra_encontrada)
-
-                if len(numero_palabra_encontrada) >= 10:
-                    print("¡Has encontrado todas las palabras!")
-                    print("Su puntaje en esta partida fue: ", puntaje_total)
-                    continuar_jugando = False
-
-                if not primer_intento:
-                    opcion_valida = False
-                    while not opcion_valida:
-                        opcion = input("¿Deseas continuar jugando o reiniciar la partida? (C/R/B): ").strip().lower()
-                        if opcion == 'b':
-                            if menu_retroceso():
-                                return
-                        elif opcion in ['c', 'r']:
-                            if opcion == 'r':
-                                reiniciar_partida()
-                            else:
-                                print("Continua el juego.")
-                                opcion_valida = True
-                        else:
-                            print("Ingrese una opción correcta.")
-                else:
-                    primer_intento = False
-
-    if not continuar_jugando:
-        print("Gracias por jugar. ¡Hasta la próxima!")
+def cargar_puntajes():
+    """Función para cargar todos los puntajes de los usuarios"""
+    try:
+        with open('credenciales.json', 'r', encoding='utf-8') as archivo:
+            credenciales = json.load(archivo)
+            puntajes = {}
+            for usuario, datos in credenciales.items():
+                if 'id' in datos and 'score' in datos:
+                    puntajes[datos['id']] = {
+                        'nombre': usuario,
+                        'score': datos['score']
+                    }
+            return puntajes
+    except FileNotFoundError:
+        print("Error: No se encontró el archivo de credenciales")
+        return {}
+    except json.JSONDecodeError:
+        print("Error: Problema al leer el archivo de credenciales")
+        return {}
 
 # Llamada inicial al programa
 if __name__ == "__main__":
