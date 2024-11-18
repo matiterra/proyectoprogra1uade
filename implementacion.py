@@ -242,7 +242,7 @@ def logica_construccion_segunda_palabra(palabras_partida,diccionario,lista_direc
         siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,
         "no")
         coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,0,"principio")
-        print(coincidencia)
+
         flag_direccion = definir_direccion(siguiente_palabra,coincidencia[1])
         lista_coincidencias.append(coincidencia)
         lista_direcciones.append("vertical-" + flag_direccion)
@@ -467,7 +467,7 @@ def ConstruirTablero(tablero,lista_palabras,lista_coincidencias,direcciones,depe
 
     return tablero, coordenadas
 def AgregoIndice(palabras_partida):
-    print(palabras_partida)
+
     '''Función encargada de colocar el prefijo utilizando una palabra a analizar. (1-casa)
        Utiliza como valor de entrada palabras_partida(palabras sin prefijo, ejemplo: casa)'''
 
@@ -478,6 +478,7 @@ def AgregoIndice(palabras_partida):
         devolucion_palabras.append(list(f"{i+1}"+ "-" + palabra)) #appendea a la lista las palabras de la siguiente forma: (0+1)-casa, (1+1)-gato, (2+1)-plaza
     return devolucion_palabras 
 
+    
 def ImpresionTablero(tablero):
     '''Función encargada de la impresión del tablero utilizado como parámetros de entrada: tablero(matriz con todas las palabras puestas en su lugar)
        A partir del tablero con todas las palabras en su lugar, se crea un tablero nuevo que tenga solamente guiones y números, y cuando hay
@@ -485,21 +486,36 @@ def ImpresionTablero(tablero):
     
     tablero_actualizado = []
 
-    for fila in tablero: #Se recorre el tablero principal dónde están todas las palabras ya posicionadas
-        nueva_fila = [] #Se crea una lista para almacenar los elementos de tablero
-        for elemento in fila:
-            if elemento[0].isdigit() or elemento[0] == "-": #Si es un número o un guión, se appendea.
-                nueva_fila.append(elemento[0]) 
+    for fila_idx, fila in enumerate(tablero):  #recorrer filas en el tablero
+        nueva_fila = []  #nueva fila tendrá mismos elementos
+        col_idx = 0  
 
-            elif elemento[0].isalpha(): #Si es una letra, se appendea un _
+        while col_idx < len(fila):  #recorrer columnas
+
+            #caso número 10
+            if fila[col_idx][0] == "1" and fila_idx + 1 < len(tablero) and tablero[fila_idx + 1][col_idx][0] == "0":
+                
+                nueva_fila.append(" ")  
+                tablero[fila_idx + 1][col_idx] = ["1"]  # El "1" se coloca en la fila siguiente
+                if col_idx + 1 < len(tablero[fila_idx + 1]):  # Validación para evitar fuera de rango
+                    tablero[fila_idx + 1][col_idx + 1] = ["0"]  #El "0" también se coloca en la fila siguiente
+                col_idx += 1  #saltamos la columna ya manejada
+
+            elif fila[col_idx][0].isdigit() or fila[col_idx][0] == "-":  #Si es un número o un guion se deja como está
+                nueva_fila.append(fila[col_idx][0])
+
+            elif fila[col_idx][0].isalpha():  #Si es una letra, appendeo un guion bajo
                 nueva_fila.append("_")
-            else:
-                nueva_fila.append(" ") #Y si no hay nada se deja el espacio vacío.
 
-        tablero_actualizado.append(nueva_fila) #Se appendean todas las filas al tablero_actualizado.
+            else:  #Espacios vacíos se dejan igual
+                nueva_fila.append(" ")
 
+            col_idx += 1  #Pasamos a la siguiente columna
+
+        tablero_actualizado.append(nueva_fila)  #Añadimos la fila actualizada al tablero actualizado
 
     return tablero_actualizado
+
 
 def ImprimirTableroActualizado(tablero_actualizado, flag_palabra, palabras_con_indice, coordenadas, lista_direcciones, SeleccionaNumero):
     '''Función encargada de la impresión del tablero utilizado como parámetros de entrada: tablero_actualizado (tablero con números y guiones)
@@ -547,48 +563,61 @@ def ImprimirTableroActualizado(tablero_actualizado, flag_palabra, palabras_con_i
 
 def PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar, palabras):
     definiciones_jugables = []
-    coordenadas = [2,53]
+    coordenadas = [2, 53]
 
     x, y = coordenadas
     for fila in tablero_actualizado:
         if x < 45:
-            tablero_actualizado [x][y] = '|'
-            x = x + 1
+            tablero_actualizado[x][y] = '|'
+            x += 1
 
     for num in range(10):
         indice_palabra = num
         palabra_elegida = palabras_para_jugar[indice_palabra]
         indice_palabra_elegida = palabras.index(palabra_elegida)
-        definiciones_jugables.append((definiciones_1[indice_palabra_elegida]))
+        definiciones_jugables.append(definiciones_1[indice_palabra_elegida])
         lista_definiciones = list(AgregoIndice(definiciones_jugables))
 
         fila_inicio = 2
         columna_inicio = 56
 
+    fila = fila_inicio
+    col = columna_inicio
 
-        fila = fila_inicio
-        col = columna_inicio
-        for definicion in lista_definiciones:
-            for letra in definicion:
-                
-                if letra.isdigit():
-                    fila += 2
-                    col = columna_inicio
+    for definicion in lista_definiciones:
+        i = 0
+        while i < len(definicion):
+            letra = definicion[i]
+        
+            #verificar para el número 10
+            if letra.isdigit() and i + 1 < len(definicion) and definicion[i:i+2] == '10':
 
+                tablero_actualizado[fila][col] = '1'
+                col += 1
+                tablero_actualizado[fila][col] = '0'
+                col += 1
+                i += 2  #espacio entre definiciones
+            elif letra.isdigit():
+                fila += 2
+                col = columna_inicio
+                i += 1  #avanzar al siguiente caracter
+            else:
                 if col < 90:
                     tablero_actualizado[fila][col] = letra
                     col += 1
                 else:
                     fila += 1
                     col = columna_inicio
-                    if fila < 50:  
+                    if fila < 50:
                         tablero_actualizado[fila][col] = letra
                         col += 1
+                i += 1  #avanzar al siguiente caracter
 
     for fila in tablero_actualizado:
-            print(" ".join(fila))
+        print(" ".join(fila))
 
-    return tablero_actualizado
+
+
 
 def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones2, definiciones3, lista_comodin):
     '''Función encargada de controles e ingreso de datos del usuario. Se ingresa el número de la palabra que se quiere adivinar,
