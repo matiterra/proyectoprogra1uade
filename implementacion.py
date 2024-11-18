@@ -992,6 +992,31 @@ def reiniciar_partida():
     print("\nReiniciando la partida...\n")
     main()
 
+def ImprimirTableroActualizado(tablero_actualizado, flag_palabra, palabras_con_indice, coordenadas, lista_direcciones, SeleccionaNumero):
+    '''Función encargada de la impresión del tablero utilizado como parámetros de entrada: tablero_actualizado (tablero con números y guiones)
+                                                                                           flag_palabra (True si es adivinada correctamente)
+                                                                                           palabras_con_indice (Ejemplo: 1-casa)
+                                                                                           coordenadas (Ejemplo: [5,5])    ([F,C]) 
+                                                                                           lista_direcciones (Ejemplo: "horizontal-norte")
+                                                                                           SeleccionaNumero (Ejemplo: 3)
+       A partir de estos valores, se seleccionan los datos de la palabra con el número ingresado por el usuario.
+       se setean las coordenadas, y si la palabra es horizontal, se suma 1 por cada letra al eje y, lo mismo con el eje x
+       luego lo printeo como si fuese un string para lograr una mejor visualización.'''
+    numero_indice = SeleccionaNumero - 1
+
+    if flag_palabra == True:
+        palabra = palabras_con_indice[numero_indice]
+        coordenadas = coordenadas[numero_indice]
+        direccion = lista_direcciones[numero_indice] #Busco datos de la palabra
+
+        if direccion in ["vertical-norte", "vertical-sur"]:
+            direccion = "flag-vertical"
+        elif direccion in ["horizontal-norte", "horizontal-sur"]:
+            direccion = "flag-horizontal" #Cambio flags
+
+        if SeleccionaNumero == 1:
+            coordenadas = [25, 25]
+
 def Login():
     '''Función encargada de manejar el registro e inicio de sesión de usuarios
        Parámetros de entrada: No recibe parámetros
