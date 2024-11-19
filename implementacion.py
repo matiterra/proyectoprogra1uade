@@ -1246,8 +1246,7 @@ def main():
             definiciones_2, 
             definiciones_3, 
             lista_comodin,
-            pista2,
-            pista3
+
         )
         
         flag_palabra = ValidarPalabra(palabras_con_indice, palabra_ingresada, numero_seleccionado)
