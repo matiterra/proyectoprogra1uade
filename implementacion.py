@@ -773,7 +773,7 @@ def ImprimirTableroActualizado(tablero_actualizado, flag_palabra, palabras_con_i
         return tablero_actualizado
 
 
-def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones2, definiciones3, lista_comodin):
+def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones2, definiciones3, lista_comodin, pista2):
     SeleccionaNumero = -1
     PedirPista = "S"
     IngresaPalabra = ""
@@ -839,17 +839,21 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
                                 SeleccionaNumero = int(entrada_pista)
                                 if 0 <= SeleccionaNumero <= 9 and SeleccionaNumero not in numero_palabra_encontrada:
                                     LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones2, PedirPista)
-                                    entrada_pista_extra = input("¿Desea pedir una pista extra? S = Sí / N = No (o 'B' para volver): ").strip().upper()
-                                    if entrada_pista_extra == 'B':
-                                        if menu_retroceso():
-                                            return "", -1, False
-                                        bandera3 = False
-                                    elif entrada_pista_extra in ["S", "N"]:
-                                        PedirPista = entrada_pista_extra
-                                        LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones3, PedirPista)
-                                        bandera3 = False
+
+                                    if pista2 == "-":
+                                        IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones2, definiciones3, lista_comodin, pista2)
                                     else:
-                                        print("Por favor, ingrese 'S' para Sí o 'N' para No.")
+                                        entrada_pista_extra = input("¿Desea pedir una pista extra? S = Sí / N = No (o 'B' para volver): ").strip().upper()
+                                        if entrada_pista_extra == 'B':
+                                            if menu_retroceso():
+                                                return "", -1, False
+                                            bandera3 = False
+                                        elif entrada_pista_extra in ["S", "N"]:
+                                            PedirPista = entrada_pista_extra
+                                            LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones3, PedirPista)
+                                            bandera3 = False
+                                        else:
+                                            print("Por favor, ingrese 'S' para Sí o 'N' para No.")
                                 else:
                                     print("El número ingresado debe corresponder a uno de los números que se muestran en el tablero y no corresponder a uno de los adivinados anteriormente.")
                         except ValueError:
@@ -971,6 +975,7 @@ def LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras, definici
         pista2 = definiciones2[indice_palabra_elegida]
         if pista2 == "-":
             print("No hay definiciones extras para esta palabra.")
+
         else:
             print("La pista extra es: ", pista2)
 
@@ -1217,6 +1222,7 @@ def main():
     primer_intento = True
     lista_comodin = []
     palabra_ingresada = " "
+    pista2 = "-"
     
     while continuar_jugando and len(numero_palabra_encontrada) < 10:
         print("\nPresiona 'B' en cualquier momento para acceder al menú de retroceso")
@@ -1238,7 +1244,8 @@ def main():
             palabras, 
             definiciones_2, 
             definiciones_3, 
-            lista_comodin
+            lista_comodin,
+            pista2
         )
         
         flag_palabra = ValidarPalabra(palabras_con_indice, palabra_ingresada, numero_seleccionado)
