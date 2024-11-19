@@ -1113,7 +1113,6 @@ def Score(palabras_para_jugar, flag_palabra, SeleccionaNumero):
     return puntaje
 
 def menu_retroceso():
-  def menu_retroceso():
     """Muestra el menú de retroceso y maneja las opciones"""
     while True:
         print("\nMenú de retroceso:")
@@ -1134,6 +1133,59 @@ def menu_retroceso():
             exit()
         else:
             print("Opción no válida. Por favor, selecciona 1, 2 o 3.")
+
+def actualizar_puntaje(nombre_usuario, puntaje_nuevo):
+    """Función para actualizar el puntaje del usuario usando su ID"""
+    try:
+        with open('credenciales.json', 'r', encoding='utf-8') as archivo:
+            credenciales = json.load(archivo)
+            
+        if nombre_usuario in credenciales:
+            usuario_id = credenciales[nombre_usuario]['id']
+            puntaje_actual = int(credenciales[nombre_usuario].get('score', 0))
+            credenciales[nombre_usuario]['score'] = puntaje_actual + puntaje_nuevo
+            
+            with open('credenciales.json', 'w', encoding='utf-8') as archivo:
+                json.dump(credenciales, archivo, indent=4, ensure_ascii=False)
+            
+            # Cargar y mostrar todos los puntajes
+            puntajes = cargar_puntajes()
+            print("\n=== TABLA DE PUNTAJES ===")
+            for id_usuario, datos in sorted(puntajes.items(), key=lambda x: x[1]['score'], reverse=True):
+                print(f"Usuario: {datos['nombre']} - Puntaje: {datos['score']}")
+            print("=======================")
+            return True
+        else:
+            print("Error: Usuario no encontrado")
+            return False
+            
+    except FileNotFoundError:
+        print("Error: No se encontró el archivo de credenciales")
+        return False
+    except json.JSONDecodeError:
+        print("Error: Problema al leer el archivo de credenciales")
+        return False
+
+def cargar_puntajes():
+    """Función para cargar todos los puntajes de los usuarios"""
+    try:
+        with open('credenciales.json', 'r', encoding='utf-8') as archivo:
+            credenciales = json.load(archivo)
+            puntajes = {}
+            for usuario, datos in credenciales.items():
+                if 'id' in datos and 'score' in datos:
+                    puntajes[datos['id']] = {
+                        'nombre': usuario,
+                        'score': datos['score']
+                    }
+            return puntajes
+    except FileNotFoundError:
+        print("Error: No se encontró el archivo de credenciales")
+        return {}
+    except json.JSONDecodeError:
+        print("Error: Problema al leer el archivo de credenciales")
+        return {}
+
 
 def main():
     #Funciones que se deben ejecutar al principio del programa:
@@ -1220,57 +1272,7 @@ def main():
     print("Gracias por jugar. ¡Hasta la próxima!")
     actualizar_puntaje(nombre_usuario, puntaje_total)
 
-def actualizar_puntaje(nombre_usuario, puntaje_nuevo):
-    """Función para actualizar el puntaje del usuario usando su ID"""
-    try:
-        with open('credenciales.json', 'r', encoding='utf-8') as archivo:
-            credenciales = json.load(archivo)
-            
-        if nombre_usuario in credenciales:
-            usuario_id = credenciales[nombre_usuario]['id']
-            puntaje_actual = int(credenciales[nombre_usuario].get('score', 0))
-            credenciales[nombre_usuario]['score'] = puntaje_actual + puntaje_nuevo
-            
-            with open('credenciales.json', 'w', encoding='utf-8') as archivo:
-                json.dump(credenciales, archivo, indent=4, ensure_ascii=False)
-            
-            # Cargar y mostrar todos los puntajes
-            puntajes = cargar_puntajes()
-            print("\n=== TABLA DE PUNTAJES ===")
-            for id_usuario, datos in sorted(puntajes.items(), key=lambda x: x[1]['score'], reverse=True):
-                print(f"Usuario: {datos['nombre']} - Puntaje: {datos['score']}")
-            print("=======================")
-            return True
-        else:
-            print("Error: Usuario no encontrado")
-            return False
-            
-    except FileNotFoundError:
-        print("Error: No se encontró el archivo de credenciales")
-        return False
-    except json.JSONDecodeError:
-        print("Error: Problema al leer el archivo de credenciales")
-        return False
 
-def cargar_puntajes():
-    """Función para cargar todos los puntajes de los usuarios"""
-    try:
-        with open('credenciales.json', 'r', encoding='utf-8') as archivo:
-            credenciales = json.load(archivo)
-            puntajes = {}
-            for usuario, datos in credenciales.items():
-                if 'id' in datos and 'score' in datos:
-                    puntajes[datos['id']] = {
-                        'nombre': usuario,
-                        'score': datos['score']
-                    }
-            return puntajes
-    except FileNotFoundError:
-        print("Error: No se encontró el archivo de credenciales")
-        return {}
-    except json.JSONDecodeError:
-        print("Error: Problema al leer el archivo de credenciales")
-        return {}
 
 # Llamada inicial al programa
 if __name__ == "__main__":
