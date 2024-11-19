@@ -773,7 +773,7 @@ def ImprimirTableroActualizado(tablero_actualizado, flag_palabra, palabras_con_i
         return tablero_actualizado
 
 
-def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones2, definiciones3, lista_comodin, pista2):
+def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones2, definiciones3, lista_comodin, pista2, pista3):
     SeleccionaNumero = -1
     PedirPista = "S"
     IngresaPalabra = ""
@@ -841,7 +841,7 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
                                     LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones2, PedirPista)
 
                                     if pista2 == "-":
-                                        IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones2, definiciones3, lista_comodin, pista2)
+                                        IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones2, definiciones3, lista_comodin, pista2, pista3)
                                     else:
                                         entrada_pista_extra = input("¿Desea pedir una pista extra? S = Sí / N = No (o 'B' para volver): ").strip().upper()
                                         if entrada_pista_extra == 'B':
@@ -851,7 +851,12 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
                                         elif entrada_pista_extra in ["S", "N"]:
                                             PedirPista = entrada_pista_extra
                                             LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones3, PedirPista)
-                                            bandera3 = False
+
+                                            if pista3 == "-":
+                                                IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones2, definiciones3, lista_comodin, pista2, pista3)
+
+                                                bandera3 = False
+
                                         else:
                                             print("Por favor, ingrese 'S' para Sí o 'N' para No.")
                                 else:
@@ -956,6 +961,8 @@ def LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definicio
             print("No hay definiciones extras para esta palabra.")
         else:
             print("La pista extra es: ", pista3)
+
+    return pista3
 
 
 def LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones2, PedirPista):
@@ -1222,7 +1229,8 @@ def main():
     primer_intento = True
     lista_comodin = []
     palabra_ingresada = " "
-    pista2 = "-"
+    pista2 = ""
+    pista3 = ""
     
     while continuar_jugando and len(numero_palabra_encontrada) < 10:
         print("\nPresiona 'B' en cualquier momento para acceder al menú de retroceso")
@@ -1245,7 +1253,8 @@ def main():
             definiciones_2, 
             definiciones_3, 
             lista_comodin,
-            pista2
+            pista2,
+            pista3
         )
         
         flag_palabra = ValidarPalabra(palabras_con_indice, palabra_ingresada, numero_seleccionado)
