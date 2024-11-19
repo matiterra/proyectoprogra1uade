@@ -570,6 +570,8 @@ def Construccion_palabras_horizontales(coordenada_dependencia, lista_coordenadas
     return tablero,lista_coordenadas    
 
 def ConstruirTablero(tablero, lista_palabras, lista_coincidencias, direcciones, dependencia_decima_palabra):
+    print(lista_palabras)
+    
     '''Función encargada de construir el tablero final del crucigrama
        Parámetros de entrada: tablero (matriz inicial vacía)
                              lista_palabras (lista de palabras a colocar)
@@ -578,6 +580,7 @@ def ConstruirTablero(tablero, lista_palabras, lista_coincidencias, direcciones, 
                              dependencia_decima_palabra (entero con dependencia final)
        Variables de salida: tablero (matriz con el crucigrama completo)
                           lista_coordenadas (lista de posiciones de cada palabra)'''
+
     indice_fila_inicial = 25
     indice_columna_inicial = 25
     fila_anterior = indice_fila_inicial
@@ -619,55 +622,74 @@ def ConstruirTablero(tablero, lista_palabras, lista_coincidencias, direcciones, 
             elif i == 9:
                 tablero,coordenadas = tablero,coordenadas = Construccion_palabras_verticales(dependencia_decima_palabra,coordenadas,tablero,direcciones,i,j,lista_palabras,lista_coincidencias)
 
+
     return tablero, coordenadas
+
 def AgregoIndice(palabras_partida):
     '''Función encargada de agregar índices numéricos a las palabras
        Parámetros de entrada: palabras_partida (lista de palabras sin índice)
        Variables de salida: palabras_con_indice (lista de palabras con formato "número-palabra")'''
     devolucion_palabras = []
 
+
     for i, palabra in enumerate(palabras_partida): #recorre palabras_partida y devuelve el indice y la palabra en la posición i
-       
+        
+
         devolucion_palabras.append(list(f"{i+1}"+ "-" + palabra)) #appendea a la lista las palabras de la siguiente forma: (0+1)-casa, (1+1)-gato, (2+1)-plaza
+
+    devolucion_palabras[-1].pop(0)
+    devolucion_palabras[-1].pop(0) 
+
+    diez = "10"
+
+    devolucion_palabras[-1].insert(0, diez)
+
+    print (devolucion_palabras)
+
     return devolucion_palabras 
 
     
 def ImpresionTablero(tablero):
-    '''Función encargada de generar la versión del tablero para mostrar al jugador
-       Parámetros de entrada: tablero (matriz con el crucigrama completo)
-       Variables de salida: tablero_actualizado (matriz con guiones en lugar de letras y números visibles)'''
-    
+    '''Función encargada de la impresión del tablero utilizado como parámetros de entrada: tablero(matriz con todas las palabras puestas en su lugar)
+       A partir del tablero con todas las palabras en su lugar, se crea un tablero nuevo que tenga solamente guiones y números, y cuando hay
+       una letra, se appendea un guión bajo. Si no hay nada se deja el espacio en blanco. '''
+ 
     tablero_actualizado = []
+    variable = False
 
-    for fila_idx, fila in enumerate(tablero):  #recorrer filas en el tablero
-        nueva_fila = []  #nueva fila tendrá mismos elementos
-        col_idx = 0  
+    
 
-        while col_idx < len(fila):  #recorrer columnas
-
-            #caso número 10
-            if fila[col_idx][0] == "1" and fila_idx + 1 < len(tablero) and tablero[fila_idx + 1][col_idx][0] == "0":
+    for fila in tablero: #Se recorre el tablero principal dónde están todas las palabras ya posicionadas
+        nueva_fila = [] #Se crea una lista para almacenar los elementos de tablero
+        for elemento in fila:
                 
-                nueva_fila.append(" ")  
-                tablero[fila_idx + 1][col_idx] = ["1"]  # El "1" se coloca en la fila siguiente
-                if col_idx + 1 < len(tablero[fila_idx + 1]):  # Validación para evitar fuera de rango
-                    tablero[fila_idx + 1][col_idx + 1] = ["0"]  #El "0" también se coloca en la fila siguiente
-                col_idx += 1  #saltamos la columna ya manejada
 
-            elif fila[col_idx][0].isdigit() or fila[col_idx][0] == "-":  #Si es un número o un guion se deja como está
-                nueva_fila.append(fila[col_idx][0])
 
-            elif fila[col_idx][0].isalpha():  #Si es una letra, appendeo un guion bajo
+            if elemento[0].isdigit() or elemento[0] == "-": #Si es un número o un guión, se appendea.
+                nueva_fila.append(elemento[0])
+
+
+            elif  elemento[0].isalpha(): #Si es una letra, se appendea un _
                 nueva_fila.append("_")
+                
+            elif   elemento[0] == " ":
+                nueva_fila.append(" ") #Y si no hay nada se deja el espacio vacío.
 
-            else:  #Espacios vacíos se dejan igual
-                nueva_fila.append(" ")
 
-            col_idx += 1  #Pasamos a la siguiente columna
-
-        tablero_actualizado.append(nueva_fila)  #Añadimos la fila actualizada al tablero actualizado
+        tablero_actualizado.append(nueva_fila) #Se appendean todas las filas al tablero_actualizado.
 
     return tablero_actualizado
+
+
+def BorroEspacioDiez(tablero_actualizado, coordenadas):
+
+    columna10 = coordenadas[-1][1]
+    columna10 = columna10 + 1
+
+    fila10 = coordenadas[-1][0]
+
+    tablero_actualizado[fila10].pop(columna10)
+    
 
 
 def PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar, palabras):
@@ -731,7 +753,49 @@ def PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar,
     for fila in tablero_actualizado:
         print(" ".join(fila))
 
+def ImprimirTableroActualizado(tablero_actualizado, flag_palabra, palabras_con_indice, coordenadas, lista_direcciones, SeleccionaNumero):
+    '''Función encargada de la impresión del tablero utilizado como parámetros de entrada: tablero_actualizado (tablero con números y guiones)
+                                                                                           flag_palabra (True si es adivinada correctamente)
+                                                                                           palabras_con_indice (Ejemplo: 1-casa)
+                                                                                           coordenadas (Ejemplo: [5,5])    ([F,C]) 
+                                                                                           lista_direcciones (Ejemplo: "horizontal-norte")
+                                                                                           SeleccionaNumero (Ejemplo: 3)
+       A partir de estos valores, se seleccionan los datos de la palabra con el número ingresado por el usuario.
+       se setean las coordenadas, y si la palabra es horizontal, se suma 1 por cada letra al eje y, lo mismo con el eje x
+       luego lo printeo como si fuese un string para lograr una mejor visualización.'''
+    numero_indice = SeleccionaNumero - 1
 
+    if flag_palabra == True:
+        palabra = palabras_con_indice[numero_indice]
+        coordenadas = coordenadas[numero_indice]
+        direccion = lista_direcciones[numero_indice] #Busco datos de la palabra
+
+        if direccion in ["vertical-norte", "vertical-sur"]:
+            direccion = "flag-vertical"
+        elif direccion in ["horizontal-norte", "horizontal-sur"]:
+            direccion = "flag-horizontal" #Cambio flags
+
+        if SeleccionaNumero == 1:
+            coordenadas = [25, 25]
+            direccion = "flag-horizontal" #Coordenadas de primer palabra.
+
+
+        x, y = coordenadas
+
+        for letra in palabra:
+            tablero_actualizado [x][y] = str(letra)
+
+            if direccion == "flag-horizontal": #Suma eje y
+                y = y + 1
+
+            elif direccion == "flag-vertical": #Suma eje x
+                x = x + 1
+
+        for fila in tablero_actualizado: #Recorro filas en tablero_actualizado
+            nueva_fila = [celda for celda in fila] #Se toma cada elemento de la fila y se incluye en nueva_fila
+            print(" ".join(nueva_fila)) #Convierto nueva_fila en una cadena de texto separado con " "
+
+        return tablero_actualizado
 
 
 def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones2, definiciones3, lista_comodin):
@@ -1021,30 +1085,8 @@ def reiniciar_partida():
     print("\nReiniciando la partida...\n")
     main()
 
-def ImprimirTableroActualizado(tablero_actualizado, flag_palabra, palabras_con_indice, coordenadas, lista_direcciones, SeleccionaNumero):
-    '''Función encargada de la impresión del tablero utilizado como parámetros de entrada: tablero_actualizado (tablero con números y guiones)
-                                                                                           flag_palabra (True si es adivinada correctamente)
-                                                                                           palabras_con_indice (Ejemplo: 1-casa)
-                                                                                           coordenadas (Ejemplo: [5,5])    ([F,C]) 
-                                                                                           lista_direcciones (Ejemplo: "horizontal-norte")
-                                                                                           SeleccionaNumero (Ejemplo: 3)
-       A partir de estos valores, se seleccionan los datos de la palabra con el número ingresado por el usuario.
-       se setean las coordenadas, y si la palabra es horizontal, se suma 1 por cada letra al eje y, lo mismo con el eje x
-       luego lo printeo como si fuese un string para lograr una mejor visualización.'''
-    numero_indice = SeleccionaNumero - 1
 
-    if flag_palabra == True:
-        palabra = palabras_con_indice[numero_indice]
-        coordenadas = coordenadas[numero_indice]
-        direccion = lista_direcciones[numero_indice] #Busco datos de la palabra
-
-        if direccion in ["vertical-norte", "vertical-sur"]:
-            direccion = "flag-vertical"
-        elif direccion in ["horizontal-norte", "horizontal-sur"]:
-            direccion = "flag-horizontal" #Cambio flags
-
-        if SeleccionaNumero == 1:
-            coordenadas = [25, 25]
+    
 
 def Login():
     bandera = True
@@ -1135,7 +1177,9 @@ def main():
     palabras_con_indice = AgregoIndice(palabras_para_jugar)
     producto_final, coordenadas = ConstruirTablero(tablero, palabras_con_indice, lista_coincidencias, lista_direcciones,dependencia_decima_palabra)
     tablero_actualizado = ImpresionTablero(tablero)
+    BorroEspacioDiez(tablero_actualizado, coordenadas)
     PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar, palabras)
+
 
     numero_palabra_encontrada = []
     puntaje_total = 0
