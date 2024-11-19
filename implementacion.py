@@ -863,7 +863,7 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
                                 bandera3 = False
                             else:
                                 SeleccionaNumero = int(entrada_pista)
-                                if 1 <= SeleccionaNumero <= 5 and SeleccionaNumero not in numero_palabra_encontrada:
+                                if 1 <= SeleccionaNumero <= 10 and SeleccionaNumero not in numero_palabra_encontrada:
                                     LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones2, PedirPista)
                                     entrada_pista_extra = input("¿Desea pedir una pista extra? S = Sí / N = No (o 'B' para volver): ").strip().upper()
                                     if entrada_pista_extra == 'B':
