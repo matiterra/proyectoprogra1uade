@@ -6,5 +6,17 @@
     "mati": {
         "nombre_usuario": "mati",
         "contraseña": "mati"
+    },
+    "1": {
+        "id": 1,
+        "nombre_usuario": "1",
+        "contraseña": "1",
+        "score": 0
+    },
+    "luciano": {
+        "id": 2,
+        "nombre_usuario": "luciano",
+        "contraseña": "perrella",
+        "score": 198
     }
 }
