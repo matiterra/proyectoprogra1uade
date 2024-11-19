@@ -570,7 +570,7 @@ def Construccion_palabras_horizontales(coordenada_dependencia, lista_coordenadas
     return tablero,lista_coordenadas    
 
 def ConstruirTablero(tablero, lista_palabras, lista_coincidencias, direcciones, dependencia_decima_palabra):
-    print(lista_palabras)
+
     
     '''Función encargada de construir el tablero final del crucigrama
        Parámetros de entrada: tablero (matriz inicial vacía)
