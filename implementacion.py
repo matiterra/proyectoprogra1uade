@@ -677,6 +677,7 @@ def ImpresionTablero(tablero):
 
 
         tablero_actualizado.append(nueva_fila) #Se appendean todas las filas al tablero_actualizado.
+    
 
     return tablero_actualizado
 
