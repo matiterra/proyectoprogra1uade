@@ -1113,18 +1113,22 @@ def Score(palabras_para_jugar, flag_palabra, SeleccionaNumero):
     return puntaje
 
 def menu_retroceso():
-    """Función que permite volver al menú principal o continuar jugando"""
-    opcion_valida = False
-    while not opcion_valida:
-        opcion = input("\n¿Qué deseas hacer?\n1. Volver al menú principal\n2. Continuar jugando\n3. Salir del juego\nOpción: ").strip()
+  def menu_retroceso():
+    """Muestra el menú de retroceso y maneja las opciones"""
+    while True:
+        print("\nMenú de retroceso:")
+        print("1. Continuar jugando")
+        print("2. Volver al menú principal")
+        print("3. Salir del juego")
+        
+        opcion = input("\nSelecciona una opción (1-3): ")
         
         if opcion == "1":
             LimpioPantalla()
-            main()
-            return True
+            return False
         elif opcion == "2":
             LimpioPantalla()
-            return False
+            return True
         elif opcion == "3":
             print("\n¡Gracias por jugar! Hasta pronto.")
             exit()
