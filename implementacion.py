@@ -210,28 +210,26 @@ def calcularColumna(columna_anterior,indice,direccion):
    
     return columna_siguiente
 
-def elegir_palabra_e_indice (diccionario,letra,palabras_partida,dependencia = "si",primer_indice = 0, segundo_indice = 1):
-    '''Función encargada de seleccionar una palabra y su índice de coincidencia
-       Parámetros de entrada: diccionario (dict con palabras y sus coincidencias)
-                             letra (char con la letra coincidente a buscar)
-                             palabras_partida (lista de palabras ya utilizadas)
-                             dependencia (string "si"/"no" para verificar dependencias)
-                             primer_indice (entero con posición inicial a verificar)
-                             segundo_indice (entero con posición final a verificar)
-       Variables de salida: siguiente_palabra (string con la palabra seleccionada)
-                          indice_coincidencia (lista con los índices de coincidencia)'''
+def elegir_palabra_e_indice(diccionario, letra, palabras_partida, dependencia="si", primer_indice=0, segundo_indice=1):
     siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra).items()))
+    max_intentos = 100  # Número máximo de intentos
+    intentos = 0
 
     if dependencia == "no":
-        while siguiente_palabra in palabras_partida:
+        while siguiente_palabra in palabras_partida and intentos < max_intentos:
             siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra).items()))
+            intentos += 1
     else:
-
-        while (siguiente_palabra[primer_indice] != letra and siguiente_palabra[segundo_indice] != letra) or     siguiente_palabra in palabras_partida:
+        while (siguiente_palabra in palabras_partida or 
+               len(siguiente_palabra) <= max(primer_indice, segundo_indice) or 
+               (siguiente_palabra[primer_indice] != letra and siguiente_palabra[segundo_indice] != letra)) and intentos < max_intentos:
             siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra).items()))
+            intentos += 1
+    
+    if intentos >= max_intentos:
+        raise ValueError("No se pudo encontrar una palabra válida después de múltiples intentos")
 
     return siguiente_palabra, indice_coincidencia
-
 def elegir_coincidencia (palabras_partida,indice_coincidencia,letra_palabra,indice_palabra,seleccion_posicion = "principio"):
     '''Función encargada de determinar los índices de coincidencia entre palabras
        Parámetros de entrada: palabras_partida (lista de palabras en el juego)
@@ -1211,9 +1209,10 @@ def main():
             tablero = ConstruccionTableroVacio()
             palabras_para_jugar,lista_direcciones,lista_coincidencias,dependencia_decima_palabra = LogicaConstruccion(palabras,diccionario_coincidencias)
             bandera_errores = False
-        except AttributeError:
+        except (AttributeError, ValueError):
             print("No se encontró una combinación, reintentando...")
             continue
+        
 
     palabras_con_indice = AgregoIndice(palabras_para_jugar)
     producto_final, coordenadas = ConstruirTablero(tablero, palabras_con_indice, lista_coincidencias, lista_direcciones,dependencia_decima_palabra)
