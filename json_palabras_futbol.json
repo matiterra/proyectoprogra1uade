@@ -3,10 +3,7 @@
     "Deporte en el que dos equipos compiten para marcar goles en la portería del rival.",
     "El deporte más popular del mundo."
   ],
-  "gol": [
-    "Cuando el balón cruza la línea de meta dentro de la portería.",
-    "El objetivo principal del juego."
-  ],
+
   "penalti": [
     "Tiro desde el punto de penalti debido a una infracción en el área.",
     "Oportunidad clara de marcar un gol."
@@ -22,18 +19,15 @@
   "entrenador": [
     "Persona que dirige las tácticas y estrategias de un equipo.",
     "Responsable de mejorar el rendimiento de los jugadores."
-  ],
-  "pelé": [
-    "Futbolista brasileño que ganó tres Copas del Mundo con Brasil.",
-    "Reconocido como uno de los más grandes futbolistas de todos los tiempos."
+
   ],
   "zidane": [
     "Exfutbolista y entrenador francés, famoso por su talento y visión de juego.",
-    "Lideró a Francia a ganar la Copa del Mundo de 1998."
+    "Lideró a Francia a ganar la Copa del Mundo de Mil novecientos noventa y ocho."
   ],
   "ronaldinho": [
     "Futbolista brasileño conocido por su técnica, habilidades y alegría en el campo.",
-    "Ganó el Balón de Oro en 2005."
+    "Ganó el Balón de Oro en dos mil cinco."
   ],
   "neymar": [
     "Futbolista brasileño reconocido por su habilidad, velocidad y regate.",
@@ -42,13 +36,10 @@
   "mbappé": [
     "Futbolista francés, conocido por su velocidad y capacidad para marcar goles.",
     "Considerado uno de los mejores jugadores jóvenes del mundo."
-  ],
-  "xavi": [
-    "Exfutbolista español conocido por su capacidad para controlar el ritmo del juego en el centro del campo.",
-    "Ganó la Copa del Mundo con España en 2010."
+
   ],
   "iniesta": [
-    "Futbolista español que marcó el gol de la victoria en la final de la Copa del Mundo de 2010.",
+    "Futbolista español que marcó el gol de la victoria en la final de la Copa del Mundo de dos mil diez.",
     "Reconocido por su habilidad técnica y visión de juego."
   ],
   "puyol": [
@@ -87,10 +78,7 @@
   "offside": [
     "Infracción que ocurre cuando un jugador está más cerca de la portería contraria que el penúltimo defensor al recibir el balón.",
     "Regla básica del fútbol."
-  ],
-  "roja": [
-    "Sanción que se le muestra a un jugador para expulsarlo del partido.",
-    "Significa que no puede continuar jugando."
+
   ],
   "amarilla": [
     "Advertencia que se le da a un jugador por comportamiento antideportivo.",
@@ -107,10 +95,7 @@
   "penal": [
     "Falta grave cometida dentro del área que da lugar a un tiro desde el punto de penalti.",
     "Situación de alto riesgo para el equipo defensor."
-  ],
-  "pase": [
-    "Acción de enviar el balón a un compañero.",
-    "Técnica fundamental para mantener la posesión del balón."
+
   ],
   "remate": [
     "Acción de golpear el balón para intentar marcar un gol.",
@@ -126,8 +111,8 @@
     "Cada equipo tiene un número limitado de cambios."
   ],
   "prórroga": [
-    "Tiempo adicional que se juega cuando un partido termina en empate después de los 90 minutos reglamentarios.",
-    "Dos tiempos de 15 minutos."
+    "Tiempo adicional que se juega cuando un partido termina en empate después de los noventa minutos reglamentarios.",
+    "Dos tiempos de quince minutos."
   ],
   "penaltis": [
     "Método de desempate utilizado al final de un partido que ha terminado en empate.",
@@ -144,10 +129,7 @@
   "torneo": [
     "Serie de partidos jugados entre equipos para determinar un campeón.",
     "Puede ser eliminatorio o por puntos."
-  ],
-  "liga": [
-    "Competición en la que varios equipos juegan entre sí para ganar puntos y determinar un ganador.",
-    "Ejemplo: La Liga, Premier League."
+
   ],
   "centrocampista": [
     "Jugador que actúa en la zona media del campo.",
@@ -191,6 +173,6 @@
   ],
   "henry": [
     "Exfutbolista francés, leyenda del Arsenal y del FC Barcelona.",
-    "Ganó la Copa del Mundo con Francia en 1998."
+    "Ganó la Copa del Mundo con Francia en Mil novecientos noventa y ocho."
   ]
 }

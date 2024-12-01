@@ -1205,10 +1205,15 @@ def main():
     
     while bandera_errores:
         try: 
+            lista_cargada = LeerJSON(tematica)
+            palabras,definiciones_1,definiciones_2,definiciones_3 = cargarListas(lista_cargada)
+            diccionario_coincidencias = Buscolista_coincidencias(palabras)
+            tablero = ConstruccionTableroVacio()
             palabras_para_jugar,lista_direcciones,lista_coincidencias,dependencia_decima_palabra = LogicaConstruccion(palabras,diccionario_coincidencias)
             bandera_errores = False
         except AttributeError:
             print("No se encontró una combinación, reintentando...")
+            continue
 
     palabras_con_indice = AgregoIndice(palabras_para_jugar)
     producto_final, coordenadas = ConstruirTablero(tablero, palabras_con_indice, lista_coincidencias, lista_direcciones,dependencia_decima_palabra)
