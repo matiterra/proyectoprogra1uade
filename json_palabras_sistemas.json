@@ -1,4 +1,212 @@
 {
+  "acceso": ["El acto de entrar, transitar, conocer o consultar información", "Posibilidad de utilizar los activos de información de un organismo u organización"],
+  "troyano": ["Programa que, además de realizar las funciones para las que aparentemente ha sido diseñado, realiza otras normalmente maliciosas sin conocimiento del usuario."],
+  "conformidad": [
+    "Ser conforme, análogo o semejante; estar de acuerdo con ciertas normas, reglas o preceptos."
+],
+  "datos": [
+    "Información preparada para ser procesada, explotada y transmitida por un sistema o programa informático."
+],
+"deepfake": [
+    "Forma de vídeo manipulado que utiliza técnicas de síntesis de imagen humana para crear representaciones artificiales hiperrealistas de un ser humano.",
+    "Estos vídeos suelen crearse mezclando un vídeo existente con nuevas imágenes, audio y vídeo para crear la ilusión del habla.",
+    "Este proceso se lleva a cabo mediante redes generativas adversariales (GAN)."
+],
+"ciberdefensa": [
+    "Acciones realizadas en el ciberespacio, en el ámbito de la planificación nacional a nivel estratégico, coordinadas e integradas por el Ministerio de Defensa.",
+    "Tiene el objetivo de proteger los activos de información de interés para la defensa nacional, obtener datos para la producción de conocimiento de inteligencia y buscar la superioridad sobre los sistemas de información del adversario."
+],
+"desarrollo": [
+    "Incluye actividades de desarrollo y evolución (mantenimiento evolutivo, perfectivo, adaptativo e integrador) de aplicaciones de software en plataformas web, de escritorio y móviles.",
+    "Incluye el análisis y la recopilación de requisitos, la creación y actualización de artefactos de documentación y del código fuente de la aplicación, así como la realización de pruebas funcionales."
+],
+"descarga": [
+    "Acción de copiar un archivo o documento de otro ordenador a través de Internet a su ordenador local."
+],
+"ciberespionaje": [
+    "Actividad que consiste en ciberataques dirigidos contra la confidencialidad de los sistemas TIC con el objetivo de obtener datos sensibles e información sobre los planes y actividades de un gobierno, institución, empresa o individuo.",
+    "Normalmente lanzados y gestionados por servicios de inteligencia extranjeros o empresas competidoras."
+],
+"evento": [
+    "Un suceso identificado de un sistema, servicio o red que indica una posible violación de la política de seguridad de la información o falta de controles.",
+    "También puede ser una situación desconocida previamente que puede ser relevante para la seguridad de la información."
+],
+"framework": [
+    "Estructura básica que actúa como una especie de plataforma de desarrollo, donde existen herramientas, guías, sistemas y componentes capaces de agilizar todo el proceso de desarrollo de soluciones.",
+    "Ayuda a los especialistas a realizar su trabajo."
+],
+"github": [
+    "Plataforma para alojar código fuente y archivos con control de versiones mediante Git.",
+    "Permite a programadores, utilitarios o cualquier usuario registrado en la plataforma contribuir a proyectos privados y/o de código abierto desde cualquier parte del mundo."
+],
+"imagen": [
+    "Copia idéntica del sistema operativo o de las aplicaciones utilizadas para la restauración y/o la instalación optimizada de un entorno estándar en un recurso informático."
+],
+"incidente": [
+    "Un suceso, acción u omisión que haya permitido, o pueda permitir, el acceso no autorizado, la interrupción o el cambio de las operaciones (incluida la toma de control)"
+],
+"integridad": [
+    "Propiedad por la que se garantiza que la información no ha sido modificada o destruida de forma no autorizada o accidental."
+],
+"intranet": [
+    "Red privada, accesible sólo a los miembros de la organización a la que sirve.",
+    "Utiliza los mismos recursos y protocolos que Internet, pero suele estar separada de ella por cortafuegos."
+],
+"parche": [
+    "Actualizaciones del sistema."
+],
+"cuarentena": [
+    "Periodo en el que se vigilan archivos o programas informáticos cuando no se tiene certeza sobre su origen o el tipo de actividades que realizan."
+],
+"recuperación": [
+    "El proceso de recuperar datos y hacer que los datos guardados en una determinada imagen de copia de seguridad estén disponibles."
+],
+"spyware": [
+    "Un tipo específico de código malicioso.",
+    "Programa diseñado para supervisar las actividades de un sistema y enviar la información recopilada a terceros."
+],
+"vulnerabilidad": [
+    "Conjunto de factores internos o causa potencial de un incidente no deseado, que podría dar lugar a un riesgo para un sistema."
+],
+"zombi": [
+    "Nombre que recibe un ordenador infectado por un bot porque puede ser controlado a distancia, sin que su propietario lo sepa."
+],
+"spam": [
+    "Término utilizado para referirse a los correos electrónicos no solicitados, que suelen enviarse a un gran número de personas."
+],
+"switch": [
+    "Recurso informático que permite interconectar dos o más activos de información físicos o virtuales."
+],
+"ciberseguridad": [
+    "Acciones destinadas a la seguridad de las operaciones, con el fin de garantizar que los sistemas de información sean capaces de resistir en el ciberespacio acontecimientos capaces de poner en peligro la disponibilidad, integridad, confidencialidad y autenticidad de los datos almacenados."
+],
+"protocolo": [
+    "Conjunto de parámetros que definen cómo debe transferirse la información."
+],
+"primacía": [
+    "Calidad de la información recogida en origen, con el mayor detalle posible, sin modificaciones."
+],
+"intrusión": [
+    "Incidente de seguridad en el que el ataque ha tenido éxito y ha provocado el acceso, la manipulación o la destrucción de información en un ordenador o en el sistema de una organización."
+],
+"internet": [
+    "Asociación mundial de redes informáticas interconectadas que utilizan protocolos de comunicación de datos."
+],
+"hacking": [
+    "Acto de programar o utilizar cualquier otro recurso para intentar entrar en un sistema o modificarlo."
+],
+"ciberguerra": [
+    "Actos de guerra en los que se utilizan predominantemente elementos de las TIC a escala suficiente durante un periodo de tiempo específico."
+],
+"cortafuegos": [
+    "Recurso destinado a impedir el acceso no autorizado a una determinada red o conjunto de redes.", "Pueden implementarse en hardware o software, o en ambos."
+],
+"documento": [
+    "Unidad de registro de información, cualquiera que sea su soporte o formato."
+],
+"criptografía": [
+    "Arte de proteger la información transformándola en un texto cifrado (encriptado)", "Se hace mediante una clave de encriptación y procedimientos informáticos previamente establecidos."
+],
+"blockchain": [
+    "Una base de datos que mantiene un conjunto de registros en continuo crecimiento: los nuevos registros sólo se añaden a la cadena existente y no se elimina ningún registro."
+],
+"autenticación": [
+    "Proceso que busca verificar la identidad digital de una entidad en un sistema cuando solicita acceso a dicho sistema.",
+    "El proceso se lleva a cabo mediante reglas preestablecidas, normalmente comparando las credenciales presentadas por la entidad con otras ya predefinidas en el sistema, reconociendo a las partes implicadas en un proceso como auténticas o legítimas."
+],
+"adware": [
+    "Del inglés Advertising Software, es un tipo específico de software espía diseñado específicamente para mostrar anuncios.",
+    "Puede utilizarse legítimamente, cuando se incorpora a programas y servicios, como una forma de patrocinio o retribución económica para quienes desarrollan programas o prestan servicios gratuitos."
+],
+"ciberarma": [
+    "Software, hardware y firmware diseñados o aplicados específicamente para causar daños a través del ciberespacio.",
+    "Esta categoría incluye herramientas de acceso no autorizado, virus, gusanos, troyanos, DoS, DDoS, botnets y rootkits."
+],
+"keylogger": [
+    "Un tipo específico de programa espía.",
+    "Programa capaz de capturar y almacenar las pulsaciones realizadas por el usuario en el teclado del ordenador."
+],
+"virus": [
+    "Sección oculta y autorreplicante de un programa informático, generalmente de lógica maliciosa, que se propaga infectando."
+],
+"gusano": [
+    "Programa capaz de propagarse automáticamente por las redes, enviando copias de sí mismo de un ordenador a otro."
+],
+"autocompletar": [
+    "Característica que funciona en distintas aplicaciones y que nos completa operaciones utilizadas frecuentemente."
+],
+"athlon": [
+    "Nombre del último procesador de AMD que puede funcionar a velocidades que oscilan desde los quinientos a setecientos MHz."
+],
+"árbol": [
+    "Estructura de datos en la cual los registros son almacenados de manera jerárquica."
+],
+"ascii": [
+    "American Standard Code of Information Interchange."
+],
+"bookmark": [
+    "Anotación, en el navegador, de una dirección de Internet que se almacena para agilizar su uso posterior.",
+    "En el programa Internet Explorer, se llama 'Favoritos'."
+],
+"cibercafé": [
+    "Bar donde, además de beber y comer, los clientes pueden usar computadoras para acceder a Internet."
+],
+"celeron": [
+    "Microprocesador de la familia Intel, de menor costo que el Pentium dos."
+],
+"cookie": [
+    "Pequeño archivo de texto que un sitio web coloca en el disco rígido de una computadora que lo visita.",
+    "Al mismo tiempo, recoge información sobre el usuario."
+],
+"ethernet": [
+    "Tecnología para red de área local.",
+    "Fue desarrollada originalmente por Xerox y posteriormente por Xerox, DEC e Intel."
+],
+"fuente": [
+    "Variedad completa de caracteres de imprenta de un determinado estilo."
+],
+"gateway": [
+    "Puerta; acceso; pasarela.",
+    "Punto de enlace entre dos sistemas de redes."
+],
+"hipertexto": [
+    "Textos enlazados entre sí.",
+    "Haciendo clic con el mouse, el usuario pasa de un texto a otro, vinculado con el anterior."
+],
+"keyword": [
+    "Palabra clave para cualquier búsqueda."
+],
+"linux": [
+    "Sistema operativo gratuito para computadoras personales derivado de Unix."
+],
+"macintosh": [
+    "Computadora que Apple empezó a fabricar en mil novecientos ochenta y cuatro.",
+    "Fue la primera computadora personal que incorporó una interfaz gráfica, con el propósito de facilitar un uso más intuitivo de la máquina."
+],
+"motherboard": [
+    "Placa madre. Placa que contiene los circuitos impresos básicos de la computadora, la CPU, la memoria RAM y slots en los que se pueden insertar otras placas (de red, de audio, etc.)."
+],
+"office": [
+    "Suite de Microsoft para trabajo de oficina; incluye procesador de texto, base de datos y planilla de cálculo."
+],
+"pixel": [
+    "Combinación de 'picture' y 'element'.",
+    "Elemento gráfico mínimo con el que se componen las imágenes en la pantalla de una computadora."
+],
+"resolución": [
+    "Número máximo de pixeles que se ven en una pantalla.",
+    "Dos ejemplos: Ochocientos por seiscientos y seiscientos cuarenta por cuatrocientos ochenta."
+],
+"telemática": [
+    "Combinación de las palabras 'telecomunicaciones' e 'informática'.",
+    "Disciplina que asocia las telecomunicaciones con los recursos de la informática."
+],
+"toolbar": [
+    "Barra de herramientas en inglés."
+],
+
+
+  "antimalware": ["Software de protección utilizado para prevenir, detectar y eliminar programas maliciosos"],
   "sistema": ["Conjunto de elementos que interactúan entre sí para cumplir un objetivo."],
   "algoritmo": ["Conjunto de reglas que permiten resolver un problema en pasos finitos."],
   "programa": ["Conjunto de instrucciones que una computadora ejecuta para realizar tareas."],
@@ -38,7 +246,7 @@
   "modelo": ["Representación abstracta de un sistema, proceso o estructura."],
   "virtual": ["Simulación de un sistema o entorno que no existe físicamente."],
   "encriptar": ["Transformar información para protegerla de accesos no autorizados."],
-  "binario": ["Sistema numérico que utiliza solo los dígitos 0 y 1."],
+  "binario": ["Sistema numérico que utiliza solo los dígitos cero y uno."],
   "rutinas": ["Conjunto de instrucciones que se repiten con frecuencia en un programa."],
   "vector": ["Estructura de datos que contiene elementos organizados en secuencia."],
   "cluster": ["Conjunto de servidores que actúan como una unidad."],
