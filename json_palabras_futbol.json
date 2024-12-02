@@ -208,12 +208,57 @@
     "Técnica acrobática que se suele usar cuando un jugador patea el balón por encima de su cabeza."
   ],
   "pelota": ["Elemento esférico en torno al que gira un partido de fútbol."],
-  "capitán": ["Jugador que mantiene al equipo unido y da ánimos."],
+  "capitán": [
+    "Jugador que lidera al equipo dentro y fuera del campo.",
+    "Es el encargado de comunicarse con el árbitro."
+  ],
   "interceptar": [
     "Cuando un jugador corta o desvía la trayectoria de otro, impidiéndole avanzar."
   ],
   "jugador": ["Persona que practica este deporte y forma parte de un equipo."],
   "liga": [
     "Asociación deportiva integrada por clubes y sociedades anónimas que participan en las categorías profesionales"
+  ],
+  "bicicleta": [
+    "Movimiento técnico que simula un cambio de dirección para desorientar al oponente."
+  ],
+  "cabezazo": ["Acción de golpear la pelota con la cabeza."],
+  "goleada": ["Victoria por un amplio margen de goles."],
+  "gambeta": [
+    "Habilidad de un jugador para esquivar oponentes con movimientos rápidos."
+  ],
+  "canillera": ["Protección para las piernas usada durante el juego."],
+  "pelotazo": ["Disparo fuerte y directo del balón."],
+  "suplente": [
+    "Jugador que no inicia el partido y puede entrar en sustitución de otro."
+  ],
+  "barrera": ["Formación de jugadores para bloquear un tiro libre directo."],
+  "benzema": [
+    "Delantero francés con excelente técnica y capacidad goleadora.",
+    "Ha jugado la mayor parte de su carrera en el Real Madrid."
+  ],
+  "modric": [
+    "Centrocampista croata reconocido por su visión de juego y precisión.",
+    "Ganó el Balón de Oro en 2018."
+  ],
+  "lewandowski": [
+    "Delantero polaco conocido por su capacidad goleadora.",
+    "Ha sido una pieza clave en equipos como Bayern Múnich y FC Barcelona."
+  ],
+  "cannavaro": [
+    "Exdefensor italiano, ganador del Balón de Oro en 2006.",
+    "Lideró a Italia en la conquista de la Copa del Mundo de 2006."
+  ],
+  "goleador": [
+    "Jugador destacado por marcar un gran número de goles.",
+    "Generalmente ocupa posiciones ofensivas."
+  ],
+  "bernabeu": [
+    "Estadio del Real Madrid, uno de los más prestigiosos del mundo.",
+    "Ubicado en Madrid, España, ha sido escenario de numerosas finales."
+  ],
+  "maracana": [
+    "Estadio icónico ubicado en Río de Janeiro, Brasil.",
+    "Ha sido sede de finales de Copa del Mundo y otros eventos históricos."
   ]
 }
