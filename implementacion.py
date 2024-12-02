@@ -856,7 +856,6 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
                                         bandera3 = False
                                     elif entrada_pista_extra in ["S", "N"]:
                                         PedirPista = entrada_pista_extra
-                                        # LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones3, PedirPista)
                                         IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones2, definiciones3, lista_comodin)
                                         bandera3 = False
                                     else:
@@ -944,27 +943,6 @@ def cargarListas(lista):
     return palabras,definiciones_1,definiciones_2,definiciones_3
 
 
-# def LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones3, PedirPista):
-#     '''Función encargada de manejar la lógica de mostrar la tercera pista
-#        Parámetros de entrada: SeleccionaNumero (entero con número de palabra)
-#                              palabras_para_jugar (lista de palabras en juego)
-#                              palabras (lista completa de palabras)
-#                              definiciones3 (lista de terceras definiciones)
-#                              PedirPista (string "S"/"N")
-#        Variables de salida: No retorna valores. Imprime la pista si existe'''
-
-#     indice_palabra = SeleccionaNumero 
-#     palabra_elegida = palabras_para_jugar[indice_palabra]
-#     indice_palabra_elegida = palabras.index(palabra_elegida)
-
-#     if PedirPista == "S":
-#         pista3 = definiciones3[indice_palabra_elegida]
-#         if pista3 == "-":
-#             print("No hay definiciones extras para esta palabra.")
-#         else:
-#             print("La pista extra es: ", pista3)
-
-#     return pista3
 
 
 def LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones2, PedirPista):
