@@ -1088,8 +1088,8 @@ def Login():
         if opcion == '1':
             registro_exitoso = False
             while not registro_exitoso:
-                nombre_usuario = input("Ingrese un nombre de usuario: ")
-                contrasenia = input("Ingrese una contraseña: ")
+                nombre_usuario = input("Ingrese un nombre de usuario (debe contener 5 letras y luego 2 números): ")
+                contrasenia = input("Ingrese una contraseña (debe contener 6 caracteres alfanuméricos): ")
                 registro_exitoso = registrar_usuario(nombre_usuario, contrasenia)
             opcion_valida = True
             
@@ -1199,7 +1199,12 @@ def cargar_puntajes():
     except json.JSONDecodeError:
         print("Error: Problema al leer el archivo de credenciales")
         return {}
+import os
+
 def printear_texto_descripcion(texto, width=80):
+    # Obtiene el ancho de la terminal
+    terminal_width = os.get_terminal_size().columns
+
     lineas = texto.split('\n')
     lineas_enmarcadas = []
 
@@ -1207,34 +1212,46 @@ def printear_texto_descripcion(texto, width=80):
     ancho_maximo_texto = max(len(linea) for linea in lineas)
     ancho_cuadro = max(width, ancho_maximo_texto + 4)
 
+    # Construye la parte superior del marco
     lineas_enmarcadas.append('+' + '-' * (ancho_cuadro - 2) + '+')
     
+    # Crea las líneas con el texto centrado dentro del recuadro
     for linea in lineas:
         linea_centrada = linea.center(ancho_maximo_texto)
         linea_ajustada = linea_centrada.center(ancho_cuadro - 2)
         lineas_enmarcadas.append(f'|{linea_ajustada}|')
     
+    # Construye la parte inferior del marco
     lineas_enmarcadas.append('+' + '-' * (ancho_cuadro - 2) + '+')
     
+    # Imprime cada línea centrada respecto al ancho de la terminal
     for linea_enmarcada in lineas_enmarcadas:
-        print(linea_enmarcada)
+        print(linea_enmarcada.center(terminal_width))
+def imprimir_centrado_ascii(ascii_art):
+    # Obtiene el ancho de la terminal
+    terminal_width = os.get_terminal_size().columns
+    
+    # Divide el arte ASCII en líneas y centra cada una
+    for linea in ascii_art.strip().split('\n'):
+        print(linea.center(terminal_width))
         
+ascii_art = r"""
+  ____  _                           _     _                      _____                       _    _           _      
+ |  _ \(_)                         (_)   | |                    / ____|                     | |  | |         | |     
+ | |_) |_  ___ _ ____   _____ _ __  _  __| | ___  ___    __ _  | |     _ __ _   ___  ___   _| |  | | __ _  __| | ___ 
+ |  _ <| |/ _ \ '_ \ \ / / _ \ '_ \| |/ _` |/ _ \/ __|  / _` | | |    | '__| | | \ \/ / | | | |  | |/ _` |/ _` |/ _ \
+ | |_) | |  __/ | | \ V /  __/ | | | | (_| | (_) \__ \ | (_| | | |____| |  | |_| |>  <| |_| | |__| | (_| | (_| |  __/
+ |____/|_|\___|_| |_|\_/ \___|_| |_|_|\__,_|\___/|___/  \__,_|  \_____|_|   \__,_/_/\_\\__, |\____/ \__,_|\__,_|\___|
+                                                                                        __/ |                        
+                                                                                       |___/                         
+"""
 texto = """Bienvenido a CruXYuade, un juego de crucigrama minimalista diseñado para desafiar tu vocabulario directamente desde la terminal.
 Pon a prueba tu ingenio, completa palabras, y desbloquea nuevos niveles de dificultad. ¡Cada crucigrama es único, y la diversión no tiene límites!
 Elige una opción, ingresa tus respuestas, y deja que el arte ASCII te motive en cada victoria."""
 
 def main():
 
-    print(r"""
-  ____  _                           _     _                      _____                       _    _           _      
- |  _ \(_)                         (_)   | |                    / ____|                     | |  | |         | |     
- | |_) |_  ___ _ ____   _____ _ __  _  __| | ___  ___    __ _  | |     _ __ _   ___  ___   _| |  | | __ _  __| | ___ 
- |  _ <| |/ _ \ '_ \ \ / / _ \ '_ \| |/ _` |/ _ \/ __|  / _` | | |    | '__| | | \ \/ / | | | |  | |/ _` |/ _` |/ _ \\
- | |_) | |  __/ | | \ V /  __/ | | | | (_| | (_) \__ \ | (_| | | |____| |  | |_| |>  <| |_| | |__| | (_| | (_| |  __/
- |____/|_|\___|_| |_|\_/ \___|_| |_|_|\__,_|\___/|___/  \__,_|  \_____|_|   \__,_/_/\_\\__, |\____/ \__,_|\__,_|\___|
-                                                                                        __/ |                        
-                                                                                       |___/                         
-""")
+    imprimir_centrado_ascii(ascii_art)
     printear_texto_descripcion(texto)
 
 
