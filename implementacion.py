@@ -131,11 +131,11 @@ def BuscarPrimerPalabra(lista):
     '''Función encargada de seleccionar la primera palabra del crucigrama
        Parámetros de entrada: lista (lista de strings con todas las palabras disponibles)
        Variables de salida: palabras_para_jugar (lista con un único string, palabra seleccionada aleatoriamente 
-                          de 7 o más letras)'''
+                          de 9 o más letras)'''
     palabras_para_jugar = []
     while len(palabras_para_jugar) == 0:
         palabra = random.choice(lista)
-        if len(palabra) >= 7:
+        if len(palabra) >= 9:
             palabras_para_jugar.append(palabra)
     return palabras_para_jugar
 
@@ -310,9 +310,12 @@ def logica_construccion_segunda_palabra(palabras_partida,diccionario,lista_direc
        Variables de salida: palabras_partida (lista actualizada con la nueva palabra)
                           lista_coincidencias (lista actualizada con nuevas coincidencias)
                           lista_direcciones (lista actualizada con nueva dirección)'''
-    
+
     letra_palabra = elegir_indice_y_letra(palabras_partida,0)
     siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,
+    "no")
+    while len(siguiente_palabra) < 7:
+        siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,
     "no")
     coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,0,"principio")
 
@@ -320,7 +323,7 @@ def logica_construccion_segunda_palabra(palabras_partida,diccionario,lista_direc
     lista_coincidencias.append(coincidencia)
     lista_direcciones.append("vertical-" + flag_direccion)
     palabras_partida.append(siguiente_palabra)
-        
+
     return palabras_partida,lista_coincidencias,lista_direcciones
     
 def logica_construccion_tercer_palabra(palabras_partida,diccionario,lista_direcciones,lista_coincidencias):
@@ -337,12 +340,18 @@ def logica_construccion_tercer_palabra(palabras_partida,diccionario,lista_direcc
             flag_direccion = "sur"
             siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,
         "si",0,1)
+            while len(siguiente_palabra) < 7:
+                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,
+                "no")
             coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,0,"final-sur")
                 
     else:
             flag_direccion = "norte"
             siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,
-                                                                             "si", -1, -1)
+                                                                            "si", -1, -1)
+            while len(siguiente_palabra) < 7:
+                siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,
+                "no")
             coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,0,"final-norte")
             
     lista_coincidencias.append(coincidencia)
