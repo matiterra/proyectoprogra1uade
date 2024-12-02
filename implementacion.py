@@ -214,6 +214,9 @@ def elegir_palabra_e_indice(diccionario, letra, palabras_partida, dependencia="s
     siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra).items()))
     max_intentos = 100  # Número máximo de intentos
     intentos = 0
+    
+    if intentos >= max_intentos:
+        raise ValueError("No se pudo encontrar una palabra válida después de múltiples intentos")
 
     if dependencia == "no":
         while siguiente_palabra in palabras_partida and intentos < max_intentos:
@@ -226,8 +229,7 @@ def elegir_palabra_e_indice(diccionario, letra, palabras_partida, dependencia="s
             siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra).items()))
             intentos += 1
     
-    if intentos >= max_intentos:
-        raise ValueError("No se pudo encontrar una palabra válida después de múltiples intentos")
+    
 
     return siguiente_palabra, indice_coincidencia
 def elegir_coincidencia (palabras_partida,indice_coincidencia,letra_palabra,indice_palabra,seleccion_posicion = "principio"):
@@ -286,13 +288,13 @@ def elegir_indice_y_letra(palabras_partida,indice_palabra,direccion = "norte"):
                              direccion (string con la orientación deseada)
        Variables de salida: letra_palabra (char con la letra seleccionada de la palabra)'''
     if direccion == "norte":
-        if len(palabras_partida[indice_palabra]) > 8:
+        if len(palabras_partida[indice_palabra]) > 9:
             indice_letra_a_buscar = random.randint(0,2)
         else:
             indice_letra_a_buscar = 0
 
     else:
-        if len(palabras_partida[indice_palabra]) > 8:
+        if len(palabras_partida[indice_palabra]) > 9:
             indice_letra_a_buscar = random.choice([-1,-2,-3])
         else:
             indice_letra_a_buscar = -1
@@ -314,7 +316,7 @@ def logica_construccion_segunda_palabra(palabras_partida,diccionario,lista_direc
     letra_palabra = elegir_indice_y_letra(palabras_partida,0)
     siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,
     "no")
-    while len(siguiente_palabra) < 7:
+    while len(siguiente_palabra) < 7 or siguiente_palabra in palabras_partida:
         siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,
     "no")
     coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,0,"principio")
@@ -340,18 +342,18 @@ def logica_construccion_tercer_palabra(palabras_partida,diccionario,lista_direcc
             flag_direccion = "sur"
             siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,
         "si",0,1)
-            while len(siguiente_palabra) < 7:
+            while len(siguiente_palabra) < 7 or siguiente_palabra in palabras_partida:
                 siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,
-                "no")
+        "si",0,1)
             coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,0,"final-sur")
                 
     else:
             flag_direccion = "norte"
             siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,
                                                                             "si", -1, -1)
-            while len(siguiente_palabra) < 7:
+            while len(siguiente_palabra) < 6  or siguiente_palabra in palabras_partida:
                 siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,
-                "no")
+        "si",0,1)
             coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,0,"final-norte")
             
     lista_coincidencias.append(coincidencia)
@@ -374,12 +376,16 @@ def logica_construccion_cuarta_y_quinta_palabra(palabras_partida,diccionario,lis
                 letra_palabra = elegir_indice_y_letra(palabras_partida,indice_palabra_dependencia,"norte")
                 
                 siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"no")
+                while siguiente_palabra in palabras_partida:
+                    siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"no")
                 coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,indice_palabra_dependencia,"principio")
                 
     else:
                 letra_palabra = elegir_indice_y_letra(palabras_partida,indice_palabra_dependencia,"sur")
                 
                 siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"no")
+                while siguiente_palabra in palabras_partida:
+                    siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"no")
                 coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,indice_palabra_dependencia,"final")
     flag_direccion = definir_direccion(siguiente_palabra,coincidencia[1])
     lista_coincidencias.append(coincidencia)
@@ -401,13 +407,17 @@ def logica_construccion_sexta_y_septima_palabra(palabras_partida,diccionario,lis
     if lista_direcciones[indice_primera_palabra_dependencia].count("norte"):
             if lista_direcciones[indice_segunda_palabra_dependencia].count("norte"):
                     letra_palabra = elegir_indice_y_letra(palabras_partida,indice_segunda_palabra_dependencia,"norte")
-                    siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",-1,-2)
+                    siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",-1,-1)
+                    while siguiente_palabra in palabras_partida:
+                         siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",-1,-1)
                     coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,indice_segunda_palabra_dependencia,"principio-norte")
                 
             
             elif lista_direcciones[indice_segunda_palabra_dependencia].count("sur"):
                     letra_palabra = elegir_indice_y_letra(palabras_partida,indice_segunda_palabra_dependencia,"sur")
-                    siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",-1,-2)
+                    siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",-1,-1)
+                    while siguiente_palabra in palabras_partida:
+                         siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",-1,-1)
                     coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,indice_segunda_palabra_dependencia,"final-norte")
                 
             lista_coincidencias.append(coincidencia)
@@ -417,12 +427,16 @@ def logica_construccion_sexta_y_septima_palabra(palabras_partida,diccionario,lis
     elif lista_direcciones[indice_primera_palabra_dependencia].count("sur"):
             if lista_direcciones[indice_segunda_palabra_dependencia].count("norte"):
                    letra_palabra = elegir_indice_y_letra(palabras_partida,indice_segunda_palabra_dependencia,"norte")
-                   siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",0,1)
+                   siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",0,0)
+                   while siguiente_palabra in palabras_partida:
+                        siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",0,0)
                    coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,indice_segunda_palabra_dependencia,"principio-sur")
                 
             elif lista_direcciones[indice_segunda_palabra_dependencia].count("sur"):
                     letra_palabra = elegir_indice_y_letra(palabras_partida,indice_segunda_palabra_dependencia,"sur")
-                    siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",0,1)
+                    siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",0,0)
+                    while siguiente_palabra in palabras_partida:
+                         siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"si",0,0)
                     coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,indice_segunda_palabra_dependencia,"final-sur")
                 
             lista_coincidencias.append(coincidencia)
@@ -445,12 +459,16 @@ def logica_construccion_octava_y_novena_palabra(palabras_partida,diccionario,lis
                 letra_palabra = elegir_indice_y_letra(palabras_partida,indice_palabra_dependencia,"norte")
                 
                 siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"no")
+                while siguiente_palabra in palabras_partida:
+                    siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"no")
                 coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,indice_palabra_dependencia,"principio")
                 
     else:
                 letra_palabra = elegir_indice_y_letra(palabras_partida,indice_palabra_dependencia,"sur")
                 
                 siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"no")
+                while siguiente_palabra in palabras_partida:
+                    siguiente_palabra, indice_coincidencia = elegir_palabra_e_indice(diccionario,letra_palabra,palabras_partida,"no")
                 coincidencia = elegir_coincidencia(palabras_partida,indice_coincidencia,letra_palabra,indice_palabra_dependencia,"final")
     flag_direccion = definir_direccion(siguiente_palabra,coincidencia[1])
     lista_coincidencias.append(coincidencia)
@@ -472,6 +490,7 @@ def logica_construccion_decima_palabra(palabras_partida,diccionario,lista_direcc
                           lista_direcciones (lista actualizada con nueva dirección)'''
     if indice_palabra_dependencia == 7:
         palabras_partida,lista_coincidencias,lista_direcciones = logica_construccion_sexta_y_septima_palabra(palabras_partida,diccionario,lista_direcciones,lista_coincidencias,5,7)
+        
     else:
         palabras_partida,lista_coincidencias,lista_direcciones = logica_construccion_sexta_y_septima_palabra(palabras_partida,diccionario,lista_direcciones,lista_coincidencias,6,8)
         

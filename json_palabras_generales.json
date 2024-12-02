@@ -160,13 +160,11 @@
     "Interrumpir algo, como una acción o un movimiento"
   ],
   "difundir": ["Extender, esparcir, propagar físicamente"],
-  
   "divertido": [
     "Entretenido, ocurrente, ameno",
     "Que divierte o hace pasar momentos agradables y de disfrute."
   ],
   "dólar": ["Nombre de la divisa oficial de USA"],
-
   "educar": [
     "Desarrollar o perfeccionar las facultades intelectuales y morales del niño o del joven por medio de preceptos, ejercicios, ejemplos, etcétera."
   ],
@@ -179,7 +177,6 @@
     "Significa quedarte con algo y dejar algo"
   ],
   "emocionar": ["Conmover el ánimo", "Conmover el ánimo"],
-
   "empresa": [
     "Unidad de organización dedicada a actividades industriales, mercantiles o de prestación de servicios con fines lucrativos.",
     "Acción o tarea que entraña dificultad y cuya ejecución requiere decisión y esfuerzo."
@@ -193,7 +190,6 @@
     "Hacer que algo se dirija o sea llevado a alguna parte."
   ],
   "entender": ["Tener idea clara de las cosas.", "Comprender, ver, asimilar"],
-
   "escribir": [
     "Componer libros, discursos, etcétera",
     "Representar las palabras o las ideas con letras u otros signos trazados en papel u otra superficie."
@@ -259,13 +255,11 @@
     "Facultad para representar en la mente las imágenes de las cosas reales o ideales"
   ],
   "importante": ["Que tiene importancia."],
-
   "inclusión": [
     "Acción y efecto de incluir.",
     "Pertenecer o ser parte de algo. "
   ],
-  "iniciar": ["El comienzo de algo (palabra en infinitivo)", "Dar principio a algo"],
-
+  "iniciar": ["Comenzar", "Dar principio a algo"],
   "innovar": [
     "Mudar o alterar algo, introduciendo novedades.",
     "Introducción de nuevas formas de diseñar, producir o vender bienes o servicios"
@@ -275,15 +269,10 @@
     "Deseo que motiva una acción"
   ],
   "intentar": ["Tener ánimo de hacer algo.", "Propósito, intención, designio."],
-
   "interesante": ["Que interesa o que es digno de interés.", "Atrayente"],
-
   "inversión": ["Acción y efecto de invertir."],
-
   "jardín": ["Terreno donde se cultivan plantas"],
-
   "juego": ["Acción y efecto de jugar por entretenimiento."],
-
   "juntar": [
     "Unir unas cosas con otras.",
     "Reunir, congregar, poner en el mismo lugar."
@@ -490,7 +479,10 @@
   "viajar": [
     "Desplazarse de un lugar a otro, generalmente por placer o trabajo.",
     "Conocer diferentes culturas y lugares."
-
+  ],
+  "vida": [
+    "Estado de los seres que tienen funciones biológicas.",
+    "Conjunto de experiencias y eventos que se viven."
   ],
   "vivir": [
     "Existir o tener vida.",
