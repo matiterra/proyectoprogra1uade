@@ -1009,21 +1009,31 @@ def ElegirTematicas():
     return tematica
 
 
+
 def LeerJSON(tematica):
     '''Función encargada de leer el archivo JSON correspondiente a la temática elegida
        Parámetros de entrada: tematica (entero con la opción elegida)
        Variables de salida: lista_palabras_definiciones (lista de listas con palabras y definiciones del JSON)'''
-    lista_json = []
+    
+    #Obtener el directorio actual del script
+    directorio_actual = os.path.dirname(os.path.abspath(__file__))
+    
+    #Definir el nombre del archivo JSON según la temática
     if tematica == 1:
-        jsonabrir = "json_palabras_generales.json"
-
-    if tematica == 2:
-        jsonabrir = "json_palabras_futbol.json"
-
-    if tematica == 3:
-        jsonabrir = "json_palabras_sistemas.json"        
-
-    with open(jsonabrir, "r", encoding="utf-8") as file:
+        nombre_archivo = "json_palabras_generales.json"
+    elif tematica == 2:
+        nombre_archivo = "json_palabras_futbol.json"
+    elif tematica == 3:
+        nombre_archivo = "json_palabras_sistemas.json"
+    else:
+        raise ValueError("Temática no válida")
+    
+    #Construir la ruta completa al archivo JSON
+    ruta_json = os.path.join(directorio_actual, nombre_archivo)
+    
+    #Leer el archivo JSON
+    lista_json = []
+    with open(ruta_json, "r", encoding="utf-8") as file:
         data = json.load(file)
         for clave in data.items():
             lista_json.append(list(clave))
