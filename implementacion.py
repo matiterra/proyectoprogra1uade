@@ -5,11 +5,23 @@ import json
 from functools import reduce
 # Función para registrar un nuevo usuario
 def registrar_usuario(nombre_usuario, contrasenia):
-    '''Función encargada del registro de nuevos usuarios en el sistema
-       Parámetros de entrada: nombre_usuario (string con el nombre de usuario a registrar)
-                             contrasenia (string con la contraseña del usuario)
-       Variables de salida: No retorna valores. Almacena en credenciales.json el usuario con su id, nombre, 
-                          contraseña y score inicial'''
+    '''Función encargada del registro de nuevos usuarios en el sistema.
+       Parámetros de entrada:
+       - nombre_usuario (string): el nombre de usuario a registrar, debe tener al menos 5 letras seguidas por 2 números.
+       - contrasenia (string): la contraseña del usuario, debe tener al menos 6 caracteres alfanuméricos.
+       Retorna:
+       - True si el registro es exitoso, False en caso contrario.
+    '''
+    # Verificar el formato del nombre de usuario
+    if not re.match(r"^[A-Za-z]{5,}\d{2}$", nombre_usuario):
+        print("El nombre de usuario debe tener al menos 5 letras seguidas de 2 números.")
+        return False
+
+    # Verificar el formato de la contraseña
+    if not re.match(r"^[A-Za-z0-9]{6,}$", contrasenia):
+        print("La contraseña debe tener al menos 6 caracteres alfanuméricos.")
+        return False
+
     try:
         # Intentar leer el archivo existente
         try:

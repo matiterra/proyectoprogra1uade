@@ -10,5 +10,17 @@
         "nombre_usuario": "1",
         "contraseña": "1",
         "score": 0
+    },
+    "luciano99": {
+        "id": 3,
+        "nombre_usuario": "luciano99",
+        "contraseña": "123",
+        "score": 71
+    },
+    "martini00": {
+        "id": 4,
+        "nombre_usuario": "martini00",
+        "contraseña": "martini00",
+        "score": 0
     }
 }
