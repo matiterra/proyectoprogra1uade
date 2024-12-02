@@ -19,7 +19,6 @@
   "entrenador": [
     "Persona que dirige las tácticas y estrategias de un equipo.",
     "Responsable de mejorar el rendimiento de los jugadores."
-
   ],
   "zidane": [
     "Exfutbolista y entrenador francés, famoso por su talento y visión de juego.",
@@ -36,7 +35,6 @@
   "mbappé": [
     "Futbolista francés, conocido por su velocidad y capacidad para marcar goles.",
     "Considerado uno de los mejores jugadores jóvenes del mundo."
-
   ],
   "iniesta": [
     "Futbolista español que marcó el gol de la victoria en la final de la Copa del Mundo de dos mil diez.",
@@ -78,7 +76,6 @@
   "offside": [
     "Infracción que ocurre cuando un jugador está más cerca de la portería contraria que el penúltimo defensor al recibir el balón.",
     "Regla básica del fútbol."
-
   ],
   "amarilla": [
     "Advertencia que se le da a un jugador por comportamiento antideportivo.",
@@ -95,7 +92,6 @@
   "penal": [
     "Falta grave cometida dentro del área que da lugar a un tiro desde el punto de penalti.",
     "Situación de alto riesgo para el equipo defensor."
-
   ],
   "remate": [
     "Acción de golpear el balón para intentar marcar un gol.",
@@ -129,7 +125,6 @@
   "torneo": [
     "Serie de partidos jugados entre equipos para determinar un campeón.",
     "Puede ser eliminatorio o por puntos."
-
   ],
   "centrocampista": [
     "Jugador que actúa en la zona media del campo.",
@@ -148,7 +143,7 @@
     "Hecho de materiales sintéticos o de cuero."
   ],
   "camiseta": [
-    "Prenda que usan los jugadores para identificarse dentro del campo.",
+    "Prenda del uniforme de un equipo que los jugadores llevan en la parte superior del cuerpo.",
     "Parte del uniforme de un equipo."
   ],
   "messi": [
@@ -174,5 +169,51 @@
   "henry": [
     "Exfutbolista francés, leyenda del Arsenal y del FC Barcelona.",
     "Ganó la Copa del Mundo con Francia en Mil novecientos noventa y ocho."
+  ],
+  "advertencia": [
+    "Acto por el cual el árbitro apercibe y censura verbalmente al infractor, el cual en ningún caso recibe sanción alguna por la infracción cometida.",
+    "También denominado «apercibimiento»."
+  ],
+  "amonestación": [
+    "Sanción disciplinaria de la que se dará parte a la autoridad competente"
+  ],
+  "expulsión": [
+    "Sanción disciplinaria en la que se obliga al jugador a abandonar el terreno de juego (y sus inmediaciones) por lo que resta de partido"
+  ],
+  "ventaja": [
+    "Concesión por la cual el árbitro permite que el juego continúe tras cometerse una infracción, en el caso de que esta decisión beneficie al equipo que ha sufrido dicha infracción."
+  ],
+  "arquero": ["Guardianes de la portería"],
+  "defender": [
+    "Acto de trabajar en equipo para impedir que el equipo contrario haga un gol."
+  ],
+  "asistencia": [
+    "Resultado de la contribución de un jugador a la jugada que concluyó en un gol"
+  ],
+  "contraataque": [
+    "Una estrategia ofensiva rápida que aprovecha los espacios abiertos dejados por el equipo contrario durante su ataque."
+  ],
+  "calcio": [
+    "Los italianos usan este término para referirse al fútbol. ",
+    "Viene de la palabra «calciare» que significa «chutar»."
+  ],
+  "rabona": [
+    "Se trata de un movimiento vistoso en el que el jugador pasa una pierna por detrás de la otra para golpear el balón.",
+    "Se suele utilizar para sorprender a los rivales o para tirar con estilo."
+  ],
+  "tijera": [
+    "Movimiento acrobático en el que el jugador salta de medio lado y golpea el balón en el aire."
+  ],
+  "chilena": [
+    "Técnica acrobática que se suele usar cuando un jugador patea el balón por encima de su cabeza."
+  ],
+  "pelota": ["Elemento esférico en torno al que gira un partido de fútbol."],
+  "capitán": ["Jugador que mantiene al equipo unido y da ánimos."],
+  "interceptar": [
+    "Cuando un jugador corta o desvía la trayectoria de otro, impidiéndole avanzar."
+  ],
+  "jugador": ["Persona que practica este deporte y forma parte de un equipo."],
+  "liga": [
+    "Asociación deportiva integrada por clubes y sociedades anónimas que participan en las categorías profesionales"
   ]
 }
