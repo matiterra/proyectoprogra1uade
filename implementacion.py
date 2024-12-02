@@ -2,6 +2,7 @@ import os
 import re
 import random
 import json
+from functools import reduce
 # Función para registrar un nuevo usuario
 def registrar_usuario(nombre_usuario, contrasenia):
     '''Función encargada del registro de nuevos usuarios en el sistema
@@ -215,8 +216,7 @@ def elegir_palabra_e_indice(diccionario, letra, palabras_partida, dependencia="s
     max_intentos = 100  # Número máximo de intentos
     intentos = 0
     
-    if intentos >= max_intentos:
-        raise ValueError("No se pudo encontrar una palabra válida después de múltiples intentos")
+    
 
     if dependencia == "no":
         while siguiente_palabra in palabras_partida and intentos < max_intentos:
@@ -228,7 +228,8 @@ def elegir_palabra_e_indice(diccionario, letra, palabras_partida, dependencia="s
                (siguiente_palabra[primer_indice] != letra and siguiente_palabra[segundo_indice] != letra)) and intentos < max_intentos:
             siguiente_palabra, indice_coincidencia = random.choice(list(diccionario.get(letra).items()))
             intentos += 1
-    
+    if intentos >= max_intentos:
+        raise ValueError("No se pudo encontrar una palabra válida después de múltiples intentos")
     
 
     return siguiente_palabra, indice_coincidencia
@@ -640,13 +641,10 @@ def AgregoIndice(palabras_partida):
     '''Función encargada de agregar índices numéricos a las palabras
        Parámetros de entrada: palabras_partida (lista de palabras sin índice)
        Variables de salida: palabras_con_indice (lista de palabras con formato "número-palabra")'''
-    devolucion_palabras = []
+    devolucion_palabras = list(map(lambda x: f"{x[0]}-{x[1]}", enumerate(palabras_partida)))
 
 
-    for i, palabra in enumerate(palabras_partida): #recorre palabras_partida y devuelve el indice y la palabra en la posición i
-        
-
-        devolucion_palabras.append(list(f"{i}"+ "-" + palabra)) #appendea a la lista las palabras de la siguiente forma: (0)-casa, (1)-gato, (2)-plaza
+    
 
 
     return devolucion_palabras 
@@ -858,7 +856,7 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
                                         bandera3 = False
                                     elif entrada_pista_extra in ["S", "N"]:
                                         PedirPista = entrada_pista_extra
-                                        LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones3, PedirPista)
+                                        # LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones3, PedirPista)
                                         IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones2, definiciones3, lista_comodin)
                                         bandera3 = False
                                     else:
@@ -946,27 +944,27 @@ def cargarListas(lista):
     return palabras,definiciones_1,definiciones_2,definiciones_3
 
 
-def LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones3, PedirPista):
-    '''Función encargada de manejar la lógica de mostrar la tercera pista
-       Parámetros de entrada: SeleccionaNumero (entero con número de palabra)
-                             palabras_para_jugar (lista de palabras en juego)
-                             palabras (lista completa de palabras)
-                             definiciones3 (lista de terceras definiciones)
-                             PedirPista (string "S"/"N")
-       Variables de salida: No retorna valores. Imprime la pista si existe'''
+# def LogicaTercerPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones3, PedirPista):
+#     '''Función encargada de manejar la lógica de mostrar la tercera pista
+#        Parámetros de entrada: SeleccionaNumero (entero con número de palabra)
+#                              palabras_para_jugar (lista de palabras en juego)
+#                              palabras (lista completa de palabras)
+#                              definiciones3 (lista de terceras definiciones)
+#                              PedirPista (string "S"/"N")
+#        Variables de salida: No retorna valores. Imprime la pista si existe'''
 
-    indice_palabra = SeleccionaNumero 
-    palabra_elegida = palabras_para_jugar[indice_palabra]
-    indice_palabra_elegida = palabras.index(palabra_elegida)
+#     indice_palabra = SeleccionaNumero 
+#     palabra_elegida = palabras_para_jugar[indice_palabra]
+#     indice_palabra_elegida = palabras.index(palabra_elegida)
 
-    if PedirPista == "S":
-        pista3 = definiciones3[indice_palabra_elegida]
-        if pista3 == "-":
-            print("No hay definiciones extras para esta palabra.")
-        else:
-            print("La pista extra es: ", pista3)
+#     if PedirPista == "S":
+#         pista3 = definiciones3[indice_palabra_elegida]
+#         if pista3 == "-":
+#             print("No hay definiciones extras para esta palabra.")
+#         else:
+#             print("La pista extra es: ", pista3)
 
-    return pista3
+#     return pista3
 
 
 def LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones2, PedirPista):
@@ -1234,10 +1232,12 @@ def main():
             diccionario_coincidencias = Buscolista_coincidencias(palabras)
             tablero = ConstruccionTableroVacio()
             palabras_para_jugar,lista_direcciones,lista_coincidencias,dependencia_decima_palabra = LogicaConstruccion(palabras,diccionario_coincidencias)
-            bandera_errores = False
+            
         except (AttributeError, ValueError):
             print("No se encontró una combinación, reintentando...")
             continue
+        else:
+            bandera_errores = False
         
 
     palabras_con_indice = AgregoIndice(palabras_para_jugar)
