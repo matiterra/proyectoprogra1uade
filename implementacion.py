@@ -1236,15 +1236,14 @@ def imprimir_centrado_ascii(ascii_art):
         print(linea.center(terminal_width))
         
 ascii_art = r"""
-  ____  _                           _     _                      _____                       _    _           _      
- |  _ \(_)                         (_)   | |                    / ____|                     | |  | |         | |     
- | |_) |_  ___ _ ____   _____ _ __  _  __| | ___  ___    __ _  | |     _ __ _   ___  ___   _| |  | | __ _  __| | ___ 
- |  _ <| |/ _ \ '_ \ \ / / _ \ '_ \| |/ _` |/ _ \/ __|  / _` | | |    | '__| | | \ \/ / | | | |  | |/ _` |/ _` |/ _ \
- | |_) | |  __/ | | \ V /  __/ | | | | (_| | (_) \__ \ | (_| | | |____| |  | |_| |>  <| |_| | |__| | (_| | (_| |  __/
- |____/|_|\___|_| |_|\_/ \___|_| |_|_|\__,_|\___/|___/  \__,_|  \_____|_|   \__,_/_/\_\\__, |\____/ \__,_|\__,_|\___|
-                                                                                        __/ |                        
-                                                                                       |___/                         
-"""
+______ _                           _     _                       _____           __   ____   __              _      
+| ___ (_)                         (_)   | |                     /  __ \          \ \ / /\ \ / /             | |     
+| |_/ /_  ___ _ ____   _____ _ __  _  __| | ___  ___     __ _   | /  \/_ __ _   _ \ V /  \ V /   _  __ _  __| | ___ 
+| ___ \ |/ _ \ '_ \ \ / / _ \ '_ \| |/ _` |/ _ \/ __|   / _` |  | |   | '__| | | |/   \   \ / | | |/ _` |/ _` |/ _ \
+| |_/ / |  __/ | | \ V /  __/ | | | | (_| | (_) \__ \  | (_| |  | \__/\ |  | |_| / /^\ \  | | |_| | (_| | (_| |  __/
+\____/|_|\___|_| |_|\_/ \___|_| |_|_|\__,_|\___/|___/   \__,_|   \____/_|   \__,_\/   \/  \_/\__,_|\__,_|\__,_|\___|
+                                                                                                                    
+                                                                                                                  """
 texto = """Bienvenido a CruXYuade, un juego de crucigrama minimalista diseñado para desafiar tu vocabulario directamente desde la terminal.
 Pon a prueba tu ingenio, completa palabras, y desbloquea nuevos niveles de dificultad. ¡Cada crucigrama es único, y la diversión no tiene límites!
 Elige una opción, ingresa tus respuestas, y deja que el arte ASCII te motive en cada victoria."""
