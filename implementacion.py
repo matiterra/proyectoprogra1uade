@@ -1187,7 +1187,29 @@ def cargar_puntajes():
     except json.JSONDecodeError:
         print("Error: Problema al leer el archivo de credenciales")
         return {}
+def printear_texto_descripcion(texto, width=80):
+    lineas = texto.split('\n')
+    lineas_enmarcadas = []
 
+    # Calcula el ancho del texto más largo para centrar correctamente
+    ancho_maximo_texto = max(len(linea) for linea in lineas)
+    ancho_cuadro = max(width, ancho_maximo_texto + 4)
+
+    lineas_enmarcadas.append('+' + '-' * (ancho_cuadro - 2) + '+')
+    
+    for linea in lineas:
+        linea_centrada = linea.center(ancho_maximo_texto)
+        linea_ajustada = linea_centrada.center(ancho_cuadro - 2)
+        lineas_enmarcadas.append(f'|{linea_ajustada}|')
+    
+    lineas_enmarcadas.append('+' + '-' * (ancho_cuadro - 2) + '+')
+    
+    for linea_enmarcada in lineas_enmarcadas:
+        print(linea_enmarcada)
+        
+texto = """Bienvenido a CruXYuade, un juego de crucigrama minimalista diseñado para desafiar tu vocabulario directamente desde la terminal.
+Pon a prueba tu ingenio, completa palabras, y desbloquea nuevos niveles de dificultad. ¡Cada crucigrama es único, y la diversión no tiene límites!
+Elige una opción, ingresa tus respuestas, y deja que el arte ASCII te motive en cada victoria."""
 
 def main():
 
@@ -1201,6 +1223,7 @@ def main():
                                                                                         __/ |                        
                                                                                        |___/                         
 """)
+    printear_texto_descripcion(texto)
 
 
     #Funciones que se deben ejecutar al principio del programa:

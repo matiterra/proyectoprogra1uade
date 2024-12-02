@@ -4,5 +4,11 @@
         "nombre_usuario": "mati",
         "contraseña": "mati",
         "score": 0
+    },
+    "1": {
+        "id": 2,
+        "nombre_usuario": "1",
+        "contraseña": "1",
+        "score": 0
     }
 }
