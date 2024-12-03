@@ -801,8 +801,7 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
 
 
             if IngresaOpcion.upper() == 'B':
-                if menu_retroceso():
-                    return "", -1, False
+                
                 bandera1 = False
             else:
                 IngresaOpcion = int(IngresaOpcion)
@@ -825,8 +824,8 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
                                 if 0 <= SeleccionaNumero <= 9 and SeleccionaNumero not in numero_palabra_encontrada:
                                     entrada_palabra = input("Ingrese la palabra que quiere adivinar (o 'B' para volver): ").strip()
                                     if entrada_palabra.upper() == 'B':
-                                        if menu_retroceso():
-                                            return "", -1, False
+                                        
+                                        bandera1 = False    
                                         bandera2 = False
                                     elif entrada_palabra.isalpha():
                                         IngresaPalabra = entrada_palabra
@@ -844,8 +843,8 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
                         try:
                             entrada_pista = input("Ingrese el número de la palabra que quiere consultar la Pista Extra (o 'B' para volver): ").strip()
                             if entrada_pista.upper() == 'B':
-                                if menu_retroceso():
-                                    return "", -1, False
+                                bandera1 = False    
+                                bandera2 = False
                                 bandera3 = False
                             else:
                                 SeleccionaNumero = int(entrada_pista)
@@ -1243,7 +1242,7 @@ ______ _                           _     _                       _____          
 \____/|_|\___|_| |_|\_/ \___|_| |_|_|\__,_|\___/|___/   \__,_|   \____/_|   \__,_\/   \/  \_/\__,_|\__,_|\__,_|\___|
                                                                                                                     
                                                                                                                   """
-texto = """Bienvenido a CruXYuade, un juego de crucigrama minimalista diseñado para desafiar tu vocabulario directamente desde la terminal.
+texto = """Bienvenid@s a CruXYuade, un juego de crucigrama minimalista diseñado para desafiar tu vocabulario directamente desde la terminal.
 Pon a prueba tu ingenio, completa palabras, y desbloquea nuevos niveles de dificultad. ¡Cada crucigrama es único, y la diversión no tiene límites!
 Elige una opción, ingresa tus respuestas, y deja que el arte ASCII te motive en cada victoria."""
 
