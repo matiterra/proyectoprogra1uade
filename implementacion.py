@@ -60,6 +60,7 @@ def iniciar_sesion(nombre_usuario, contrasenia, archivo_credenciales='credencial
 
         if nombre_usuario in credenciales:
             if credenciales[nombre_usuario]['contraseña'] == contrasenia:
+                print("--------------------------------")
                 print(f"Bienvenido, {nombre_usuario}!")
                 return True
             else:
@@ -793,7 +794,11 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
     while bandera1:
         try:
             print("\nEn cualquier momento puedes escribir 'B' para volver al menú de retroceso")
+            print("--------------------------------")
+
             IngresaOpcion = input("Ingrese una opción:\n 1) Ingresar número de palabra a adivinar\n 2) Pedir Pista Extra\n 3) Utilizar Comodín\n Opción: ").strip()
+            print("--------------------------------")
+
 
             if IngresaOpcion.upper() == 'B':
                 if menu_retroceso():
@@ -965,6 +970,7 @@ def ElegirTematicas():
     while bandera1 == True:
         try:
             tematica=int(input("Ingrese una opción para elegir la tematica:\n 1) Palabras generales\n 2) Palabras con relación al fútbol\n 3) Palabras con relación a Sistemas \n Opción: "))
+            print("--------------------------------")
             if tematica < 1 or tematica > 3:
                 print("Por favor elija un número dentro de las opciones")
             else:
@@ -1280,9 +1286,11 @@ def main():
         pista3 = ""
         
         while continuar_jugando and len(numero_palabra_encontrada) < 10:
-            print("\nPresiona 'B' en cualquier momento para acceder al menú de retroceso")
-            
+            # print("\nPresiona 'B' en cualquier momento para acceder al menú de retroceso")
+            print("--------------------------------")
             accion = input("\nPresiona Enter para continuar o 'B' para el menú de retroceso: ").strip().upper()
+            print("--------------------------------")
+
             if accion == 'B':
                 print(f"\nGuardando puntaje final: {puntaje_total}")
                 actualizar_puntaje(nombre_usuario, puntaje_total)
