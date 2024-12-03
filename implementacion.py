@@ -1053,33 +1053,51 @@ def reiniciar_partida():
     
 
 def Login():
-    bandera = True
-    opcion_valida = False
-    nombre_usuario = ""
-
-    while not opcion_valida:
+    while True:
         opcion = input("Seleccione una opción (1-Registrar, 2-Iniciar sesión): ")
         
-        if opcion == '1':
-            registro_exitoso = False
-            while not registro_exitoso:
-                nombre_usuario = input("Ingrese un nombre de usuario (debe contener 5 letras y luego 2 números): ")
-                contrasenia = input("Ingrese una contraseña (debe contener 6 caracteres alfanuméricos): ")
-                registro_exitoso = registrar_usuario(nombre_usuario, contrasenia)
-            opcion_valida = True
-            
-        elif opcion == '2':
-            while bandera:
-                nombre_usuario = input("Ingrese su nombre de usuario: ")
-                contrasenia = input("Ingrese su contraseña: ")
+        if opcion == '1':  # Registrar usuario
+            volver_al_menu = False
+            while not volver_al_menu:
+                nombre_usuario = input("Ingrese un nombre de usuario (debe contener 5 letras y luego 2 números) o 'B' para volver a elegir: ")
+                if nombre_usuario.upper() == 'B':
+                    volver_al_menu = True  # Cambiar bandera para salir al menú principal
+                    continue
+                
+                contrasenia = input("Ingrese una contraseña (debe contener 6 caracteres alfanuméricos) o 'B' para volver a elegir: ")
+                if contrasenia.upper() == 'B':
+                    volver_al_menu = True  # Cambiar bandera para salir al menú principal
+                    continue
+                
+                if registrar_usuario(nombre_usuario, contrasenia):
+                    print("Registro exitoso.")
+                    return nombre_usuario  # Salir de la función si el registro fue exitoso
+                else:
+                    print("Error en el registro. Intente nuevamente.")
+
+        elif opcion == '2':  # Iniciar sesión
+            volver_al_menu = False
+            while not volver_al_menu:
+                nombre_usuario = input("Ingrese su nombre de usuario o 'B' para volver a elegir: ")
+                if nombre_usuario.upper() == 'B':
+                    volver_al_menu = True  # Cambiar bandera para salir al menú principal
+                    continue
+                
+                contrasenia = input("Ingrese su contraseña o 'B' para volver a elegir: ")
+                if contrasenia.upper() == 'B':
+                    volver_al_menu = True  # Cambiar bandera para salir al menú principal
+                    continue
+                
                 if iniciar_sesion(nombre_usuario, contrasenia):
                     print("Inicio de sesión exitoso.")
-                    bandera = False
-                    opcion_valida = True
+                    return nombre_usuario  # Salir de la función si el inicio de sesión fue exitoso
                 else:
                     print("Error en el inicio de sesión. Intente nuevamente.")
+        
         else:
             print("Opción no válida. Por favor, seleccione 1 o 2.")
+
+        
     
     return nombre_usuario
 
