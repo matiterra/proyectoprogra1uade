@@ -1242,7 +1242,7 @@ ______ _                           _     _                       _____          
                                                                                                                     
                                                                                                                   """
 texto = """Bienvenid@s a CruXYuade, un juego de crucigrama minimalista diseñado para desafiar tu vocabulario directamente desde la terminal.
-Pon a prueba tu ingenio, completa palabras, y desbloquea nuevos niveles de dificultad. ¡Cada crucigrama es único, y la diversión no tiene límites!
+¡Cada crucigrama es único, y la diversión no tiene límites!
 Elige una opción, ingresa tus respuestas, y deja que el arte ASCII te motive en cada victoria."""
 
 def main():
