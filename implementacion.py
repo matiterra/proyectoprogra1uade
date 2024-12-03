@@ -816,8 +816,7 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
                         try:
                             entrada_numero = input("Ingrese el número de la palabra que quiere adivinar (o 'B' para volver): ").strip()
                             if entrada_numero.upper() == 'B':
-                                if menu_retroceso():
-                                    return "", -1, False
+                                bandera1 = False
                                 bandera2 = False
                             else:
                                 SeleccionaNumero = int(entrada_numero)
