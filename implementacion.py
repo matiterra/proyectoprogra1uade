@@ -2,56 +2,44 @@ import os
 import re
 import random
 import json
-from functools import reduce
+
 # Función para registrar un nuevo usuario
-def registrar_usuario(nombre_usuario, contrasenia):
-    '''Función encargada del registro de nuevos usuarios en el sistema.
-       Parámetros de entrada:
-       - nombre_usuario (string): el nombre de usuario a registrar, debe tener al menos 5 letras seguidas por 2 números.
-       - contrasenia (string): la contraseña del usuario, debe tener al menos 6 caracteres alfanuméricos.
-       Retorna:
-       - True si el registro es exitoso, False en caso contrario.
-    '''
-    # Verificar el formato del nombre de usuario
+def registrar_usuario(nombre_usuario, contrasenia, archivo_credenciales='credenciales.json'):
+    """Función para registrar un usuario en el sistema."""
     if not re.match(r"^[A-Za-z]{5,}\d{2}$", nombre_usuario):
         print("El nombre de usuario debe tener al menos 5 letras seguidas de 2 números.")
         return False
 
-    # Verificar el formato de la contraseña
     if not re.match(r"^[A-Za-z0-9]{6,}$", contrasenia):
         print("La contraseña debe tener al menos 6 caracteres alfanuméricos.")
         return False
 
     try:
-        # Intentar leer el archivo existente
-        try:
-            with open('credenciales.json', 'r', encoding='utf-8') as archivo_json:
-                contenido = archivo_json.read()
-                credenciales = json.loads(contenido) if contenido else {}
-        except FileNotFoundError:
+        # Leer el archivo de credenciales o inicializar un diccionario vacío
+        if os.path.exists(archivo_credenciales):
+            with open(archivo_credenciales, 'r', encoding='utf-8') as archivo_json:
+                credenciales = json.load(archivo_json)
+        else:
             credenciales = {}
 
-        # Verificar si el usuario ya existe
         if nombre_usuario in credenciales:
             print("Este usuario ya existe. Por favor, elija otro nombre de usuario.")
             return False
 
-        # Obtener el último ID y crear uno nuevo
+        # Calcular el nuevo ID y agregar el usuario
         ultimo_id = max((int(usuario.get("id", 0)) for usuario in credenciales.values()), default=0)
         nuevo_id = ultimo_id + 1
-
-        # Crear nuevo registro de usuario
         credenciales[nombre_usuario] = {
             "id": nuevo_id,
             "nombre_usuario": nombre_usuario,
             "contraseña": contrasenia,
             "score": 0
         }
-        
-        # Guardar los cambios en el archivo
-        with open('credenciales.json', 'w', encoding='utf-8') as archivo_json:
+
+        # Guardar los datos actualizados en el archivo
+        with open(archivo_credenciales, 'w', encoding='utf-8') as archivo_json:
             json.dump(credenciales, archivo_json, indent=4, ensure_ascii=False)
-            
+
         print(f"Usuario {nombre_usuario} registrado exitosamente!")
         return True
 
@@ -59,34 +47,32 @@ def registrar_usuario(nombre_usuario, contrasenia):
         print(f"Error al registrar usuario: {str(e)}")
         return False
 
-# Función para iniciar sesión
-def iniciar_sesion(nombre_usuario, contrasenia):
-    '''Función encargada de la validación de credenciales de usuarios existentes
-       Parámetros de entrada: nombre_usuario (string con el nombre de usuario)
-                             contrasenia (string con la contraseña)
-       Variables de salida: flag_login (boolean True si las credenciales son correctas, False si son incorrectas)'''
+
+def iniciar_sesion(nombre_usuario, contrasenia, archivo_credenciales='credenciales.json'):
+    """Función para iniciar sesión con un usuario registrado."""
     try:
-        # Cargar el archivo JSON que contiene las credenciales
-        with open('credenciales.json', 'r', encoding='utf-8') as archivo_json:
+        if not os.path.exists(archivo_credenciales):
+            print("No se encontraron usuarios registrados.")
+            return False
+
+        with open(archivo_credenciales, 'r', encoding='utf-8') as archivo_json:
             credenciales = json.load(archivo_json)
-    except FileNotFoundError:
-        print("No se encontraron usuarios registrados.")
-        return False
+
+        if nombre_usuario in credenciales:
+            if credenciales[nombre_usuario]['contraseña'] == contrasenia:
+                print(f"Bienvenido, {nombre_usuario}!")
+                return True
+            else:
+                print("Contraseña incorrecta.")
+                return False
+        else:
+            print("El nombre de usuario no existe.")
+            return False
+
     except json.JSONDecodeError:
         print("Error al leer el archivo de credenciales.")
         return False
 
-    # Verificar si el nombre de usuario existe y la contraseña es correcta
-    if nombre_usuario in credenciales:
-        if credenciales[nombre_usuario]['contraseña'] == contrasenia:
-            print(f"Bienvenido, {nombre_usuario}!")
-            return True
-        else:
-            print("Contraseña incorrecta.")
-            return False
-    else:
-        print("El nombre de usuario no existe.")
-        return False
 
         
 def Buscolista_coincidencias(palabras):
