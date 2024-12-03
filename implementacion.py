@@ -39,7 +39,8 @@ def registrar_usuario(nombre_usuario, contrasenia, archivo_credenciales='credenc
         # Guardar los datos actualizados en el archivo
         with open(archivo_credenciales, 'w', encoding='utf-8') as archivo_json:
             json.dump(credenciales, archivo_json, indent=4, ensure_ascii=False)
-
+            
+        print("--------------------------------")
         print(f"Usuario {nombre_usuario} registrado exitosamente!")
         return True
 
@@ -1063,12 +1064,12 @@ def Login():
         if opcion == '1':  # Registrar usuario
             volver_al_menu = False
             while not volver_al_menu:
-                nombre_usuario = input("Ingrese un nombre de usuario (debe contener 5 letras y luego 2 números) o 'B' para volver a elegir: ")
+                nombre_usuario = input("Ingrese un nombre de usuario (debe contener al menos 5 letras y luego 2 números) o 'B' para volver a elegir: ")
                 if nombre_usuario.upper() == 'B':
                     volver_al_menu = True  # Cambiar bandera para salir al menú principal
                     continue
                 
-                contrasenia = input("Ingrese una contraseña (debe contener 6 caracteres alfanuméricos) o 'B' para volver a elegir: ")
+                contrasenia = input("Ingrese una contraseña (debe contener al menos 6 caracteres alfanuméricos) o 'B' para volver a elegir: ")
                 if contrasenia.upper() == 'B':
                     volver_al_menu = True  # Cambiar bandera para salir al menú principal
                     continue

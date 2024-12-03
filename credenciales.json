@@ -4,5 +4,35 @@
         "nombre_usuario": "luciano99",
         "contraseña": "123456",
         "score": 136
+    },
+    "asdasdasdasd12": {
+        "id": 2,
+        "nombre_usuario": "asdasdasdasd12",
+        "contraseña": "12312415",
+        "score": 0
+    },
+    "asdasdasdasd11": {
+        "id": 3,
+        "nombre_usuario": "asdasdasdasd11",
+        "contraseña": "asd1234",
+        "score": 0
+    },
+    "asdasd12": {
+        "id": 4,
+        "nombre_usuario": "asdasd12",
+        "contraseña": "asdasd2",
+        "score": 0
+    },
+    "asdasd11": {
+        "id": 5,
+        "nombre_usuario": "asdasd11",
+        "contraseña": "02131245",
+        "score": 0
+    },
+    "asdasdasdasdas00": {
+        "id": 6,
+        "nombre_usuario": "asdasdasdasdas00",
+        "contraseña": "123123mxdfwe",
+        "score": 0
     }
 }
