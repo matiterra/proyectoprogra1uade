@@ -1113,10 +1113,10 @@ def menu_retroceso():
         
         if opcion == "1":
             LimpioPantalla()
-            return False
+            return False, True  # (volver_menu, continuar_jugando)
         elif opcion == "2":
             LimpioPantalla()
-            return True
+            return True, False  # (volver_menu, continuar_jugando)
         elif opcion == "3":
             print("\n¡Gracias por jugar! Hasta pronto.")
             exit()
@@ -1224,105 +1224,100 @@ Pon a prueba tu ingenio, completa palabras, y desbloquea nuevos niveles de dific
 Elige una opción, ingresa tus respuestas, y deja que el arte ASCII te motive en cada victoria."""
 
 def main():
-
     imprimir_centrado_ascii(ascii_art)
     printear_texto_descripcion(texto)
 
-
-    #Funciones que se deben ejecutar al principio del programa:
-    bandera_errores = True
-    nombre_usuario = Login()  # Guardamos el nombre de usuario
-    tematica = ElegirTematicas()
-    lista_cargada = LeerJSON(tematica)
+    nombre_usuario = Login()
+    continuar_programa = True
     
-    palabras,definiciones_1,definiciones_2,definiciones_3 = cargarListas(lista_cargada)
-    diccionario_coincidencias = Buscolista_coincidencias(palabras)
-    tablero = ConstruccionTableroVacio()
-    
-    while bandera_errores:
-        try: 
-            lista_cargada = LeerJSON(tematica)
-            palabras,definiciones_1,definiciones_2,definiciones_3 = cargarListas(lista_cargada)
-            diccionario_coincidencias = Buscolista_coincidencias(palabras)
-            tablero = ConstruccionTableroVacio()
-            palabras_para_jugar,lista_direcciones,lista_coincidencias,dependencia_decima_palabra = LogicaConstruccion(palabras,diccionario_coincidencias)
-            
-        except (AttributeError, ValueError):
-            print("No se encontró una combinación, reintentando...")
-            continue
-        else:
-            bandera_errores = False
+    while continuar_programa:
+        tematica = ElegirTematicas()
+        lista_cargada = LeerJSON(tematica)
+        bandera_errores = True
         
-
-    palabras_con_indice = AgregoIndice(palabras_para_jugar)
-    producto_final, coordenadas = ConstruirTablero(tablero, palabras_con_indice, lista_coincidencias, lista_direcciones,dependencia_decima_palabra)
-    tablero_actualizado = ImpresionTablero(tablero)
-    PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar, palabras)
-
-
-    numero_palabra_encontrada = []
-    puntaje_total = 0
-    continuar_jugando = True
-    primer_intento = True
-    lista_comodin = []
-    palabra_ingresada = " "
-    pista2 = ""
-    pista3 = ""
-    
-    while continuar_jugando and len(numero_palabra_encontrada) < 10:
-        print("\nPresiona 'B' en cualquier momento para acceder al menú de retroceso")
-        
-        accion = input("\nPresiona Enter para continuar o 'B' para el menú de retroceso: ").strip().upper()
-        if accion == 'B':
-            print(f"\nGuardando puntaje final: {puntaje_total}")
-            actualizar_puntaje(nombre_usuario, puntaje_total)
-            if menu_retroceso():
-                return
-        
-        # Agregar la lógica principal del juego aquí
-        LimpioPantalla()
-        PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar, palabras)
-        
-        palabra_ingresada, numero_seleccionado, comodin = IngresarPalabraNumero(
-            numero_palabra_encontrada, 
-            palabras_para_jugar, 
-            palabras, 
-            definiciones_2, 
-            definiciones_3, 
-            lista_comodin,
-
-        )
-        
-        flag_palabra = ValidarPalabra(palabras_con_indice, palabra_ingresada, numero_seleccionado)
-        
-        if flag_palabra or comodin:
-            if comodin:
-                tablero_actualizado = Comodin(
-                    numero_seleccionado,
-                    palabras_con_indice,
-                    comodin,
-                    tablero_actualizado,
-                    coordenadas,
-                    lista_direcciones,
-                    flag_palabra,
-                    numero_palabra_encontrada
-                )
+        while bandera_errores:
+            try: 
+                palabras,definiciones_1,definiciones_2,definiciones_3 = cargarListas(lista_cargada)
+                diccionario_coincidencias = Buscolista_coincidencias(palabras)
+                tablero = ConstruccionTableroVacio()
+                palabras_para_jugar,lista_direcciones,lista_coincidencias,dependencia_decima_palabra = LogicaConstruccion(palabras,diccionario_coincidencias)
+            except (AttributeError, ValueError):
+                print("No se encontró una combinación, reintentando...")
+                continue
             else:
-                ImprimirTableroActualizado(
-                    tablero_actualizado,
-                    flag_palabra,
-                    palabras_con_indice,
-                    coordenadas,
-                    lista_direcciones,
-                    numero_seleccionado
-                )
-            
-            if numero_seleccionado not in numero_palabra_encontrada:
-                numero_palabra_encontrada.append(numero_seleccionado)
-                puntaje_total += Score(palabras_para_jugar, flag_palabra, numero_seleccionado)
+                bandera_errores = False
 
-    print("Gracias por jugar. ¡Hasta la próxima!")
-    actualizar_puntaje(nombre_usuario, puntaje_total)
+        palabras_con_indice = AgregoIndice(palabras_para_jugar)
+        producto_final, coordenadas = ConstruirTablero(tablero, palabras_con_indice, lista_coincidencias, lista_direcciones,dependencia_decima_palabra)
+        tablero_actualizado = ImpresionTablero(tablero)
+        PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar, palabras)
+
+        numero_palabra_encontrada = []
+        puntaje_total = 0
+        continuar_jugando = True
+        primer_intento = True
+        lista_comodin = []
+        palabra_ingresada = " "
+        pista2 = ""
+        pista3 = ""
+        
+        while continuar_jugando and len(numero_palabra_encontrada) < 10:
+            print("\nPresiona 'B' en cualquier momento para acceder al menú de retroceso")
+            
+            accion = input("\nPresiona Enter para continuar o 'B' para el menú de retroceso: ").strip().upper()
+            if accion == 'B':
+                print(f"\nGuardando puntaje final: {puntaje_total}")
+                actualizar_puntaje(nombre_usuario, puntaje_total)
+                volver_menu, continuar_jugando = menu_retroceso()
+                if volver_menu:
+                    LimpioPantalla()
+                    continue  # Salta el resto del bucle actual
+                
+            if continuar_jugando:  # Solo ejecuta el código del juego si continuar_jugando es True
+                LimpioPantalla()
+                PrintPistasTablero(tablero_actualizado, definiciones_1, palabras_para_jugar, palabras)
+                
+                palabra_ingresada, numero_seleccionado, comodin = IngresarPalabraNumero(
+                    numero_palabra_encontrada, 
+                    palabras_para_jugar, 
+                    palabras, 
+                    definiciones_2, 
+                    definiciones_3, 
+                    lista_comodin
+                )
+                
+                flag_palabra = ValidarPalabra(palabras_con_indice, palabra_ingresada, numero_seleccionado)
+                
+                if flag_palabra or comodin:
+                    if comodin:
+                        tablero_actualizado = Comodin(
+                            numero_seleccionado,
+                            palabras_con_indice,
+                            comodin,
+                            tablero_actualizado,
+                            coordenadas,
+                            lista_direcciones,
+                            flag_palabra,
+                            numero_palabra_encontrada
+                        )
+                    else:
+                        ImprimirTableroActualizado(
+                            tablero_actualizado,
+                            flag_palabra,
+                            palabras_con_indice,
+                            coordenadas,
+                            lista_direcciones,
+                            numero_seleccionado
+                        )
+                    
+                    if numero_seleccionado not in numero_palabra_encontrada:
+                        numero_palabra_encontrada.append(numero_seleccionado)
+                        puntaje_total += Score(palabras_para_jugar, flag_palabra, numero_seleccionado)
+
+        if len(numero_palabra_encontrada) >= 10:
+            print("¡Felicitaciones! Has completado el crucigrama.")
+            print(f"Puntaje final: {puntaje_total}")
+            actualizar_puntaje(nombre_usuario, puntaje_total)
 
 
 
