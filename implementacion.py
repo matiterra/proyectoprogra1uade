@@ -860,18 +860,7 @@ def IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabr
                                 SeleccionaNumero = int(entrada_pista)
                                 if 0 <= SeleccionaNumero <= 9 and SeleccionaNumero not in numero_palabra_encontrada:
                                     LogicaSegundaPista(SeleccionaNumero, palabras_para_jugar, palabras, definiciones2, PedirPista)
-                                    IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones2, definiciones3, lista_comodin)
-                                    entrada_pista_extra = input("¿Desea pedir una pista extra? S = Sí / N = No (o 'B' para volver): ").strip().upper()
-                                    if entrada_pista_extra == 'B':
-                                        if menu_retroceso():
-                                            return "", -1, False
-                                        bandera3 = False
-                                    elif entrada_pista_extra in ["S", "N"]:
-                                        PedirPista = entrada_pista_extra
-                                        IngresarPalabraNumero(numero_palabra_encontrada, palabras_para_jugar, palabras, definiciones2, definiciones3, lista_comodin)
-                                        bandera3 = False
-                                    else:
-                                        print("Por favor, ingrese 'S' para Sí o 'N' para No.")
+                                    bandera3 = False
                                 else:
                                     print("El número ingresado debe corresponder a uno de los números que se muestran en el tablero y no corresponder a uno de los adivinados anteriormente.")
                         except ValueError:

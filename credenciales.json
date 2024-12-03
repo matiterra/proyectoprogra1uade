@@ -4,5 +4,11 @@
         "nombre_usuario": "luciano99",
         "contraseña": "123456",
         "score": 0
+    },
+    "matimati99": {
+        "id": 2,
+        "nombre_usuario": "matimati99",
+        "contraseña": "mati123123",
+        "score": 0
     }
 }
